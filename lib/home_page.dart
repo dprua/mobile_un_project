@@ -43,6 +43,15 @@ class _HomePageState extends State<HomePage> {
     return downloadURL;
   }
 
+  gettype() async {
+    Future<DocumentSnapshot> docSnapshot = FirebaseFirestore.instance
+        .collection('users').doc(FirebaseAuth.instance.currentUser.uid).get();
+    DocumentSnapshot docu = await docSnapshot;
+    int a = await docu.get('user_type');
+    return a;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: Return an AsymmetricView (104)
@@ -65,186 +74,227 @@ class _HomePageState extends State<HomePage> {
     else{
       flag = true;
     }
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(
-            Icons.person,
-            semanticLabel: 'profile',
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
-            );
-          },
-        ),
-        centerTitle: true,
-        title: Text('Main'),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add,
-              semanticLabel: 'add',
+    return FutureBuilder(
+      future: gettype(),
+      builder: (BuildContext context, AsyncSnapshot snapshot1) {
+        if (snapshot1.hasData == false) {
+          return CircularProgressIndicator();
+        }
+        //error가 발생하게 될 경우 반환하게 되는 부분
+        else if (snapshot1.hasError) {
+          return Padding(
+            padding: const EdgeInsets.all(
+                8.0),
+            child: Text(
+              'Error: ${snapshot1.error}',
+              style: TextStyle(
+                  fontSize: 15),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SecondRoute()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: <Widget>[
-          DropdownButton<String>(
-            value: dropdownValue,
-            icon: const Icon(Icons.arrow_drop_down),
-            iconSize: 24,
-            elevation: 16,
-            style: const TextStyle(color: Colors.black),
-            underline: Container(
-              height: 2,
-              color: Colors.black12,
+          );
+        }
+        else {
+          var a;
+          if(snapshot1.data.toString() == '0')
+            a = 'HM';
+          else if (snapshot1.data.toString() == '1')
+            a = 'HR';
+          else
+            a = 'STF';
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(
+                  Icons.person,
+                  semanticLabel: 'profile',
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                },
+              ),
+              centerTitle: true,
+              title: Text(a),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(
+                    Icons.add,
+                    semanticLabel: 'add',
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SecondRoute()),
+                    );
+                  },
+                ),
+              ],
             ),
-            onChanged: (String newValue) {
-              setState(() {
-                dropdownValue = newValue;
-              });
-            },
-            items: <String>['ASC', 'DESC']
-                .map<DropdownMenuItem<String>>((String value) {
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Text(value),
-              );
-            }).toList(),
-          ),
-          Expanded(
-            child: Container(
-              height: 600,
-              child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance.collection('post').orderBy('price', descending: flag).snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasData == false)
-                    return CircularProgressIndicator();
-                  if (snapshot.hasError)
-                    return Text("Error: ${snapshot.error}");
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return Text("Loading...");
-                    default:
-                      return GridView.count(
-                          crossAxisCount: 2,
-                          children: snapshot.data.docs
-                              .map((DocumentSnapshot document) {
-                            if (snapshot.hasData == false) {
-                              return CircularProgressIndicator();
-                            }
-                            if (snapshot.hasData && !document.exists) {
-                              return CircularProgressIndicator();
-                            }
-                            else if (snapshot.hasError) {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  'Error: ${snapshot.error}',
-                                  style: TextStyle(fontSize: 15),
-                                ),
-                              );
-                            }
-                            else {
-                              return Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Card(
-                                  elevation: 2,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Column(
-                                      children: <Widget>[
-                                        AspectRatio(
-                                            aspectRatio: 16 / 9,
-                                            child: Image.network(
-                                              document['url'],
-                                              fit: BoxFit.fitWidth,
-                                            )
+            body: Column(
+              children: <Widget>[
+                DropdownButton<String>(
+                  value: dropdownValue,
+                  icon: const Icon(Icons.arrow_drop_down),
+                  iconSize: 24,
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.black),
+                  underline: Container(
+                    height: 2,
+                    color: Colors.black12,
+                  ),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      dropdownValue = newValue;
+                    });
+                  },
+                  items: <String>['ASC', 'DESC']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 600,
+                    child: StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance.collection('post')
+                            .orderBy('price', descending: flag)
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.hasData == false)
+                            return CircularProgressIndicator();
+                          if (snapshot.hasError)
+                            return Text("Error: ${snapshot.error}");
+                          switch (snapshot.connectionState) {
+                            case ConnectionState.waiting:
+                              return Text("Loading...");
+                            default:
+                              return GridView.count(
+                                  crossAxisCount: 2,
+                                  children: snapshot.data.docs
+                                      .map((DocumentSnapshot document) {
+                                    if (snapshot.hasData == false) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    if (snapshot.hasData && !document.exists) {
+                                      return CircularProgressIndicator();
+                                    }
+                                    else if (snapshot.hasError) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          'Error: ${snapshot.error}',
+                                          style: TextStyle(fontSize: 15),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              8.0, 8.0, 0.0, 3.0),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Text(
-                                                document["name"],
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 10,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              8.0, 0.0, 0.0, 0.0),
+                                      );
+                                    }
+                                    else {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Card(
+                                          elevation: 2,
                                           child: Container(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              '\$' +
-                                                  document["price"].toString(),
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 10,
-                                              ),
+                                            padding: const EdgeInsets.all(8),
+                                            child: Column(
+                                              children: <Widget>[
+                                                AspectRatio(
+                                                    aspectRatio: 16 / 9,
+                                                    child: Image.network(
+                                                      document['url'],
+                                                      fit: BoxFit.fitWidth,
+                                                    )
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .fromLTRB(
+                                                      8.0, 8.0, 0.0, 3.0),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        document["name"],
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 10,
+                                                          fontWeight: FontWeight
+                                                              .bold,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .fromLTRB(
+                                                      8.0, 0.0, 0.0, 0.0),
+                                                  child: Container(
+                                                    alignment: Alignment
+                                                        .centerLeft,
+                                                    child: Text(
+                                                      '\$' +
+                                                          document["price"]
+                                                              .toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 10,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Row(
+                                                    mainAxisAlignment: MainAxisAlignment
+                                                        .end,
+                                                    children: [
+                                                      Container(
+                                                        width: 60,
+                                                        height: 30,
+                                                        child: TextButton(
+                                                            child: Text(
+                                                              'more',
+                                                              style: TextStyle(
+                                                                  fontSize: 12),),
+                                                            onPressed: () {
+                                                              print(
+                                                                  document['price']);
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder: (
+                                                                      context) =>
+                                                                      DetailScreen(
+                                                                          doc: document),
+                                                                ),
+                                                              );
+                                                            }
+                                                        ),
+                                                      ),
+                                                    ]
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ),
-                                        Row(
-                                            mainAxisAlignment: MainAxisAlignment
-                                                .end,
-                                            children: [
-                                              Container(
-                                                width: 60,
-                                                height: 30,
-                                                child: TextButton(
-                                                    child: Text(
-                                                      'more', style: TextStyle(
-                                                        fontSize: 12),),
-                                                    onPressed: () {
-                                                      print(document['price']);
-                                                      Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              DetailScreen(doc: document),
-                                                        ),
-                                                      );
-                                                    }
-                                                ),
-                                              ),
-                                            ]
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                      );
+                                    }
+                                  }
+                                  ).toList()
                               );
-                            }
                           }
-                          ).toList()
-                      );
-                  }
-                }
-              ),
+                        }
+                    ),
+                  ),
+                )
+              ],
             ),
-          )
-        ],
-      ),
+          );
+        }
+      }
     );
   }
 }

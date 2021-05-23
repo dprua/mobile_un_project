@@ -6,10 +6,11 @@ INJECTED from /Users/a1111/Desktop/21600277/mobile/hw/un_project/android/app/src
 INJECTED from /Users/a1111/Desktop/21600277/mobile/hw/un_project/android/app/src/main/AndroidManifest.xml:1:1-41:12
 MERGED from /Users/a1111/Desktop/21600277/mobile/hw/un_project/android/app/src/main/AndroidManifest.xml:1:1-41:12
 MERGED from [:firebase_auth] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
+MERGED from [:shared_preferences] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
 MERGED from [:image_picker] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-22:12
 MERGED from [:flutter_plugin_android_lifecycle] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-7:12
-MERGED from [:cloud_firestore] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:google_sign_in] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/google_sign_in/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
+MERGED from [:cloud_firestore] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:firebase_storage] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [:firebase_core] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-15:12
 MERGED from [androidx.multidex:multidex:2.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/a20be4a04e20a7650c7478728658bc1e/multidex-2.0.0/AndroidManifest.xml:17:1-22:12
@@ -27,8 +28,8 @@ MERGED from [com.google.firebase:firebase-components:17.0.0] /Users/a1111/.gradl
 MERGED from [com.google.android.gms:play-services-auth:16.0.1] /Users/a1111/.gradle/caches/transforms-2/files-2.1/f236c74cc6d6f2d8c5a41a39cc9cdbd6/jetified-play-services-auth-16.0.1/AndroidManifest.xml:17:1-39:12
 MERGED from [com.google.android.gms:play-services-auth-api-phone:17.4.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/a259cc2533c3f82706c94c31ad6608cd/jetified-play-services-auth-api-phone-17.4.0/AndroidManifest.xml:2:1-7:12
 MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/dd341317ee0c836f3e714a8533ea18e1/jetified-play-services-safetynet-17.0.0/AndroidManifest.xml:17:1-24:12
-MERGED from [com.google.firebase:firebase-database-collection:18.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/4e743f6562e86b8e612b0b4019ecb071/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-auth-base:16.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/2152269df592b3d6aab10b881027c062/jetified-play-services-auth-base-16.0.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.firebase:firebase-database-collection:18.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/4e743f6562e86b8e612b0b4019ecb071/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml:2:1-9:12
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/93fbae78ce8dc134e45274d9cd223907/jetified-play-services-base-17.1.0/AndroidManifest.xml:17:1-29:12
 MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:17:1-46:12
 MERGED from [com.google.android.gms:play-services-measurement-sdk:19.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/1b90f7876a0dd6a37e3d1ba5e9ad14ca/jetified-play-services-measurement-sdk-19.0.0/AndroidManifest.xml:17:1-25:12
@@ -198,14 +199,16 @@ INJECTED from /Users/a1111/Desktop/21600277/mobile/hw/un_project/android/app/src
 INJECTED from /Users/a1111/Desktop/21600277/mobile/hw/un_project/android/app/src/main/AndroidManifest.xml
 MERGED from [:firebase_auth] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_auth] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/firebase_auth/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:shared_preferences] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/shared_preferences/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:image_picker] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:image_picker] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/image_picker/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:flutter_plugin_android_lifecycle] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/flutter_plugin_android_lifecycle/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
-MERGED from [:cloud_firestore] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
-MERGED from [:cloud_firestore] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:google_sign_in] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/google_sign_in/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:google_sign_in] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/google_sign_in/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:cloud_firestore] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
+MERGED from [:cloud_firestore] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/cloud_firestore/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_storage] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_storage] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/firebase_storage/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
 MERGED from [:firebase_core] /Users/a1111/Desktop/21600277/mobile/hw/un_project/build/firebase_core/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-44
@@ -240,10 +243,10 @@ MERGED from [com.google.android.gms:play-services-auth-api-phone:17.4.0] /Users/
 MERGED from [com.google.android.gms:play-services-auth-api-phone:17.4.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/a259cc2533c3f82706c94c31ad6608cd/jetified-play-services-auth-api-phone-17.4.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/dd341317ee0c836f3e714a8533ea18e1/jetified-play-services-safetynet-17.0.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-safetynet:17.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/dd341317ee0c836f3e714a8533ea18e1/jetified-play-services-safetynet-17.0.0/AndroidManifest.xml:20:5-44
-MERGED from [com.google.firebase:firebase-database-collection:18.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/4e743f6562e86b8e612b0b4019ecb071/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml:5:5-7:41
-MERGED from [com.google.firebase:firebase-database-collection:18.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/4e743f6562e86b8e612b0b4019ecb071/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.android.gms:play-services-auth-base:16.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/2152269df592b3d6aab10b881027c062/jetified-play-services-auth-base-16.0.0/AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-auth-base:16.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/2152269df592b3d6aab10b881027c062/jetified-play-services-auth-base-16.0.0/AndroidManifest.xml:5:5-44
+MERGED from [com.google.firebase:firebase-database-collection:18.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/4e743f6562e86b8e612b0b4019ecb071/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.firebase:firebase-database-collection:18.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/4e743f6562e86b8e612b0b4019ecb071/jetified-firebase-database-collection-18.0.0/AndroidManifest.xml:5:5-7:41
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/93fbae78ce8dc134e45274d9cd223907/jetified-play-services-base-17.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-base:17.1.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/93fbae78ce8dc134e45274d9cd223907/jetified-play-services-base-17.1.0/AndroidManifest.xml:20:5-44
 MERGED from [com.google.android.gms:play-services-measurement:19.0.0] /Users/a1111/.gradle/caches/transforms-2/files-2.1/b8dcfd1b552f7109144a8abf8e3c9b86/jetified-play-services-measurement-19.0.0/AndroidManifest.xml:20:5-44
