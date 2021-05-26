@@ -21,7 +21,7 @@ class HRPage extends StatelessWidget{
             },
           ),
           centerTitle: true,
-          title: Text("For HM home page"),
+          title: Text("For HR home page"),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.delete),
