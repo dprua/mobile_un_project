@@ -9,9 +9,10 @@ import 'firebase_provider.dart';
 import 'signedin_page.dart';
 import 'register.dart';
 import 'dart:io';
-import 'staff_page.dart';
-
-var flag;
+import 'home_page.dart';
+import 'temp.dart';
+var flag = 0;
+var circle = false;
 var tt = true;
 class WidgetTree extends StatefulWidget {
 
@@ -30,7 +31,7 @@ class _WidgetTreeState extends State<WidgetTree> {
 
     if (user == null) {
       print("WHAT????");
-      flag = false;
+      //flag = 0;
       tt = true;
       return SignInPage();
     }
@@ -42,31 +43,33 @@ class _WidgetTreeState extends State<WidgetTree> {
         ref.doc(user.uid).get().then((doc){
           if (doc.exists) {
             print("이거이거");
-            flag = true;
-
+            flag = 2;
+            circle = true;
           }
           else {
             print("요거요거");
-            flag = false;
+            flag = 1;
           }
           setState(() {
             tt = false;
           });
         });
       }
-
-
       print(user.uid);
       print(flag);
 
-      if (user != null && flag == false) {
-        print("HERE!!!!!!!!!");
+      if (flag == 1) {
+        print("REGISTER!!!!!!!!!");
         tt = true;
         return RegisterForm();
       }
-      if (user != null && flag == true) {
-        print("HERE!!!");
-        return StaffPage();
+      else if (flag == 0) {
+        print("TPPP!!!");
+        return tpp();
+      }
+      else {
+        print("HOME!!!");
+        return HomePage();
       }
     }
 
