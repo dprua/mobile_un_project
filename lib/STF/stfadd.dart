@@ -31,8 +31,6 @@ class StaffAddState extends State<StaffAdd>{
       'work_exp': [_workControl.text], // have to change
       // 'userlist': [], // don't change // people who apply to this position, after apply, then update this field
       'writerId': FirebaseAuth.instance.currentUser.uid,
-    }).then((value){
-      return FirebaseFirestore.instance.collection('post').doc(value.id).collection('apply').add({});
     });
   }
 
