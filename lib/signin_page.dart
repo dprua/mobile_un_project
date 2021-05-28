@@ -187,7 +187,7 @@ class SignInPageState extends State<SignInPage> {
         ),
       ));
     bool result = await fp.signInWithEmail(_mailCon.text, _pwCon.text);
-    _scaffoldKey.currentState.hideCurrentSnackBar();
+    //_scaffoldKey.currentState.hideCurrentSnackBar();
     if (result == false) showLastFBMessage();
   }
 
