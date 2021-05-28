@@ -44,8 +44,6 @@ class StfPage extends StatelessWidget{
   }
 }
 
-
-
 class HMPage extends StatelessWidget{
   var loginstate = "STF";
   @override
