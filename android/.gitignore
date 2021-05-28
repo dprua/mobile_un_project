@@ -493,7 +493,7 @@ flycheck_*.el
 
 .gradle
 /build/
-
+.flutter-plugins-dependencies
 # Ignore Gradle GUI config
 gradle-app.setting
 
