@@ -11,7 +11,6 @@
 .buildlog/
 .history
 .svn/
-.flutter-plugins-dependencies
 
 # IntelliJ related
 *.iml
@@ -878,6 +877,7 @@ DerivedData/
 !default.mode2v3
 *.perspectivev3
 !default.perspectivev3
+.flutter-plugins-dependencies
 
 
 ### Flutter Generated Exceptions
