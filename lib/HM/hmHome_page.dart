@@ -7,7 +7,7 @@ import 'package:un_project/HM/approval_page.dart';
 import 'package:un_project/HM/hmDetail_page.dart';
 
 // Home page for Staff
-class HMPage extends StatefulWidget {
+class hmHomePage extends StatefulWidget {
   // List<String> arr;
   // getApproval() async{
   //   Future<DocumentSnapshot> docSnapshot = FirebaseFirestore.instance
@@ -23,7 +23,7 @@ class HMPage extends StatefulWidget {
   _hmHomePageState createState() => _hmHomePageState();
 }
 
-class _hmHomePageState extends State<HMPage> {
+class _hmHomePageState extends State<hmHomePage> {
   bool _isIncluding = false;
 
   gettype() async {

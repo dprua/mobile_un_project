@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:un_project/STF/stfpage.dart';
 import 'package:un_project/HR/hrpage.dart';
+import 'package:un_project/HM/hmHome_page.dart';
 
 
 // Home page for Staff
@@ -41,7 +42,7 @@ class HomePage extends StatelessWidget{
               var loginstate;
               if (snapshot1.data.toString() == '0') {
                 loginstate = 'HM';
-                return HMPage();
+                return hmHomePage();
               }
               else if (snapshot1.data.toString() == '1') {
                 loginstate = 'HR';
