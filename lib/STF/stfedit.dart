@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:un_project/STF/stfpage.dart';
 
 class StaffEdit extends StatefulWidget{
   final doc;
@@ -82,6 +83,8 @@ class _StaffEditState extends State<StaffEdit>{
               child: Text("Edit"),
               onPressed: (){
                 updatePosition();
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
               },
             )
           ],

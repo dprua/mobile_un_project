@@ -14,6 +14,8 @@ class StaffAddState extends State<StaffAdd>{
   final _divisionController = TextEditingController();
   final _branchController = TextEditingController();
   final _dutyController = TextEditingController();
+  final _workControl = TextEditingController();
+  final _langControl = TextEditingController();
 
   Future<DocumentReference> addPosition(String duty, String name, int posNum) {
     return FirebaseFirestore.instance.collection('post').add({
@@ -25,9 +27,9 @@ class StaffAddState extends State<StaffAdd>{
       'Post': "", // have to change  // What it is ??????????
       'Title': _titleController.text,  // have to change
       'approval': false,  // don't change // Initialize false unconditionally
-      'lang_exp': [], // have to change
-      'work_exp': [], // have to change
-      'userlist': [], // don't change // people who apply to this position, after apply, then update this field
+      'lang_exp': [_langControl.text], // have to change
+      'work_exp': [_workControl.text], // have to change
+      // 'userlist': [], // don't change // people who apply to this position, after apply, then update this field
       'writerId': FirebaseAuth.instance.currentUser.uid,
     }).then((value){
       return FirebaseFirestore.instance.collection('post').doc(value.id).collection('apply').add({});
@@ -70,6 +72,20 @@ class StaffAddState extends State<StaffAdd>{
               decoration: InputDecoration(
                 filled: false,
                 labelText: 'Branch',
+              ),
+            ),
+            TextField(
+              controller: _workControl,
+              decoration: InputDecoration(
+                filled: false,
+                labelText: 'Work Description',
+              ),
+            ),
+            TextField(
+              controller: _langControl,
+              decoration: InputDecoration(
+                filled: false,
+                labelText: 'Language Description',
               ),
             ),
             /* TextField(

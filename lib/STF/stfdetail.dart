@@ -55,27 +55,50 @@ class StaffDetailState extends State<StaffDetail>{
                 : [],
           ),
           body: Container(
+            padding: const EdgeInsets.all(10),
             child: Row(
-              children: [
-                // Left, See the description of that position
-                /*Column(
+              children: <Widget>[Expanded(
+                child: Column(
                   children: [
-                    Text("This is start of Detail of position"),
+                    Text("[${widget.doc['Title']}]", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
                     // have to change
                     // have to add
+                    Container(
+                      padding: EdgeInsets.all(30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Work Experience", style: TextStyle(fontSize: 20.0),),
+                          Text(widget.doc['work_exp'][0]),
 
+                          Text("Languages", style: TextStyle(fontSize: 20.0),),
+                          Text(widget.doc['lang_exp'][0]),
+                        ],
+                      ),
+                    ),
                     ElevatedButton(
                         onPressed: (){
-                          join = true;
+                          setState(() {
+                            join = true;
+                          });
                         },
                         child: Text("Join?")
                     ),
                   ],
-                ),*/
-                // Right, if The Join? button clicked, boolean check true and show the apply on the right
-                (join)
-                    ? ApplyPage(docId: widget.doc.id)
-                    : Text("Push Join Button"),
+                ),
+              ),
+                const VerticalDivider(
+                  color: Colors.grey,
+                  thickness: 1,
+                  indent: 20,
+                  endIndent: 0,
+                  width: 20,
+                ),
+                Expanded(
+                  child: (join)
+                      ? ApplyPage(doc: widget.doc, applyId: FirebaseAuth.instance.currentUser.uid)
+                      : Text("Push Join Button"),
+                ),
               ],
             ),
           ),
