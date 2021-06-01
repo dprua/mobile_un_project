@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'authentification.dart';
 import 'package:provider/provider.dart';
+import 'firebase_provider.dart';
 
 class ProfilePage extends StatelessWidget {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
