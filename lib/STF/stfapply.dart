@@ -23,9 +23,9 @@ class ApplyState extends State<ApplyPage>{
   TextEditingController _idControl = TextEditingController(); // ID? // email?
   TextEditingController _nameControl = TextEditingController();
   TextEditingController _nationControl = TextEditingController();
-  TextEditingController _curtitleControl = TextEditingController();
-  TextEditingController _curdutyControl = TextEditingController();
-  TextEditingController _curlevelControl = TextEditingController();
+  TextEditingController _curTitleControl = TextEditingController();
+  TextEditingController _curDutyControl = TextEditingController();
+  TextEditingController _curLevelControl = TextEditingController();
 
   Future<void> phpPicker() async{
     final result = await FilePicker.platform.pickFiles();
@@ -55,22 +55,25 @@ class ApplyState extends State<ApplyPage>{
     });
   }
 
-  applyAdd(String url) async {
-    // have to change
+  Future<DocumentReference> applyAdd(String url)  async{
     Future<DocumentSnapshot> userDocSnap = FirebaseFirestore.instance
         .collection('users').doc(widget.applyId).get();
     DocumentSnapshot userDoc = await userDocSnap;
+    final getDocApply = await FirebaseFirestore.instance.collection('apply').where('postId', isEqualTo: widget.doc.id).get();
+    final size = getDocApply.docs.length;
 
-    return FirebaseFirestore.instance.collection('post').doc(widget.doc.id)
-        .collection('apply').doc(widget.applyId)
-        .set({
-      'phpURL': url, // have to change, update
-      'name': _nameControl.text, // I don't know...
+    return FirebaseFirestore.instance
+        .collection('apply').add({
       'Gender': userDoc['gender'], // user info
       'Nation': _nationControl.text, // user info, can change
-      'curPostTitle': _curtitleControl.text, // user info, can change?
-      'curPostLevel': int.tryParse(_curlevelControl.text), // user info, can change?
-      'curDutyStat': _curdutyControl.text, // user info, can change?
+      'curDutyStat': _curDutyControl.text, // user info, can change?
+      'curPostLevel': int.tryParse(_curLevelControl.text), // user info, can change?
+      'curPostTitle': _curTitleControl.text, // user info, can change?
+      'name': _nameControl.text, // I don't know...
+      'phpURL': url, // have to change, update
+      'postId': widget.doc.id,
+      'rank': size,
+      'applyId': widget.applyId,
     });
   }
   showAlertDialog(BuildContext context, String postTitle) async {
@@ -124,14 +127,13 @@ class ApplyState extends State<ApplyPage>{
             );
           }
           _idControl..text = widget.applyId;
-          _curtitleControl..text = snapshot.data['position_title'];
-          _curdutyControl..text = snapshot.data['duty_station'];
-          _curlevelControl..text = "${snapshot.data['position_level']}";
+          _curTitleControl..text = snapshot.data['position_title'];
+          _curDutyControl..text = snapshot.data['duty_station'];
+          _curLevelControl..text = "${snapshot.data['position_level']}";
           return Container(
             padding: EdgeInsets.all(30.0),
             child: ListView(
               children: [
-
                 Container(
                   child: Row(
                     children: [
@@ -171,14 +173,14 @@ class ApplyState extends State<ApplyPage>{
                   ),
                 ),
                 TextField(
-                  controller: _curtitleControl,
+                  controller: _curTitleControl,
                   decoration: InputDecoration(
                     filled: false,
                     labelText: 'Current Position',
                   ),
                 ),
                 TextFormField(
-                  controller: _curlevelControl,
+                  controller: _curLevelControl,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     filled: false,
@@ -186,7 +188,7 @@ class ApplyState extends State<ApplyPage>{
                   ),
                 ),
                 TextField(
-                  controller: _curdutyControl,
+                  controller: _curDutyControl,
                   decoration: InputDecoration(
                     filled: false,
                     labelText: 'Current Duty Station',
@@ -200,9 +202,9 @@ class ApplyState extends State<ApplyPage>{
                       onPressed: () {
                         _nationControl.clear();
                         _nameControl.clear();
-                        _curtitleControl.clear();
-                        _curdutyControl.clear();
-                        _curlevelControl.clear();
+                        _curTitleControl.clear();
+                        _curDutyControl.clear();
+                        _curLevelControl.clear();
                       },
                     ),
                     ElevatedButton(
@@ -220,3 +222,4 @@ class ApplyState extends State<ApplyPage>{
     );
   }
 }
+
