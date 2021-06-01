@@ -8,7 +8,7 @@ import 'firebase_provider.dart';
 
 class ProfilePage extends StatelessWidget {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-
+  FirebaseProvider fp;
   Future<void> signOut() async {
     await Authentification().signOut();
   }
@@ -30,6 +30,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    fp = Provider.of<FirebaseProvider>(context);
     return Scaffold(
         appBar: AppBar(
           actions: <Widget>[
@@ -40,7 +41,8 @@ class ProfilePage extends StatelessWidget {
               ),
               onPressed: () {
                 signOut();
-                Navigator.pop(context);
+                //Navigator.pop(context);
+                Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));
               },
             ),
           ],
