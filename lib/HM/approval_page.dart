@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import "package:un_project/HM/hmPostInfo_page.dart";
+
+var target;
 
 class Approval extends StatefulWidget {
   final doc;
@@ -62,6 +65,7 @@ class _ApprovalState extends State<Approval> {
   }
 
 
+
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
@@ -115,88 +119,92 @@ class _ApprovalState extends State<Approval> {
           ),
           Expanded(
               child: StreamBuilder(
-            stream: (levelNum == 0)
-                ? FirebaseFirestore.instance
+                stream: (levelNum == 0)
+                    ? FirebaseFirestore.instance
                     .collection('post')
                     .where('approval', isEqualTo: false)
                     .snapshots()
-                : FirebaseFirestore.instance
+                    : FirebaseFirestore.instance
                     .collection('post')
                     .where('Level', isEqualTo: levelNum)
                     .where('approval', isEqualTo: false)
                     .snapshots(),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-              return GridView.count(
-                crossAxisCount: 3,
-                children: snapshot.data.docs.map((DocumentSnapshot document) {
-                  return Card(
-                    child: Container(
-                      padding: EdgeInsets.all(10.0),
-                      width: MediaQuery.of(context).size.width / 1.2,
-                      // height: ,
-                      child: Column(
-                        children: [
-                          Text("Title: ${document.get('Title')}"),
-                          Text("Level: ${document.get('Level')}"),
-                          Text("Division: ${document.get('Division')}"),
-                          Text("Branch: ${document.get('Branch')}"),
-                          Text("Duty station: ${document.get('Duty station')}"),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                builder:
+                    (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return GridView.count(
+                    crossAxisCount: 3,
+                    children: snapshot.data.docs.map((DocumentSnapshot document) {
+                      return Card(
+                        child: Container(
+                          padding: EdgeInsets.all(10.0),
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          // height: ,
+                          child: Column(
                             children: [
-                              Container(
-                                child: TextButton(
-                                  child: Text(
-                                    "Accept",
-                                    style: TextStyle(color: Color(0xFF1A237E)),
+                              Text("Title: ${document.get('Title')}"),
+                              Text("Level: ${document.get('Level')}"),
+                              Text("Division: ${document.get('Division')}"),
+                              Text("Branch: ${document.get('Branch')}"),
+                              Text("Duty station: ${document.get('Duty station')}"),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: TextButton(
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(color: Color(0xFF1A237E)),
+                                      ),
+                                      onPressed: () async {
+                                        print(document.id);
+                                        await updateApproval(document.id);
+                                        //update the users approval.
+                                      },
+                                    ),
                                   ),
-                                  onPressed: () async {
-                                    print(document.id);
-                                    await updateApproval(document.id);
-                                    //update the users approval.
-                                  },
-                                ),
+                                  Container(
+                                    child: TextButton(
+                                      child: Text(
+                                        "Reject",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      onPressed: () {
+                                        showAlertDialog(context,document.id);
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
                               Container(
+                                alignment: Alignment.centerRight,
                                 child: TextButton(
-                                  child: Text(
-                                    "Reject",
-                                    style: TextStyle(color: Colors.red),
-                                  ),
+                                  child: Text("more"),
                                   onPressed: () {
-                                    showAlertDialog(context,document.id);
+                                    target=document.id;
+                                    print(target);
+                                    print(FirebaseAuth.instance.currentUser.uid);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => hmPostInfo(doc: widget.doc,applyId: target),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
                             ],
                           ),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              child: Text("more"),
-                              onPressed: () {
-                                // When tap the "more", go to Detail page
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => StaffDetail(doc: document)),
-                                // );
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                        ),
+                      );
+                    }).toList(),
                   );
-                }).toList(),
-              );
-            },
-          )),
+                },
+              )),
         ],
       ),
     );

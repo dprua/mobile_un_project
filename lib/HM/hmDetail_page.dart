@@ -1,5 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'approval_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 var target;
 
@@ -25,6 +30,7 @@ class _hmDetailPageState extends State<hmDetailPage> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("Detail about Applicant "),
+        centerTitle: true,
       ),
       body: Row(
         children: <Widget>[
@@ -61,8 +67,8 @@ class _hmDetailPageState extends State<hmDetailPage> {
           Expanded(
             child: (join)
                 ? ViewDetail(doc: widget.doc, applyId: target)
-                //hmDetailInfoPage(doc:widget.doc,applyId:FirebaseAuth.instance.currentUser.uid)
-                : Text("Push Join Button"),
+            //hmDetailInfoPage(doc:widget.doc,applyId:FirebaseAuth.instance.currentUser.uid)
+                : Text(""),
           ),
         ],
       ),
@@ -83,6 +89,7 @@ class _hmDetailPageState extends State<hmDetailPage> {
             print('bbbb');
             join = true;
             target = data.id;
+            print(target);
           });
         },
       ),
@@ -158,6 +165,19 @@ class _ViewDetailState extends State<ViewDetail> {
                   "Nation: ${snapshot.data['Nation']}",
                   style: TextStyle(fontSize: 20.0),
                 ),
+                TextButton(
+                  onPressed: () {
+                    launch(snapshot.data['phpURL']);
+                  },
+                  child: Text(
+                    "Resume: \n${snapshot.data['phpURL']}",
+                    style: TextStyle(
+                      fontSize: 20.0,
+                      color: Colors.black,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                )
               ],
             ),
           );
