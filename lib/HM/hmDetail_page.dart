@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'approval_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -37,24 +36,29 @@ class _hmDetailPageState extends State<hmDetailPage> {
           Expanded(
             child: Container(
               height: 600,
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('post')
-                      .doc(widget.doc.id)
-                      .collection('apply')
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasData == false)
-                      return CircularProgressIndicator();
-                    if (snapshot.hasError)
-                      return Text("Error: ${snapshot.error}");
-                    return ListView(
-                      children: snapshot.data.docs
-                          .map((data) => _buildListItem(context, data))
-                          .toList(),
-                    );
-                  }),
+              child: ReorderableFirebaseList(//.where('postId',isEqualTo : widget.doc.id)
+                collection: FirebaseFirestore.instance.collection('apply'),
+                indexKey: 'rank',
+                id: widget.doc.id,
+                itemBuilder: (BuildContext context, int index, DocumentSnapshot doc) {
+                  return ListTile(
+                    leading: Icon(Icons.person),
+                    key: Key(doc.id),
+                    title: Text(doc.data()['name']),
+                    subtitle: Text(doc.data()['Gender']),
+                    onTap: (){
+                      print('aaaa');
+                      setState(() {
+                        print('bbbb');
+                        join = true;
+                        target = doc.id;
+                        print(target);
+                      });
+                    },
+
+                  );
+                },
+              ),
             ),
           ),
           const VerticalDivider(
@@ -113,8 +117,6 @@ class _ViewDetailState extends State<ViewDetail> {
     return Container(
       child: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('post')
-            .doc(widget.doc.id)
             .collection('apply')
             .doc(widget.applyId)
             .snapshots(),
@@ -184,5 +186,79 @@ class _ViewDetailState extends State<ViewDetail> {
         },
       ),
     );
+  }
+}
+typedef ReorderableWidgetBuilder = Widget Function(BuildContext context, int index, DocumentSnapshot doc);
+class ReorderableFirebaseList extends StatefulWidget {
+  const ReorderableFirebaseList({
+    Key key,
+    @required this.collection,
+    @required this.indexKey,
+    @required this.itemBuilder,
+    @required this.id,
+    this.descending = false,
+  }) : super(key: key);
+
+  final CollectionReference collection;
+  final String indexKey;
+  final bool descending;
+  final ReorderableWidgetBuilder itemBuilder;
+  final String id;
+
+  @override
+  _ReorderableFirebaseListState createState() => _ReorderableFirebaseListState();
+}
+class _ReorderableFirebaseListState extends State<ReorderableFirebaseList> {
+  List<DocumentSnapshot> _docs;
+  Future _saving;
+  List<DocumentSnapshot> temp;
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _saving,
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (snapshot.connectionState == ConnectionState.none || snapshot.connectionState == ConnectionState.done) {
+          return StreamBuilder<QuerySnapshot>(
+            stream: widget.collection.orderBy(widget.indexKey, descending: widget.descending).snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasData) {
+                _docs = snapshot.data.docs;
+                for(int i=0;i<_docs.length;i++){
+                  if(_docs.elementAt(i).data()['postId'] != widget.id){
+                    _docs.removeWhere((element) => element.data()['postId'] != widget.id);
+                  }
+                }
+                return ReorderableListView(
+                  onReorder: _onReorder,
+                  children: List.generate(_docs.length, (int index) {
+                    return widget.itemBuilder(context, index, _docs[index]);
+                  }),
+                );
+              } else {
+                return const Center(
+                  child: Text("hI"),
+                );
+              }
+            },
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  void _onReorder(int oldIndex, int newIndex) {
+    if (oldIndex < newIndex) newIndex -= 1;
+    _docs.insert(newIndex, _docs.removeAt(oldIndex));
+    final futures = <Future>[];
+    for (int rank = 0; rank < _docs.length; rank++) {
+      futures.add(_docs[rank].reference.update({widget.indexKey: rank}));
+    }
+    setState(() {
+      _saving = Future.wait(futures);
+    });
   }
 }
