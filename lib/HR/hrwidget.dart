@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:un_project/STF/stfdetail.dart';
+import 'package:un_project/HR/hrdetail.dart';
 
 class HRWidget extends StatefulWidget{
   final user_state;
@@ -84,7 +85,7 @@ class HRState extends State<HRWidget>{
                                   // When tap the "more", go to Detail page
                                   Navigator.push(
                                     context,
-                                    MaterialPageRoute(builder: (context) => StaffDetail(doc: document)),
+                                    MaterialPageRoute(builder: (context) => HRDetail(doc: document)),
                                   );
                                 },
                               ),
