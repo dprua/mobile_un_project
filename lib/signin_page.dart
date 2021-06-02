@@ -70,6 +70,7 @@ class SignInPageState extends State<SignInPage> {
                 ),
                 Container(
                   height: 50,
+                  width: 600,
                   decoration: BoxDecoration(color: Colors.amber),
                   child: Center(
                     child: Text(
@@ -84,6 +85,7 @@ class SignInPageState extends State<SignInPage> {
 
                 // Input Area
                 Container(
+                  width: 600,
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.amber, width: 1),
                   ),
@@ -118,7 +120,7 @@ class SignInPageState extends State<SignInPage> {
           ),
           // Remember Me
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
+            margin: const EdgeInsets.symmetric(horizontal: 335),
             child: Row(
               children: <Widget>[
                 Checkbox(
@@ -135,7 +137,7 @@ class SignInPageState extends State<SignInPage> {
           ),
           // Sign In Button
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
             child: RaisedButton(
               color: Colors.indigo[300],
               child: Text(
