@@ -59,25 +59,42 @@ class StaffDetailState extends State<StaffDetail>{
             child: Row(
               children: <Widget>[Expanded(
                 child: Column(
-                  children: [
-                    Text("[${widget.doc['Title']}]", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
-                    // have to change
-                    // have to add
+                  children: <Widget>[
+                    Text("\n[${widget.doc['Title']}]", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
+                    SizedBox(height: 10.0,),
                     Container(
+                      decoration: BoxDecoration(
+                        border:Border.all(),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0)
+                        ),
+                      ),
                       padding: EdgeInsets.all(30.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Work Experience", style: TextStyle(fontSize: 20.0),),
-                          Text(widget.doc['work_exp'][0]),
-
+                          for(var i in widget.doc['work_exp'])
+                            Container(
+                              padding: EdgeInsets.all(5.0),
+                              child: Text("   -   ${i.toString()}"),
+                            ),
+                          SizedBox(height:10.0),
                           Text("Languages", style: TextStyle(fontSize: 20.0),),
-                          Text(widget.doc['lang_exp'][0]),
+                          for(var i in widget.doc['lang_exp'])
+                            Container(
+                              padding: EdgeInsets.all(5.0),
+                              child: Text("  -  ${i.toString()}"),
+                            ),
                         ],
                       ),
                     ),
                     ElevatedButton(
                         onPressed: (){
+                          widget.doc['work_exp'].forEach((text){
+                            print(text);
+                            print(widget.doc['work_exp'].length);
+                          });
                           setState(() {
                             join = true;
                           });

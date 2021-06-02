@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -20,12 +21,12 @@ class ApplyState extends State<ApplyPage>{
   File php;
   String filename = "";
   // TextEditingController
-  TextEditingController _idControl = TextEditingController(); // ID? // email?
   TextEditingController _nameControl = TextEditingController();
   TextEditingController _nationControl = TextEditingController();
   TextEditingController _curTitleControl = TextEditingController();
   TextEditingController _curDutyControl = TextEditingController();
   TextEditingController _curLevelControl = TextEditingController();
+  TextEditingController _certControl = TextEditingController();
 
   Future<void> phpPicker() async{
     final result = await FilePicker.platform.pickFiles();
@@ -61,6 +62,7 @@ class ApplyState extends State<ApplyPage>{
     DocumentSnapshot userDoc = await userDocSnap;
     final getDocApply = await FirebaseFirestore.instance.collection('apply').where('postId', isEqualTo: widget.doc.id).get();
     final size = getDocApply.docs.length;
+    final certificates = _certControl.text;
 
     return FirebaseFirestore.instance
         .collection('apply').add({
@@ -74,6 +76,9 @@ class ApplyState extends State<ApplyPage>{
       'postId': widget.doc.id,
       'rank': size,
       'applyId': widget.applyId,
+      'certificates': certificates.split(','),
+      'certCount': certificates.split(',').length,
+      'skillLev': skillLev,
     });
   }
   showAlertDialog(BuildContext context, String postTitle) async {
@@ -93,7 +98,6 @@ class ApplyState extends State<ApplyPage>{
                 String url = await _uploadPHP();   // Storage upload
                 _updatePHPtoUsers(url);
                 applyAdd(url);
-
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
               },
@@ -109,6 +113,12 @@ class ApplyState extends State<ApplyPage>{
       },
     );
   }
+
+  int skillLev = 1;
+  final snackBarLike = SnackBar(
+    content: Text('You have to upload PHP file!'),
+  );
+
 
   // Add or update userID and user info into collection('post').doc(docId).collection('apply')
   @override
@@ -126,7 +136,6 @@ class ApplyState extends State<ApplyPage>{
               child: CircularProgressIndicator(),
             );
           }
-          _idControl..text = widget.applyId;
           _curTitleControl..text = snapshot.data['position_title'];
           _curDutyControl..text = snapshot.data['duty_station'];
           _curLevelControl..text = "${snapshot.data['position_level']}";
@@ -148,14 +157,6 @@ class ApplyState extends State<ApplyPage>{
                           ? Text(filename)
                           : Text("No file selected"),
                     ],
-                  ),
-                ),
-
-                TextField(
-                  controller: _idControl,
-                  decoration: InputDecoration(
-                    filled: false,
-                    labelText: 'ID#',
                   ),
                 ),
                 TextField(
@@ -194,6 +195,56 @@ class ApplyState extends State<ApplyPage>{
                     labelText: 'Current Duty Station',
                   ),
                 ),
+                SizedBox(height:10.0),
+                // programming skill level
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Programming Skill", style: TextStyle(fontSize: 15.0 ,/*fontWeight: FontWeight.bold*/),),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Radio(value: 1, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 1;
+                              });}),
+                          Text('level 1', style: new TextStyle(fontSize: 15.0)),
+                          Radio(value: 2, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 2;
+                              });}),
+                          Text('level 2', style: new TextStyle(fontSize: 15.0)),
+                          Radio(value: 3, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 3;
+                              });}),
+                          Text('level 3', style: new TextStyle(fontSize: 15.0)),
+                          Radio(value: 4, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 4;
+                              });}),
+                          Text('level 4', style: TextStyle(fontSize: 15.0)),
+                          Radio(value: 5, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 5;
+                              });}),
+                          Text('level 5', style: TextStyle(fontSize: 15.0)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                // Your Certificates
+                TextField(
+                  controller: _certControl,
+                  decoration: InputDecoration(
+                    filled: false,
+                    labelText: 'Your Certificates',
+                  ),
+                ),
+                Text("Please separate with ' , '", style: TextStyle(color: Colors.redAccent)),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -210,7 +261,10 @@ class ApplyState extends State<ApplyPage>{
                     ElevatedButton(
                       child: Text("Apply"),
                       onPressed: () async{
-                        showAlertDialog(context, widget.doc.get('Title'));
+                        if(filename == "")
+                          ScaffoldMessenger.of(context).showSnackBar(snackBarLike);
+                        else
+                          showAlertDialog(context, widget.doc.get('Title'));
                       },
                     ),
                   ],
