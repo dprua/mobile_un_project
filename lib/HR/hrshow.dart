@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
+import 'package:un_project/HR/case_generate.dart';
 
 class HRShow extends StatefulWidget {
 
@@ -11,36 +11,46 @@ class HRShow extends StatefulWidget {
 class _HRShowState extends State<HRShow> {
   //String id = FirebaseAuth.instance.currentUser.uid;
   bool join = false;
-
+  var target = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: Text("Detail about Applicant "),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.featured_play_list_sharp),
+            onPressed: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Case_generate()),
+              );
+              print("Make case!");
+            },
+          ),
+        ]
       ),
       body: Row(
         children: <Widget>[
-          Expanded(
-            child: Container(
-              height: 600,
-              child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('apply')
-                      .snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasData == false)
-                      return CircularProgressIndicator();
-                    if (snapshot.hasError)
-                      return Text("Error: ${snapshot.error}");
-                    return ListView(
-                      children: snapshot.data.docs
-                          .map((data) => _buildListItem(context, data))
-                          .toList(),
-                    );
-                  }),
-            ),
+          SizedBox(
+            width: 250,
+            child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('apply')
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData == false)
+                    return CircularProgressIndicator();
+                  if (snapshot.hasError)
+                    return Text("Error: ${snapshot.error}");
+                  return ListView(
+                    children: snapshot.data.docs
+                        .map((data) => _buildListItem(context, data))
+                        .toList(),
+                  );
+                }),
           ),
           const VerticalDivider(
             color: Colors.grey,
@@ -51,7 +61,7 @@ class _HRShowState extends State<HRShow> {
           ),
           Expanded(
             child: (join)
-                ? Text("Push Join Button")
+                ? ViewDetail(applyId: target,)
             //hmDetailInfoPage(doc:widget.doc,applyId:FirebaseAuth.instance.currentUser.uid)
                 : Text("Push Join Button"),
           ),
@@ -61,17 +71,22 @@ class _HRShowState extends State<HRShow> {
   }
 
   Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    return Padding(
-      key: ValueKey(data.data()['name']),
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: ListTile(
-        leading: Icon(Icons.person),
-        title: Text(data.data()['name']),
-        subtitle: Text(data.data()['Gender']),
-        onTap: () {
-          setState(() {
-          });
-        },
+    return SizedBox(
+      width: 100,
+      child: Padding(
+        key: ValueKey(data.data()['name']),
+        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: ListTile(
+          leading: Icon(Icons.person),
+          title: Text(data.data()['name']),
+          subtitle: Text(data.data()['Gender']),
+          onTap: () {
+            setState(() {
+              join = true;
+              target = data.id;
+            });
+          },
+        ),
       ),
     );
   }
@@ -150,3 +165,4 @@ class _ViewDetailState extends State<ViewDetail> {
     );
   }
 }
+
