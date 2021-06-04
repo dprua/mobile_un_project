@@ -7,8 +7,13 @@ import 'package:provider/provider.dart';
 import 'firebase_provider.dart';
 
 class ProfileEditPage extends StatefulWidget {
+  final doc;
+
+  ProfileEditPage({Key key, @required this.doc}) : super(key: key);
+
   @override
   _ProfileEditPageState createState() => _ProfileEditPageState();
+
 }
 //final _sigInFormKey = GlobalKey<FormState>();
 class _ProfileEditPageState extends State<ProfileEditPage> {
@@ -46,10 +51,10 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   Future<void> updateDoc(String docId) async {
     return FirebaseFirestore.instance
         .collection('users')
-        .doc(_firebaseAuth.currentUser.uid)
+        .doc(docId)
         .update({
       'nationality': _newNationCon.text,
-      'duty_station': _newDutyStatCon,
+      'duty_station': _newDutyStatCon.text,
     })
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to update user: $error"));
@@ -81,6 +86,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    _newNationCon..text = widget.doc["nationality"];
+    _newDutyStatCon..text = widget.doc["duty_station"];
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -108,6 +115,8 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                   if (_newDutyStatCon.text.isNotEmpty &&
                       _newNationCon.text.isNotEmpty){
                     await updateDoc(_firebaseAuth.currentUser.uid);
+                    print(_firebaseAuth.currentUser.uid);
+                    Navigator.pop(context);
                   }
                   else{
                     showAlertDialog(context);
@@ -127,8 +136,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                 if (snapshot.hasData == false)
                   return CircularProgressIndicator();
                 if (snapshot.hasError) return Text("Error: ${snapshot.error}");
-                _newNationCon..text = snapshot.data['nationality'];
-                _newDutyStatCon..text = snapshot.data['duty_station'];
                 return SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Padding(
@@ -140,7 +147,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                           height: 20,
                         ),
                         Text(
-                          'My\nProfile',
+                          'My\nEdit Profile',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,

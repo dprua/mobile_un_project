@@ -37,16 +37,41 @@ class _hmDetailPageState extends State<hmDetailPage> {
           Expanded(
             child: Container(
               height: 600,
-              child: ReorderableFirebaseList(//.where('postId',isEqualTo : widget.doc.id)
+              child: ReorderableFirebaseList(
+                //.where('postId',isEqualTo : widget.doc.id)
                 collection: FirebaseFirestore.instance.collection('apply'),
                 indexKey: 'rank',
                 id: widget.doc.id,
-                itemBuilder: (BuildContext context, int index, DocumentSnapshot doc) {
+                itemBuilder:
+                    (BuildContext context, int index, DocumentSnapshot doc) {
                   return ListTile(
-                    leading: Icon(Icons.person),
                     key: Key(doc.id),
-                    title: Text(doc.data()['name']),
-                    subtitle: Text(doc.data()['Gender']),
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    leading: Container(
+                      padding: EdgeInsets.only(right: 12.0),
+                      decoration: new BoxDecoration(
+                          border: new Border(
+                              right: new BorderSide(
+                                  width: 1.0, color: Colors.grey))),
+                      child: Icon(Icons.person, color: Colors.grey,size:40),
+                    ),
+                    title: Text(
+                      doc.data()['name'],
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.bold),
+                    ),
+                    // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+
+                    subtitle: Row(
+                      children: <Widget>[
+                        Icon(Icons.linear_scale, color: Colors.black),
+                        Text(doc.data()['Gender'],
+                            style: TextStyle(color: Colors.black))
+                      ],
+                    ),
+                    trailing: Icon(Icons.keyboard_arrow_right,
+                        color: Colors.black, size: 30.0),
                     onTap: (){
                       print('aaaa');
                       setState(() {
@@ -56,7 +81,6 @@ class _hmDetailPageState extends State<hmDetailPage> {
                         print(target);
                       });
                     },
-
                   );
                 },
               ),
@@ -72,8 +96,14 @@ class _hmDetailPageState extends State<hmDetailPage> {
           Expanded(
             child: (join)
                 ? ViewDetail(doc: widget.doc, applyId: target)
-            //hmDetailInfoPage(doc:widget.doc,applyId:FirebaseAuth.instance.currentUser.uid)
-                : Text(""),
+                //hmDetailInfoPage(doc:widget.doc,applyId:FirebaseAuth.instance.currentUser.uid)
+                : AspectRatio(
+              aspectRatio: 4 / 2,
+              child: Image.network(
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
+                  height: 50,
+                  width: 50),
+            ),
           ),
         ],
       ),
@@ -115,8 +145,7 @@ class ViewDetail extends StatefulWidget {
 class _ViewDetailState extends State<ViewDetail> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StreamBuilder<DocumentSnapshot>(
+    return StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('apply')
             .doc(widget.applyId)
@@ -126,70 +155,149 @@ class _ViewDetailState extends State<ViewDetail> {
           if (snapshot.hasData == false) return CircularProgressIndicator();
           if (snapshot.hasError) return Text("Error: ${snapshot.error}");
           return Container(
-            padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
+            padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
             child: Column(
-              children: [
-                Text(
-                  "Name: ${snapshot.data['name']}",
-                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Current Position Title: ${snapshot.data['curPostTitle']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Current Duty Station: ${snapshot.data['curDutyStat']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Current Position Level: ${snapshot.data['curPostLevel']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Gender: ${snapshot.data['Gender']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Nation: ${snapshot.data['Nation']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                TextButton(
-                  onPressed: () {
-                    launch(snapshot.data['phpURL']);
-                  },
-                  child: Text(
-                    "Resume: \n${snapshot.data['phpURL']}",
-                    style: TextStyle(
-                      fontSize: 20.0,
-                      color: Colors.black,
-                      decoration: TextDecoration.underline,
-                    ),
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text('Applicant details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+                      Container(height: 24,width: 24)
+                    ],
                   ),
-                )
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0,0 ,50),
+                  child: Stack(
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundColor: Colors.grey,
+                        radius: 70,
+                        child: ClipOval(child: Icon(Icons.person, size:100,color: Colors.white,),),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+                      gradient: LinearGradient(
+                          begin: Alignment.topRight,
+                          end: Alignment.bottomLeft,
+                          colors: [Color(0xFF01579B), Color.fromRGBO(0, 41, 60, 1)]
+                      )
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 25, 20, 4),
+                        child: Container(
+                          height: 60,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Name: ${snapshot.data['name']}", style: TextStyle(color: Colors.white70,fontSize: 20),),
+                            ),
+                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
+                        child: Container(
+                          height: 60,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Current Position Title: ${snapshot.data['curPostTitle']}", style: TextStyle(color: Colors.white70,fontSize: 20)),
+                            ),
+                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
+                        child: Container(
+                          height: 60,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Gender: ${snapshot.data['Gender']}", style: TextStyle(color: Colors.white70,fontSize: 20)),
+                            ),
+                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
+                        child: Container(
+                          height: 60,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Nation: ${snapshot.data['Nation']}", style: TextStyle(color: Colors.white70,fontSize: 20),),
+                            ),
+                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
+                        child: Container(
+                          height: 60,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text("Current Position Level: ${snapshot.data['curPostLevel']}", style: TextStyle(color: Colors.white70,fontSize: 20),),
+                            ),
+                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
+                        child: Container(
+                          height: 60,
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextButton(
+                                onPressed: () {
+                                  launch(snapshot.data['phpURL']);
+                                },
+                                child: Text(
+                                  "Resume:   if you want read Resume, click here",
+                                  style: TextStyle(
+                                    fontSize: 20.0,
+                                      color: Colors.white70,
+                                    fontWeight: FontWeight.bold,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70),),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ))
               ],
             ),
           );
         },
-      ),
-    );
+      );
+
   }
 }
-typedef ReorderableWidgetBuilder = Widget Function(BuildContext context, int index, DocumentSnapshot doc);
+
+typedef ReorderableWidgetBuilder = Widget Function(
+    BuildContext context, int index, DocumentSnapshot doc);
+
 class ReorderableFirebaseList extends StatefulWidget {
   const ReorderableFirebaseList({
     Key key,
@@ -207,26 +315,34 @@ class ReorderableFirebaseList extends StatefulWidget {
   final String id;
 
   @override
-  _ReorderableFirebaseListState createState() => _ReorderableFirebaseListState();
+  _ReorderableFirebaseListState createState() =>
+      _ReorderableFirebaseListState();
 }
+
 class _ReorderableFirebaseListState extends State<ReorderableFirebaseList> {
   List<DocumentSnapshot> _docs;
   Future _saving;
   List<DocumentSnapshot> temp;
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _saving,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        if (snapshot.connectionState == ConnectionState.none || snapshot.connectionState == ConnectionState.done) {
+        if (snapshot.connectionState == ConnectionState.none ||
+            snapshot.connectionState == ConnectionState.done) {
           return StreamBuilder<QuerySnapshot>(
-            stream: widget.collection.orderBy(widget.indexKey, descending: widget.descending).snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            stream: widget.collection
+                .orderBy(widget.indexKey, descending: widget.descending)
+                .snapshots(),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasData) {
                 _docs = snapshot.data.docs;
-                for(int i=0;i<_docs.length;i++){
-                  if(_docs.elementAt(i).data()['postId'] != widget.id){
-                    _docs.removeWhere((element) => element.data()['postId'] != widget.id);
+                for (int i = 0; i < _docs.length; i++) {
+                  if (_docs.elementAt(i).data()['postId'] != widget.id) {
+                    _docs.removeWhere(
+                        (element) => element.data()['postId'] != widget.id);
                   }
                 }
                 return ReorderableListView(
