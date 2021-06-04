@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -20,12 +21,12 @@ class ApplyState extends State<ApplyPage>{
   File php;
   String filename = "";
   // TextEditingController
-  TextEditingController _idControl = TextEditingController(); // ID? // email?
   TextEditingController _nameControl = TextEditingController();
   TextEditingController _nationControl = TextEditingController();
-  TextEditingController _curtitleControl = TextEditingController();
-  TextEditingController _curdutyControl = TextEditingController();
-  TextEditingController _curlevelControl = TextEditingController();
+  TextEditingController _curTitleControl = TextEditingController();
+  TextEditingController _curDutyControl = TextEditingController();
+  TextEditingController _curLevelControl = TextEditingController();
+  TextEditingController _certControl = TextEditingController();
 
   Future<void> phpPicker() async{
     final result = await FilePicker.platform.pickFiles();
@@ -55,22 +56,29 @@ class ApplyState extends State<ApplyPage>{
     });
   }
 
-  applyAdd(String url) async {
-    // have to change
+  Future<DocumentReference> applyAdd(String url)  async{
     Future<DocumentSnapshot> userDocSnap = FirebaseFirestore.instance
         .collection('users').doc(widget.applyId).get();
     DocumentSnapshot userDoc = await userDocSnap;
+    final getDocApply = await FirebaseFirestore.instance.collection('apply').where('postId', isEqualTo: widget.doc.id).get();
+    final size = getDocApply.docs.length;
+    final certificates = _certControl.text;
 
-    return FirebaseFirestore.instance.collection('post').doc(widget.doc.id)
-        .collection('apply').doc(widget.applyId)
-        .set({
-      'phpURL': url, // have to change, update
-      'name': _nameControl.text, // I don't know...
+    return FirebaseFirestore.instance
+        .collection('apply').add({
       'Gender': userDoc['gender'], // user info
       'Nation': _nationControl.text, // user info, can change
-      'curPostTitle': _curtitleControl.text, // user info, can change?
-      'curPostLevel': int.tryParse(_curlevelControl.text), // user info, can change?
-      'curDutyStat': _curdutyControl.text, // user info, can change?
+      'curDutyStat': _curDutyControl.text, // user info, can change?
+      'curPostLevel': int.tryParse(_curLevelControl.text), // user info, can change?
+      'curPostTitle': _curTitleControl.text, // user info, can change?
+      'name': _nameControl.text, // I don't know...
+      'phpURL': url, // have to change, update
+      'postId': widget.doc.id,
+      'rank': size,
+      'applyId': widget.applyId,
+      'certificates': certificates.split(','),
+      'certCount': certificates.split(',').length,
+      'skillLev': skillLev,
     });
   }
   showAlertDialog(BuildContext context, String postTitle) async {
@@ -90,7 +98,6 @@ class ApplyState extends State<ApplyPage>{
                 String url = await _uploadPHP();   // Storage upload
                 _updatePHPtoUsers(url);
                 applyAdd(url);
-
                 Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
               },
@@ -106,6 +113,12 @@ class ApplyState extends State<ApplyPage>{
       },
     );
   }
+
+  int skillLev = 1;
+  final snackBarLike = SnackBar(
+    content: Text('You have to upload PHP file!'),
+  );
+
 
   // Add or update userID and user info into collection('post').doc(docId).collection('apply')
   @override
@@ -123,15 +136,13 @@ class ApplyState extends State<ApplyPage>{
               child: CircularProgressIndicator(),
             );
           }
-          _idControl..text = widget.applyId;
-          _curtitleControl..text = snapshot.data['position_title'];
-          _curdutyControl..text = snapshot.data['duty_station'];
-          _curlevelControl..text = "${snapshot.data['position_level']}";
+          _curTitleControl..text = snapshot.data['position_title'];
+          _curDutyControl..text = snapshot.data['duty_station'];
+          _curLevelControl..text = "${snapshot.data['position_level']}";
           return Container(
             padding: EdgeInsets.all(30.0),
             child: ListView(
               children: [
-
                 Container(
                   child: Row(
                     children: [
@@ -146,14 +157,6 @@ class ApplyState extends State<ApplyPage>{
                           ? Text(filename)
                           : Text("No file selected"),
                     ],
-                  ),
-                ),
-
-                TextField(
-                  controller: _idControl,
-                  decoration: InputDecoration(
-                    filled: false,
-                    labelText: 'ID#',
                   ),
                 ),
                 TextField(
@@ -171,14 +174,14 @@ class ApplyState extends State<ApplyPage>{
                   ),
                 ),
                 TextField(
-                  controller: _curtitleControl,
+                  controller: _curTitleControl,
                   decoration: InputDecoration(
                     filled: false,
                     labelText: 'Current Position',
                   ),
                 ),
                 TextFormField(
-                  controller: _curlevelControl,
+                  controller: _curLevelControl,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     filled: false,
@@ -186,12 +189,62 @@ class ApplyState extends State<ApplyPage>{
                   ),
                 ),
                 TextField(
-                  controller: _curdutyControl,
+                  controller: _curDutyControl,
                   decoration: InputDecoration(
                     filled: false,
                     labelText: 'Current Duty Station',
                   ),
                 ),
+                SizedBox(height:10.0),
+                // programming skill level
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Programming Skill", style: TextStyle(fontSize: 15.0 ,/*fontWeight: FontWeight.bold*/),),
+                    Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Radio(value: 1, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 1;
+                              });}),
+                          Text('level 1', style: new TextStyle(fontSize: 15.0)),
+                          Radio(value: 2, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 2;
+                              });}),
+                          Text('level 2', style: new TextStyle(fontSize: 15.0)),
+                          Radio(value: 3, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 3;
+                              });}),
+                          Text('level 3', style: new TextStyle(fontSize: 15.0)),
+                          Radio(value: 4, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 4;
+                              });}),
+                          Text('level 4', style: TextStyle(fontSize: 15.0)),
+                          Radio(value: 5, groupValue: skillLev,
+                              onChanged: (val) {setState(() {
+                                skillLev = 5;
+                              });}),
+                          Text('level 5', style: TextStyle(fontSize: 15.0)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                // Your Certificates
+                TextField(
+                  controller: _certControl,
+                  decoration: InputDecoration(
+                    filled: false,
+                    labelText: 'Your Certificates',
+                  ),
+                ),
+                Text("Please separate with ' , '", style: TextStyle(color: Colors.redAccent)),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -200,15 +253,18 @@ class ApplyState extends State<ApplyPage>{
                       onPressed: () {
                         _nationControl.clear();
                         _nameControl.clear();
-                        _curtitleControl.clear();
-                        _curdutyControl.clear();
-                        _curlevelControl.clear();
+                        _curTitleControl.clear();
+                        _curDutyControl.clear();
+                        _curLevelControl.clear();
                       },
                     ),
                     ElevatedButton(
                       child: Text("Apply"),
                       onPressed: () async{
-                        showAlertDialog(context, widget.doc.get('Title'));
+                        if(filename == "")
+                          ScaffoldMessenger.of(context).showSnackBar(snackBarLike);
+                        else
+                          showAlertDialog(context, widget.doc.get('Title'));
                       },
                     ),
                   ],
@@ -220,3 +276,4 @@ class ApplyState extends State<ApplyPage>{
     );
   }
 }
+

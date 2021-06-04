@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:un_project/profile.dart';
 import 'package:un_project/HR/hrwidget.dart';
+import 'package:un_project/HR/hrshow.dart';
 
 class HRPage extends StatelessWidget{
   var loginstate = "HR";
@@ -26,7 +27,10 @@ class HRPage extends StatelessWidget{
             IconButton(
               icon: Icon(Icons.delete),
               onPressed: (){
-
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HRShow()),
+                );
               },
             ),
           ]

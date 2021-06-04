@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:un_project/STF/stfdetail.dart';
+import 'package:un_project/HR/hrdetail.dart';
 
 class HRWidget extends StatefulWidget{
   final user_state;
