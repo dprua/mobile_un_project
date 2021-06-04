@@ -278,7 +278,7 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
- /*
+/*
  Scaffold(
         appBar: AppBar(
           actions: <Widget>[
@@ -369,7 +369,5 @@ class ProfilePage extends StatelessWidget {
       ],
     );
   }
-
    */
 }
-
