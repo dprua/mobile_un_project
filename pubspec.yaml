@@ -30,6 +30,7 @@ dependencies:
   cloud_firestore: ^1.0.0
   image_picker: ^0.7.4
   firebase_storage:
+  path: ^1.8.0
   shared_preferences: ^2.0.5
   file_picker: ^3.0.2+2
   url_launcher: ^6.0.4

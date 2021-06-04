@@ -28,80 +28,66 @@ class StaffDetailState extends State<StaffDetail>{
         }
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: Color(0xFF01579B),
             title: Text("Detail"),
-            actions:
-            (widget.doc.get('writerId') == FirebaseAuth.instance.currentUser.uid)
-                ? <Widget>[
-              IconButton(
-                icon: Icon(Icons.edit), // edit button
-                onPressed: (){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          StaffEdit(doc: widget.doc),
-                    ),
-                  );
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: (){
-                  FirebaseFirestore.instance.collection('post').doc(widget.doc.id).delete();
-                  Navigator.pop(context);
-                },
-              ),
-            ]
-                : [],
           ),
           body: Container(
             padding: const EdgeInsets.all(10),
             child: Row(
               children: <Widget>[Expanded(
-                child: Column(
-                  children: <Widget>[
-                    Text("\n[${widget.doc['Title']}]", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
-                    SizedBox(height: 10.0,),
-                    Container(
-                      decoration: BoxDecoration(
-                        border:Border.all(),
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0)
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: <Widget>[
+                      Text("\n[${widget.doc['Title']}]", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
+                      SizedBox(height: 10.0,),
+                      Container(
+                        decoration: BoxDecoration(
+                          border:Border.all(),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10.0)
+                          ),
+                        ),
+                        padding: EdgeInsets.all(30.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            AspectRatio(
+                              aspectRatio: 12/8,
+                              child: Image.network(
+                                widget.doc['photoURL'],
+                                  height: 50,
+                                  width: 50),
+                            ),
+                            Text("Work Experience", style: TextStyle(fontSize: 20.0),),
+                            for(var i in widget.doc['work_exp'])
+                              Container(
+                                padding: EdgeInsets.all(5.0),
+                                child: Text("   -   ${i.toString()}"),
+                              ),
+                            SizedBox(height:10.0),
+                            Text("Languages", style: TextStyle(fontSize: 20.0),),
+                            for(var i in widget.doc['lang_exp'])
+                              Container(
+                                padding: EdgeInsets.all(5.0),
+                                child: Text("  -  ${i.toString()}"),
+                              ),
+                          ],
                         ),
                       ),
-                      padding: EdgeInsets.all(30.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Work Experience", style: TextStyle(fontSize: 20.0),),
-                          for(var i in widget.doc['work_exp'])
-                            Container(
-                              padding: EdgeInsets.all(5.0),
-                              child: Text("   -   ${i.toString()}"),
-                            ),
-                          SizedBox(height:10.0),
-                          Text("Languages", style: TextStyle(fontSize: 20.0),),
-                          for(var i in widget.doc['lang_exp'])
-                            Container(
-                              padding: EdgeInsets.all(5.0),
-                              child: Text("  -  ${i.toString()}"),
-                            ),
-                        ],
+                      ElevatedButton(
+                          onPressed: (){
+                            widget.doc['work_exp'].forEach((text){
+                              print(text);
+                              print(widget.doc['work_exp'].length);
+                            });
+                            setState(() {
+                              join = true;
+                            });
+                          },
+                          child: Text("Join?")
                       ),
-                    ),
-                    ElevatedButton(
-                        onPressed: (){
-                          widget.doc['work_exp'].forEach((text){
-                            print(text);
-                            print(widget.doc['work_exp'].length);
-                          });
-                          setState(() {
-                            join = true;
-                          });
-                        },
-                        child: Text("Join?")
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
                 const VerticalDivider(
@@ -114,7 +100,7 @@ class StaffDetailState extends State<StaffDetail>{
                 Expanded(
                   child: (join)
                       ? ApplyPage(doc: widget.doc, applyId: FirebaseAuth.instance.currentUser.uid)
-                      : Text("Push Join Button"),
+                      : Center(child: Text("Push Join Button")),
                 ),
               ],
             ),
