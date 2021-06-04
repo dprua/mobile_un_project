@@ -8,7 +8,6 @@ class StaffAdd extends StatefulWidget{
 }
 
 class StaffAddState extends State<StaffAdd>{
-  int levelId = 1;
   final _nameController = TextEditingController();
   final _titleController = TextEditingController();
   final _divisionController = TextEditingController();
@@ -24,12 +23,10 @@ class StaffAddState extends State<StaffAdd>{
       'Duty station': duty,
       'Level': posNum,
       'Name': name,
-      'Post': "", // have to change  // What it is ??????????
       'Title': _titleController.text,  // have to change
       'approval': false,  // don't change // Initialize false unconditionally
-      'lang_exp': [_langControl.text], // have to change
-      'work_exp': [_workControl.text], // have to change
-      // 'userlist': [], // don't change // people who apply to this position, after apply, then update this field
+      'lang_exp': _langControl.text.split('\n'),
+      'work_exp': _workControl.text.split('\n'),
       'writerId': FirebaseAuth.instance.currentUser.uid,
     });
   }
@@ -44,13 +41,6 @@ class StaffAddState extends State<StaffAdd>{
         padding: EdgeInsets.all(100.0),
         child: ListView(
           children: [
-            /*TextField(
-              controller: _nameController,  // have to change, if necessary
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Your Name',
-              ),
-            ),*/
             TextField(
               controller: _titleController,
               decoration: InputDecoration(
@@ -73,62 +63,24 @@ class StaffAddState extends State<StaffAdd>{
               ),
             ),
             TextField(
+              maxLines: null,
               controller: _workControl,
               decoration: InputDecoration(
                 filled: false,
                 labelText: 'Work Description',
               ),
             ),
+            Text("Please separate description list with enter", style: TextStyle(color: Colors.redAccent)),
             TextField(
+              maxLines: null,
               controller: _langControl,
               decoration: InputDecoration(
                 filled: false,
                 labelText: 'Language Description',
               ),
             ),
-            /* TextField(
-              controller: _dutyController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Duty Station',
-              ),
-            ),*/
-            // Level
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Radio(value: 1, groupValue: levelId,
-                    onChanged: (val) {setState(() {
-                      levelId = 1;
-                    });}),
-                Text('level 1', style: new TextStyle(fontSize: 17.0)),
-                Radio(value: 2, groupValue: levelId,
-                    onChanged: (val) {setState(() {
-                      levelId = 2;
-                    });}),
-                Text('level 2', style: new TextStyle(fontSize: 17.0)),
-                Radio(value: 3, groupValue: levelId,
-                    onChanged: (val) {setState(() {
-                      levelId = 3;
-                    });}),
-                Text('level 3', style: new TextStyle(fontSize: 17.0)),
-                Radio(value: 4, groupValue: levelId,
-                    onChanged: (val) {setState(() {
-                      levelId = 4;
-                    });}),
-                Text('level 4', style: new TextStyle(fontSize: 17.0)),
-                Radio(value: 5, groupValue: levelId,
-                    onChanged: (val) {setState(() {
-                      levelId = 5;
-                    });}),
-                Text('level 5', style: new TextStyle(fontSize: 17.0)),
-                Radio(value: 6, groupValue: levelId,
-                    onChanged: (val) {setState(() {
-                      levelId = 6;
-                    });}),
-                Text('level 6', style: new TextStyle(fontSize: 17.0)),
-              ],
-            ),
+            Text("Please separate description list with enter", style: TextStyle(color: Colors.redAccent)),
+            SizedBox(height:10.0),
             ElevatedButton(
               child: Text("Post"),
               onPressed: () async{
