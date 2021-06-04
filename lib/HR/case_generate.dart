@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -197,21 +196,6 @@ class Case_generate extends StatelessWidget{
         }
       }
     }
-    //var StringStringMap1 = {'1' : "wefwefa",'3':"dsfewgwe"};
-    //var StringStringMap2 = {'2' : "adfwegwe"};
-    // var a = {'Data Analysis': 'stf1', 'dhs': 'stf5', 'yezzin': 'stf2', 'CEO position': 'admin_stf'};
-    // var b = {'yezzin': 'stf2', 'dhs': 'stf5', 'Data Analysis': 'stf1', 'CEO position': 'admin_stf'};
-    // print("SHWHDHFWHDFWHDFHWFHW");
-    // print(mapEquals(a, b));
-    // Map<String, Map> superMap = new Map();
-    // superMap["subMap"] = new Map();
-    // superMap["efae"] = new Map();
-    // superMap["subMap"].addAll(StringStringMap1);
-    // superMap["efae"].addAll(StringStringMap2);
-    // print(superMap);
-    // print("SDFASDF");
-    //print(twoDList);
-    //print(solution);
     var init =  Map.fromIterables(twoDList[0], solution[0]);
     final_case[num] = new Map();
     final_case[num].addAll(init);
@@ -220,24 +204,13 @@ class Case_generate extends StatelessWidget{
       var b = Map.fromIterables(twoDList[i], solution[i]);
       var c = judge(b);
     }
-    // print(final_case);
-    // print(final_case.length);
-    // print(num);
-    // print(position_length);
-    // print(init);
-    // print(init.keys);
-    // print(init.values);
-    // print(init.keys.elementAt(0));
-    print(final_case[0]['dhs']);
+
     Map<int, Map> possible_case = new Map();
     for(int i = 0; i < final_case.length; i++){
       possible_case[i] = new Map();
       for(int j = 0 ; j < position_length; j++)
         possible_case[i].addAll({init.keys.elementAt(j):final_case[i][init.keys.elementAt(j)]});
     }
-    //print("KFDFJQLWDGJWDKGJQDWLGD");
-    print(possible_case);
-
     return possible_case;
   }
 
