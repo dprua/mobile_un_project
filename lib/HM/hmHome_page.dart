@@ -45,18 +45,18 @@ class _hmHomePageState extends State<hmHomePage> {
         .collection('post')
         .get()
         .then((snapshot) => {
-              for (i in snapshot.docs)
-                {
-                  doc = i,
-                  if (doc.data()['approval'] == false)
-                    {
-                      print("KKKKKKK"),
-                      print(doc.data()['approval']),
-                      a = true,
-                      setState,
-                    }
-                }
-            });
+      for (i in snapshot.docs)
+        {
+          doc = i,
+          if (doc.data()['approval'] == false)
+            {
+              print("KKKKKKK"),
+              print(doc.data()['approval']),
+              a = true,
+              setState,
+            }
+        }
+    });
     return a;
   }
 
@@ -76,7 +76,7 @@ class _hmHomePageState extends State<hmHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF01579B),
+          backgroundColor: Color(0xFF01579B),
           leading: IconButton(
             icon: Icon(
               Icons.person,
@@ -93,7 +93,7 @@ class _hmHomePageState extends State<hmHomePage> {
           title: Text("For HM home page"),
           actions: <Widget>[
             StreamBuilder(
-                //future: getbool(),
+              //future: getbool(),
                 stream: FirebaseFirestore.instance.collection('post').where('approval', isEqualTo: false).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasData == false) {
@@ -221,83 +221,83 @@ class ViewState extends State<ViewWidget> {
         ),
         Expanded(
             child: StreamBuilder(
-          stream: (levelNum == 0)
-              ? FirebaseFirestore.instance
+              stream: (levelNum == 0)
+                  ? FirebaseFirestore.instance
                   .collection('post')
                   .where('approval', isEqualTo: true)
                   .snapshots()
-              : FirebaseFirestore.instance
+                  : FirebaseFirestore.instance
                   .collection('post')
                   .where('Level', isEqualTo: levelNum)
                   .where('approval', isEqualTo: true)
                   .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+              builder:
+                  (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-            return GridView.count(
-              crossAxisCount: 3,
-              children: snapshot.data.docs.map((document) {
-                return Card(
-                  child: Container(
-                    padding: EdgeInsets.all(10.0),
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    // height: ,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          document.get('photoURL') == ""
-                              ? AspectRatio(
-                            aspectRatio: 12 / 9,
-                            child: Image.network(
-                                "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
-                                height: 100,
-                                width: 175),
-                          )
-                              : AspectRatio(
-                            aspectRatio: 12 / 9,
-                            child: Image.network(
-                              document.get('photoURL'),
-                              height: 100,
-                              width: 175,
-                            ),
+                return GridView.count(
+                  crossAxisCount: 3,
+                  children: snapshot.data.docs.map((document) {
+                    return Card(
+                      child: Container(
+                        padding: EdgeInsets.all(10.0),
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        // height: ,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              document.get('photoURL') == ""
+                                  ? AspectRatio(
+                                aspectRatio: 12 / 7,
+                                child: Image.network(
+                                    "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
+                                    height: 100,
+                                    width: 175),
+                              )
+                                  : AspectRatio(
+                                aspectRatio: 12 / 7,
+                                child: Image.network(
+                                  document.get('photoURL'),
+                                  height: 100,
+                                  width: 175,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 25,
+                              ),
+                              Text("Title: ${document.get('Title')}"),
+                              Text("Level: ${document.get('Level')}"),
+                              Text("Division: ${document.get('Division')}"),
+                              Text("Branch: ${document.get('Branch')}"),
+                              Text("Duty station: ${document.get('Duty station')}"),
+                              Container(
+                                alignment: Alignment.centerRight,
+                                child: TextButton(
+                                  child: Text("more"),
+                                  onPressed: () {
+                                    // When tap the "more", go to Detail page
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              hmDetailPage(doc: document )),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            height: 25,
-                          ),
-                          Text("Title: ${document.get('Title')}"),
-                          Text("Level: ${document.get('Level')}"),
-                          Text("Division: ${document.get('Division')}"),
-                          Text("Branch: ${document.get('Branch')}"),
-                          Text("Duty station: ${document.get('Duty station')}"),
-                          Container(
-                            alignment: Alignment.centerRight,
-                            child: TextButton(
-                              child: Text("more"),
-                              onPressed: () {
-                                // When tap the "more", go to Detail page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          hmDetailPage(doc: document )),
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }).toList(),
                 );
-              }).toList(),
-            );
-          },
-        )),
+              },
+            )),
       ],
     );
   }
@@ -350,6 +350,7 @@ class StaffAddState extends State<StaffAdd> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Add page"),
+        backgroundColor: Color(0xFF01579B),
       ),
       body: Container(
         padding: EdgeInsets.all(100.0),
@@ -458,7 +459,7 @@ class StaffAddState extends State<StaffAdd> {
                 int posNum;
 
                 final r =
-                    FirebaseFirestore.instance.collection('users').snapshots();
+                FirebaseFirestore.instance.collection('users').snapshots();
                 await FirebaseFirestore.instance
                     .collection('users')
                     .doc(FirebaseAuth.instance.currentUser.uid)
@@ -510,30 +511,30 @@ class StaffDetailState extends State<StaffDetail> {
           appBar: AppBar(
             title: Text("Detail"),
             actions: (widget.doc.get('writerId') ==
-                    FirebaseAuth.instance.currentUser.uid)
+                FirebaseAuth.instance.currentUser.uid)
                 ? <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.edit), // edit button
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StaffEdit(doc: widget.doc),
-                          ),
-                        );
-                      },
+              IconButton(
+                icon: Icon(Icons.edit), // edit button
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => StaffEdit(doc: widget.doc),
                     ),
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        FirebaseFirestore.instance
-                            .collection('post')
-                            .doc(widget.doc.id)
-                            .delete();
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ]
+                  );
+                },
+              ),
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
+                  FirebaseFirestore.instance
+                      .collection('post')
+                      .doc(widget.doc.id)
+                      .delete();
+                  Navigator.pop(context);
+                },
+              ),
+            ]
                 : [],
           ),
           body: Container(

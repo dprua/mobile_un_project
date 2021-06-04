@@ -5,13 +5,54 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'authentification.dart';
 import 'package:provider/provider.dart';
 import 'firebase_provider.dart';
-import 'profileEdit_page.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfileEditPage extends StatefulWidget {
+  @override
+  _ProfileEditPageState createState() => _ProfileEditPageState();
+}
+//final _sigInFormKey = GlobalKey<FormState>();
+class _ProfileEditPageState extends State<ProfileEditPage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  TextEditingController _newNationCon = TextEditingController();
+
+  TextEditingController _newDutyStatCon = TextEditingController();
 
   Future<void> signOut() async {
     await Authentification().signOut();
+  }
+
+  void showAlertDialog(BuildContext context) async {
+    String result = await showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Edit error!'),
+          content: Text("you have to fill in the blanks!"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.pop(context, "Cancel");
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> updateDoc(String docId) async {
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(_firebaseAuth.currentUser.uid)
+        .update({
+      'nationality': _newNationCon.text,
+      'duty_station': _newDutyStatCon,
+    })
+        .then((value) => print("User Updated"))
+        .catchError((error) => print("Failed to update user: $error"));
   }
 
   getProfileImage() {
@@ -60,12 +101,17 @@ class ProfilePage extends StatelessWidget {
             actions: <Widget>[
               IconButton(
                 icon: Icon(
-                  Icons.logout,
-                  semanticLabel: 'logout',
+                  Icons.check,
+                  semanticLabel: 'save',
                 ),
-                onPressed: () {
-                  signOut();
-                  Navigator.pop(context);
+                onPressed: () async{
+                  if (_newDutyStatCon.text.isNotEmpty &&
+                      _newNationCon.text.isNotEmpty){
+                    await updateDoc(_firebaseAuth.currentUser.uid);
+                  }
+                  else{
+                    showAlertDialog(context);
+                  };
                 },
               ),
             ],
@@ -81,6 +127,8 @@ class ProfilePage extends StatelessWidget {
                 if (snapshot.hasData == false)
                   return CircularProgressIndicator();
                 if (snapshot.hasError) return Text("Error: ${snapshot.error}");
+                _newNationCon..text = snapshot.data['nationality'];
+                _newDutyStatCon..text = snapshot.data['duty_station'];
                 return SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   child: Padding(
@@ -158,26 +206,6 @@ class ProfilePage extends StatelessWidget {
                                     ),
                                   ),
                                   Positioned(
-                                    top: 110,
-                                    right: 20,
-                                    child: IconButton(
-                                      //padding: EdgeInsets.all(8.0),
-                                      icon: Icon(
-                                        Icons.person,
-                                        color: Colors.grey[700],
-                                        size: 30,
-                                      ),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ProfileEditPage()),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  Positioned(
                                     top: 0,
                                     left: 0,
                                     right: 0,
@@ -234,44 +262,44 @@ class ProfilePage extends StatelessWidget {
                                   height: 10,
                                 ),
                                 Container(
-                                  height: height * 0.15,
-                                  width: 800,
-                                  padding:
-                                  EdgeInsets.fromLTRB(250, 50, 250, 50),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Text(
-                                    'Nationality : [${snapshot.data['nationality']}]',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 27,
-                                      fontFamily: 'Nunito',
+                                    height: height * 0.15,
+                                    width: 800,
+                                    padding:
+                                    EdgeInsets.fromLTRB(250, 50, 250, 50),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
-                                  ),
-                                ),
+                                    child: TextField(
+                                      autofocus: true,
+                                      controller: _newNationCon,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 27,
+                                        color: Colors.black,
+                                      ),
+                                    )),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Container(
-                                  height: height * 0.15,
-                                  width: 800,
-                                  padding:
-                                  EdgeInsets.fromLTRB(250, 50, 250, 50),
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Text(
-                                    'Duty Station : [${snapshot.data['duty_station']}]',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 27,
-                                      fontFamily: 'Nunito',
+                                    height: height * 0.15,
+                                    width: 800,
+                                    padding:
+                                    EdgeInsets.fromLTRB(250, 50, 250, 50),
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey,
+                                      borderRadius: BorderRadius.circular(30),
                                     ),
-                                  ),
-                                ),
+                                    child: TextField(
+                                      autofocus: true,
+                                      controller: _newDutyStatCon,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 27,
+                                        color: Colors.black,
+                                      ),
+                                    )),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -288,98 +316,4 @@ class ProfilePage extends StatelessWidget {
       ],
     );
   }
-
-/*
- Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.logout,
-                semanticLabel: 'logout',
-              ),
-              onPressed: () {
-                signOut();
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-        body: Center(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(80.0,0,80.0,0),
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('users').doc(_firebaseAuth.currentUser.uid).snapshots(),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        snapshot.data['gender']=='MALE'
-                            ?AspectRatio(
-                          aspectRatio: 12 / 9,
-                          child: Image.network(
-                              "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman%20char%20-%20%EB%B3%B5%EC%82%AC%EB%B3%B8.png?alt=media&token=8476c05f-cd65-4093-8468-f85cdd35df66",
-                              height: 50,
-                              width: 175),
-                        )
-                        :AspectRatio(
-                          aspectRatio: 12 / 9,
-                          child: Image.network(
-                              "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fwoman%20char%20-%20%EB%B3%B5%EC%82%AC%EB%B3%B8.png?alt=media&token=07b26116-52f9-4a1c-9ffc-0835c862e994",
-                              height: 50,
-                              width: 175),
-                        ),
-                        //SizedBox(height: 50,),
-                        Text(
-                          _firebaseAuth.currentUser.uid,
-                          //snapshot.data['gender'],
-                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 25,),
-                        const Divider(
-                          height: 1.0,
-                          color: Colors.black,
-                        ),
-                        SizedBox(height: 25,),
-                        getEmail(),
-                      ],
-                    ),
-                  );
-                }
-              ),
-            )
-        )
-    );*/
-/*
-  Widget displayUserInformation(context, snapshot) {
-    final authData = snapshot.data;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Provider.of(context).auth.getProfileImage(),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "UID: ${FirebaseAuth.instance.currentUser.uid}",
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-        const Divider(
-          height: 1.0,
-          color: Colors.grey,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Email: ${authData.email ?? 'Anonymous'}",
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-      ],
-    );
-  }
-
-   */
 }

@@ -35,9 +35,19 @@ class SignUpPageState extends State<SignUpPage> {
 
     return Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(title: Text("Sign-Up Page")),
+        appBar: AppBar(title: Text("Sign-Up Page"),backgroundColor: Color(0xFF01579B),),
         body: ListView(
           children: <Widget>[
+            Container(
+                margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
+                child: AspectRatio(
+                  aspectRatio: 12 / 9,
+                  child: Image.network(
+                      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
+                      height: 100,
+                      width: 175),
+                )
+            ),
             Container(
               margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: Column(
@@ -45,6 +55,7 @@ class SignUpPageState extends State<SignUpPage> {
                   //Header
                   Container(
                     height: 50,
+                    width: 600,
                     decoration: BoxDecoration(color: Colors.amber),
                     child: Center(
                       child: Text(
@@ -59,6 +70,7 @@ class SignUpPageState extends State<SignUpPage> {
 
                   // Input Area
                   Container(
+                    width: 600,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.amber, width: 1),
                     ),
@@ -94,8 +106,10 @@ class SignUpPageState extends State<SignUpPage> {
 
             // Sign Up Button
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              //padding: ,
+              margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
               child: RaisedButton(
+
                 color: Colors.indigo[300],
                 child: Text(
                   "SIGN UP",

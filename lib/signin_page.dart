@@ -42,7 +42,7 @@ class SignInPageState extends State<SignInPage> {
 
     return Scaffold(
       key: _scaffoldKey,
-      appBar: AppBar(title: Text("Sign-In Page"),centerTitle: true,),
+      appBar: AppBar(title: Text("Sign-In Page"),centerTitle: true,backgroundColor: Color(0xFF01579B),),
       body: ListView(
         children: <Widget>[
           Container(
@@ -219,15 +219,15 @@ class SignInPageState extends State<SignInPage> {
 
   showLastFBMessage() {
     _scaffoldKey.currentState.showSnackBar(SnackBar(
-        backgroundColor: Colors.red[400],
-        duration: Duration(seconds: 10),
-        content: Text(fp.getLastFBMessage()),
-        action: SnackBarAction(
-          label: "Done",
-          textColor: Colors.white,
-          onPressed: () {},
-        ),
-      ));
+      backgroundColor: Colors.red[400],
+      duration: Duration(seconds: 10),
+      content: Text(fp.getLastFBMessage()),
+      action: SnackBarAction(
+        label: "Done",
+        textColor: Colors.white,
+        onPressed: () {},
+      ),
+    ));
   }
 
 }
