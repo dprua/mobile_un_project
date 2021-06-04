@@ -1,6 +1,14 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class StaffAdd extends StatefulWidget{
   @override
@@ -12,11 +20,15 @@ class StaffAddState extends State<StaffAdd>{
   final _titleController = TextEditingController();
   final _divisionController = TextEditingController();
   final _branchController = TextEditingController();
-  final _dutyController = TextEditingController();
   final _workControl = TextEditingController();
   final _langControl = TextEditingController();
 
-  Future<DocumentReference> addPosition(String duty, String name, int posNum) {
+  File postPhoto;
+  final picker = ImagePicker();
+  String filename = "";
+  String photoDefault = "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c";
+
+  Future<DocumentReference> addPosition(String duty, String name, int posNum, String photo) {
     return FirebaseFirestore.instance.collection('post').add({
       'Branch': _branchController.text,
       'Division': _divisionController.text,
@@ -28,14 +40,39 @@ class StaffAddState extends State<StaffAdd>{
       'lang_exp': _langControl.text.split('\n'),
       'work_exp': _workControl.text.split('\n'),
       'writerId': FirebaseAuth.instance.currentUser.uid,
+      'photoURL': (photo != "") ? photo : photoDefault,
     });
+  }
+
+  Future<void> photoPicker() async{
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    filename = "" ;
+    setState(() {
+      if(pickedFile != null){
+        postPhoto = File(pickedFile.path);
+        filename = path.basename(postPhoto.path);
+      }else{
+        print('No file selected');
+      }
+    });
+  }
+  Future<String> uploadImage() async{
+    Reference storageReference = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('post photo/'+ filename);
+    UploadTask uploadTask = storageReference.putFile(postPhoto);
+    var imageUrl = await (await uploadTask).ref.getDownloadURL();
+    print('File Uploaded');
+
+    return imageUrl;
   }
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add page"),
+          backgroundColor: Color(0xFF01579B),
+          title: Text("Add page"),
       ),
       body: Container(
         padding: EdgeInsets.all(100.0),
@@ -80,6 +117,22 @@ class StaffAddState extends State<StaffAdd>{
               ),
             ),
             Text("Please separate description list with enter", style: TextStyle(color: Colors.redAccent)),
+            Container(
+              child: Row(
+                children: [
+                  Text("Upload your position photo"),
+                  TextButton(
+                    child: Text("File"),
+                    onPressed: () async{
+                      photoPicker();
+                    },
+                  ),
+                  (filename != "")
+                      ? Text("\t$filename will be updated", style: TextStyle(color: Colors.blue))
+                      : Text("\tDefault photo will be updated", style: TextStyle(color: Colors.brown)),
+                ],
+              ),
+            ),
             SizedBox(height:10.0),
             ElevatedButton(
               child: Text("Post"),
@@ -88,14 +141,17 @@ class StaffAddState extends State<StaffAdd>{
                 String name;
                 int posNum;
 
-                final r = FirebaseFirestore.instance.collection('users').snapshots();
                 await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) {
                   duty = value['duty_station'];
                   name = "${value['last_name']} ${value['first_name']}";
                   posNum = value['position_level'];
                 });
+                String url = "";
+                if(filename != ""){
+                  url = await uploadImage();
+                }
 
-                addPosition(duty, name, posNum);
+                addPosition(duty, name, posNum, url);
                 Navigator.pop(context);
               },
             ),

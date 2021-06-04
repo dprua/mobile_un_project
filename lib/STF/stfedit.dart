@@ -46,6 +46,15 @@ class _StaffEditState extends State<StaffEdit>{
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit the position"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: (){
+              FirebaseFirestore.instance.collection('post').doc(widget.doc.id).delete();
+              Navigator.pop(context);
+            },
+          ),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(40.0),
