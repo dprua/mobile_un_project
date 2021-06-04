@@ -172,7 +172,7 @@ class ProfilePage extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ProfileEditPage()),
+                                                  ProfileEditPage(doc:snapshot.data)),
                                         );
                                       },
                                     ),
@@ -246,7 +246,7 @@ class ProfilePage extends StatelessWidget {
                                     'Nationality : [${snapshot.data['nationality']}]',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 27,
+                                      fontSize: 24,
                                       fontFamily: 'Nunito',
                                     ),
                                   ),
@@ -267,7 +267,7 @@ class ProfilePage extends StatelessWidget {
                                     'Duty Station : [${snapshot.data['duty_station']}]',
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 27,
+                                      fontSize: 24,
                                       fontFamily: 'Nunito',
                                     ),
                                   ),
