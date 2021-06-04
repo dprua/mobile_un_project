@@ -104,7 +104,8 @@ class Case_generate extends StatelessWidget{
     print(twoDList);
 
     final_case = makecase();
-
+    print("SDGKDJQWGLDGWQD");
+    print(final_case);
     return final_case;
   }
 
@@ -232,6 +233,79 @@ class Case_generate extends StatelessWidget{
     }
   }
 
+  // Future<void> makePDF() async {
+  //   final pdf = pw.Document();
+  //
+  //   pdf.addPage(
+  //     pw.Page(
+  //       build: (pw.Context context) => pw.Center(
+  //         child: pw.Table(
+  //             width: MediaQuery.of(context).size.width-100,
+  //             height: MediaQuery.of(context).size.height-100,
+  //             child: DataTable(
+  //               horizontalMargin: 12.0,
+  //               columnSpacing: 28.0,
+  //               columns: _getColumns(),
+  //               rows: _getRows(),
+  //             )
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  //
+  //   final file = File('example.pdf');
+  //   await file.writeAsBytes(await pdf.save());
+  // }
+  //num = 3
+  //final_case
+  //{0: {Data Analysis: stf1, yezzin: stf2, CEO position: admin_stf},
+  // 1: {Data Analysis: stf3, yezzin: stf2, CEO position: stf1},
+  // 2: {Data Analysis: stf2, yezzin: stf3, CEO position: stf1}}
+  List<DataRow> _getRows(){
+    List<DataRow> dataRow = [];
+    for (var i=1; i<=num; i++) {
+      var csvDataCells=[];
+      csvDataCells.add('$i') ;
+      for(var k=0;k<position_length;k++){
+        if(final_case[i-1][init_arr[k]] == null)
+          csvDataCells.add("No");
+        else
+          csvDataCells.add(final_case[i-1][init_arr[k]]);
+      }
+      //var csvDataCells = init_arr[i]; // data Analysis
+
+      List<DataCell> cells = [];
+      for(var j=0; j<csvDataCells.length; j++) {
+        cells.add(DataCell(Text(csvDataCells[j])));
+      }
+      dataRow.add(DataRow(cells: cells));
+    }
+    return dataRow;
+  }
+
+  List<DataColumn> _getColumns(){
+    List<DataColumn> dataColumn = [];
+
+    dataColumn.add(DataColumn(label: Text('#')));
+
+    for (int i = 0; i<position_length;i++) {
+        dataColumn.add(DataColumn(label: Text(init_arr[i])));
+    }
+
+    return dataColumn;
+  }
+
+  Widget _getDataTable() {
+    return DataTable(
+      horizontalMargin: 30.0,
+      columnSpacing: 300.0,
+      columns: _getColumns(),
+      rows: _getRows(),
+    );
+  }
+
+
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -256,22 +330,32 @@ class Case_generate extends StatelessWidget{
               );
             }
             else {
-              return new ListView.builder(
-                itemCount: snapshot1.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  int key = snapshot1.data.keys.elementAt(index);
-                  return new Column(
-                    children: <Widget>[
-                      new ListTile(
-                        title: new Text("$key"),
-                        subtitle: new Text("${snapshot1.data[key]}"),
+              //SingleChildScrollView( scrollDirection: Axis.horizontal, child: SingleChildScrollView( child: _getDataTable(), ), )
+              // return new ListView.builder(
+              //   itemCount: snapshot1.data.length,
+              //   itemBuilder: (BuildContext context, int index) {
+              //     int key = snapshot1.data.keys.elementAt(index);
+              //
+              //   },//
+              // );
+              return new Column(
+                children: <Widget>[
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      child: Container(
+                          width: MediaQuery.of(context).size.width-100,
+                          height: MediaQuery.of(context).size.height-400,
+                          child: DataTable(
+                            horizontalMargin: 12.0,
+                            columnSpacing: 28.0,
+                            columns: _getColumns(),
+                            rows: _getRows(),
+                          )
                       ),
-                      new Divider(
-                        height: 2.0,
-                      ),
-                    ],
-                  );
-                },
+                    ),
+                  ),
+                ],
               );
             }
           }
@@ -279,3 +363,4 @@ class Case_generate extends StatelessWidget{
     );
   }
 }
+
