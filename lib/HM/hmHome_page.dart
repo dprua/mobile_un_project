@@ -138,31 +138,54 @@ class _hmHomePageState extends State<hmHomePage> {
           ]),
       // Default page is grid view of positions approved by HM
       body: SafeArea(
-        child: FutureBuilder(
-            future: gettype(),
-            builder: (BuildContext context, AsyncSnapshot snapshot1) {
-              if (snapshot1.hasData == false) {
-                return CircularProgressIndicator();
-              } else if (snapshot1.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Error: ${snapshot1.error}',
-                    style: TextStyle(fontSize: 15),
-                  ),
-                );
-              } else {
-                var loginstate;
-                if (snapshot1.data.toString() == '0')
-                  loginstate = 'HM';
-                else if (snapshot1.data.toString() == '1')
-                  loginstate = 'HR';
-                else
-                  loginstate = 'STF';
+        child: Center(
+          child : Row(
+            children: [
+              Container(
+                  width: 200.0,
+                  child: Column(
+                    children: [
+                      FlatButton(
+                          onPressed: () {},
+                          child: ListTile(
+                            leading: Icon(Icons.looks_one),
+                            title: Text("First Link"),
+                          )
+                      ),
+                    ],
+                  )
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width-200.0,
+                child: FutureBuilder(
+                    future: gettype(),
+                    builder: (BuildContext context, AsyncSnapshot snapshot1) {
+                      if (snapshot1.hasData == false) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot1.hasError) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Error: ${snapshot1.error}',
+                            style: TextStyle(fontSize: 15),
+                          ),
+                        );
+                      } else {
+                        var loginstate;
+                        if (snapshot1.data.toString() == '0')
+                          loginstate = 'HM';
+                        else if (snapshot1.data.toString() == '1')
+                          loginstate = 'HR';
+                        else
+                          loginstate = 'STF';
 
-                return ViewWidget(user_state: loginstate);
-              }
-            }),
+                        return ViewWidget(user_state: loginstate);
+                      }
+                    }),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -240,7 +263,7 @@ class ViewState extends State<ViewWidget> {
                 }
 
                 return GridView.count(
-                  crossAxisCount: 3,
+                  crossAxisCount: 2,
                   children: snapshot.data.docs.map((document) {
                     return Card(
                       child: Container(

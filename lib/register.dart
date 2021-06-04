@@ -172,7 +172,6 @@ class _RegisterFormState extends State<RegisterForm> {
                         decoration: const InputDecoration(
                           hintText: 'Enter your nationality',
                         ),
-                        obscureText: true,
                         validator: (value) {
                           if (value.isEmpty) {
                             return 'Enter your nationality';
