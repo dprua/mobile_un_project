@@ -138,6 +138,11 @@ class _hmHomePageState extends State<hmHomePage> {
                                     child: CircularProgressIndicator(),
                                   );
                                 }
+                                else if(snapshot.connectionState == ConnectionState.waiting){
+                                  return Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                }
                                 return ListTile(
                                   leading: snapshot.data.docs.length == 0
                                       ? Icon(

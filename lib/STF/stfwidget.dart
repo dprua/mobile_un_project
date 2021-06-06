@@ -182,6 +182,11 @@ class _STFViewState extends State<STFViewWidget>{
                     child: CircularProgressIndicator(),
                   );
                 }
+                else if(snapshot.connectionState == ConnectionState.waiting){
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 return GridView.count(
                       crossAxisCount: 3,
                       children: snapshot.data.docs.map((document) {

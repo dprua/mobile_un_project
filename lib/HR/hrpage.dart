@@ -9,32 +9,12 @@ class HRPage extends StatelessWidget{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.person,
-              semanticLabel: 'profile',
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            },
-          ),
+          backgroundColor: Color(0xFF01579B),
           centerTitle: true,
           title: Text("For HR home page"),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HRShow()),
-                );
-              },
-            ),
-          ]
-      ),
+
+          ]),
       // Default page is grid view of positions approved by HM
       body: SafeArea(
         child : HRWidget(user_state: loginstate),
