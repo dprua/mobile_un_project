@@ -216,17 +216,19 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                     top: 0,
                                     left: 0,
                                     right: 0,
+                                    bottom:-15,
                                     child: Center(
                                       child: Container(
                                         child: snapshot.data['gender'] == 'MALE'
                                             ? Image.network(
-                                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman%20char%20-%20%EB%B3%B5%EC%82%AC%EB%B3%B8.png?alt=media&token=8476c05f-cd65-4093-8468-f85cdd35df66',
-                                          width: innerWidth * 0.45,
+                                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman_char-removebg-preview.png?alt=media&token=986c55de-c46c-49a4-965b-4feb49360c3c',
+                                          width: innerWidth * 0.35,
                                           fit: BoxFit.fitWidth,
                                         )
                                             : Image.network(
-                                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fwoman%20char%20-%20%EB%B3%B5%EC%82%AC%EB%B3%B8.png?alt=media&token=07b26116-52f9-4a1c-9ffc-0835c862e994',
-                                          width: innerWidth * 0.45,
+                                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fwoman_char-removebg-preview.png?alt=media&token=bdd9a2ab-91ea-437c-8f61-74eae8e1e5a9',
+                                          width: innerWidth * 0.33,
+
                                           fit: BoxFit.fitWidth,
                                         ),
                                       ),
@@ -271,19 +273,19 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 Container(
                                     height: height * 0.15,
                                     width: 800,
-                                    padding:
-                                    EdgeInsets.fromLTRB(250, 50, 250, 50),
                                     decoration: BoxDecoration(
                                       color: Colors.grey,
                                       borderRadius: BorderRadius.circular(30),
                                     ),
-                                    child: TextField(
-                                      autofocus: true,
-                                      controller: _newNationCon,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 27,
-                                        color: Colors.black,
+                                    child: Center(
+                                      child: TextField(
+                                        autofocus: true,
+                                        controller: _newNationCon,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 27,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                     )),
                                 SizedBox(
@@ -292,19 +294,19 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                 Container(
                                     height: height * 0.15,
                                     width: 800,
-                                    padding:
-                                    EdgeInsets.fromLTRB(250, 50, 250, 50),
                                     decoration: BoxDecoration(
                                       color: Colors.grey,
                                       borderRadius: BorderRadius.circular(30),
                                     ),
-                                    child: TextField(
-                                      autofocus: true,
-                                      controller: _newDutyStatCon,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 27,
-                                        color: Colors.black,
+                                    child: Center(
+                                      child: TextField(
+                                        autofocus: true,
+                                        controller: _newDutyStatCon,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 27,
+                                          color: Colors.black,
+                                        ),
                                       ),
                                     )),
                                 SizedBox(

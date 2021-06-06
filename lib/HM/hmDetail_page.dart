@@ -35,55 +35,90 @@ class _hmDetailPageState extends State<hmDetailPage> {
       body: Row(
         children: <Widget>[
           Expanded(
-            child: Container(
-              height: 600,
-              child: ReorderableFirebaseList(
-                //.where('postId',isEqualTo : widget.doc.id)
-                collection: FirebaseFirestore.instance.collection('apply'),
-                indexKey: 'rank',
-                id: widget.doc.id,
-                itemBuilder:
-                    (BuildContext context, int index, DocumentSnapshot doc) {
-                  return ListTile(
-                    key: Key(doc.id),
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                    leading: Container(
-                      padding: EdgeInsets.only(right: 12.0),
-                      decoration: new BoxDecoration(
-                          border: new Border(
-                              right: new BorderSide(
-                                  width: 1.0, color: Colors.grey))),
-                      child: Icon(Icons.person, color: Colors.grey,size:40),
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Opacity(
+                      opacity: 0.7,
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        height: 60,
+                        width: 400,
+                        padding: EdgeInsets.fromLTRB(120, 15, 20, 0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF64B5F6),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
                     ),
-                    title: Text(
-                      doc.data()['name'],
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.bold),
+                    Positioned(
+                      top: 25,
+                      left: 110,
+                      child: Text(
+                        'Applicant List',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontFamily: 'Nunito',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+                  ],
+                ),
+                Container(
+                  height: 600,
+                  child: ReorderableFirebaseList(
+                    //.where('postId',isEqualTo : widget.doc.id)
+                    collection: FirebaseFirestore.instance.collection('apply'),
+                    indexKey: 'rank',
+                    id: widget.doc.id,
+                    itemBuilder: (BuildContext context, int index,
+                        DocumentSnapshot doc) {
+                      return ListTile(
+                        key: Key(doc.id),
+                        contentPadding: EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10.0),
+                        leading: Container(
+                          padding: EdgeInsets.only(right: 12.0),
+                          decoration: new BoxDecoration(
+                              border: new Border(
+                                  right: new BorderSide(
+                                      width: 1.0, color: Colors.grey))),
+                          child:
+                              Icon(Icons.person, color: Colors.grey, size: 40),
+                        ),
+                        title: Text(
+                          doc.data()['name'],
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
-                    subtitle: Row(
-                      children: <Widget>[
-                        Icon(Icons.linear_scale, color: Colors.black),
-                        Text(doc.data()['Gender'],
-                            style: TextStyle(color: Colors.black))
-                      ],
-                    ),
-                    trailing: Icon(Icons.keyboard_arrow_right,
-                        color: Colors.black, size: 30.0),
-                    onTap: (){
-                      print('aaaa');
-                      setState(() {
-                        print('bbbb');
-                        join = true;
-                        target = doc.id;
-                        print(target);
-                      });
+                        subtitle: Row(
+                          children: <Widget>[
+                            Icon(Icons.linear_scale, color: Colors.black),
+                            Text(doc.data()['Gender'],
+                                style: TextStyle(color: Colors.black))
+                          ],
+                        ),
+                        trailing: Icon(Icons.keyboard_arrow_right,
+                            color: Colors.black, size: 30.0),
+                        onTap: () {
+                          print('aaaa');
+                          setState(() {
+                            print('bbbb');
+                            join = true;
+                            target = doc.id;
+                            print(target);
+                          });
+                        },
+                      );
                     },
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
           const VerticalDivider(
@@ -98,12 +133,12 @@ class _hmDetailPageState extends State<hmDetailPage> {
                 ? ViewDetail(doc: widget.doc, applyId: target)
                 //hmDetailInfoPage(doc:widget.doc,applyId:FirebaseAuth.instance.currentUser.uid)
                 : AspectRatio(
-              aspectRatio: 4 / 2,
-              child: Image.network(
-                  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
-                  height: 50,
-                  width: 50),
-            ),
+                    aspectRatio: 4 / 2,
+                    child: Image.network(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
+                        height: 50,
+                        width: 50),
+                  ),
           ),
         ],
       ),
@@ -143,8 +178,62 @@ class ViewDetail extends StatefulWidget {
 }
 
 class _ViewDetailState extends State<ViewDetail> {
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildProfileImage(Stuidring) {
+    return Center(
+      child: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('apply')
+              .doc('2QyVNh0QWpcjckamGhnj')
+              .snapshots(),
+          builder:
+              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            return Container(
+              width: 140.0,
+              height: 140.0,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: snapshot.data['Gender'] == 'MALE'
+                      ? NetworkImage(
+                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman_char-removebg-preview.png?alt=media&token=986c55de-c46c-49a4-965b-4feb49360c3c')
+                      : NetworkImage(
+                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fwoman_char-removebg-preview.png?alt=media&token=bdd9a2ab-91ea-437c-8f61-74eae8e1e5a9'),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.circular(80.0),
+                border: Border.all(
+                  color: Colors.white,
+                  width: 10.0,
+                ),
+              ),
+            );
+          }),
+    );
+  }
+
+  Widget _buildCoverImage(Size screenSize) {
+    return Opacity(
+      opacity: 0.6,
+      child: Container(
+        height: screenSize.height / 2.6,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+                'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=f9a8&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true'),
+            fit: BoxFit.fitWidth,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFullName() {
+    TextStyle _nameTextStyle = TextStyle(
+      fontFamily: 'Roboto',
+      color: Colors.black,
+      fontSize: 28.0,
+      fontWeight: FontWeight.w700,
+    );
+
     return StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('apply')
@@ -154,144 +243,175 @@ class _ViewDetailState extends State<ViewDetail> {
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.hasData == false) return CircularProgressIndicator();
           if (snapshot.hasError) return Text("Error: ${snapshot.error}");
-          return Container(
-            padding: EdgeInsets.fromLTRB(30, 0, 30, 30),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text('Applicant details', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-                      Container(height: 24,width: 24)
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0,0 ,50),
-                  child: Stack(
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        radius: 70,
-                        child: ClipOval(child: Icon(Icons.person, size:100,color: Colors.white,),),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-                      gradient: LinearGradient(
-                          begin: Alignment.topRight,
-                          end: Alignment.bottomLeft,
-                          colors: [Color(0xFF01579B), Color.fromRGBO(0, 41, 60, 1)]
-                      )
-                  ),
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 25, 20, 4),
-                        child: Container(
-                          height: 60,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Name: ${snapshot.data['name']}", style: TextStyle(color: Colors.white70,fontSize: 20),),
+
+          return Text(
+            snapshot.data['name'],
+            style: _nameTextStyle,
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('apply')
+          .doc(widget.applyId)
+          .snapshots(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasData == false) return CircularProgressIndicator();
+        if (snapshot.hasError) return Text("Error: ${snapshot.error}");
+        return Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                child: Stack(
+                  children: <Widget>[
+                    _buildCoverImage(screenSize),
+                    SafeArea(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: screenSize.height / 4.0,
                             ),
-                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
-                        child: Container(
-                          height: 60,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Current Position Title: ${snapshot.data['curPostTitle']}", style: TextStyle(color: Colors.white70,fontSize: 20)),
-                            ),
-                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
-                        child: Container(
-                          height: 60,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Gender: ${snapshot.data['Gender']}", style: TextStyle(color: Colors.white70,fontSize: 20)),
-                            ),
-                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
-                        child: Container(
-                          height: 60,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Nation: ${snapshot.data['Nation']}", style: TextStyle(color: Colors.white70,fontSize: 20),),
-                            ),
-                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
-                        child: Container(
-                          height: 60,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Current Position Level: ${snapshot.data['curPostLevel']}", style: TextStyle(color: Colors.white70,fontSize: 20),),
-                            ),
-                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70)),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 5, 20, 4),
-                        child: Container(
-                          height: 60,
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TextButton(
-                                onPressed: () {
-                                  launch(snapshot.data['phpURL']);
-                                },
-                                child: Text(
-                                  "Resume:   if you want read Resume, click here",
-                                  style: TextStyle(
-                                    fontSize: 20.0,
-                                      color: Colors.white70,
-                                    fontWeight: FontWeight.bold,
-                                    decoration: TextDecoration.underline,
-                                  ),
+                            Container(
+                              width: 140.0,
+                              height: 140.0,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: snapshot.data['Gender'] == 'MALE'
+                                      ? NetworkImage(
+                                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman_char-removebg-preview.png?alt=media&token=986c55de-c46c-49a4-965b-4feb49360c3c')
+                                      : NetworkImage(
+                                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fwoman_char-removebg-preview.png?alt=media&token=bdd9a2ab-91ea-437c-8f61-74eae8e1e5a9'),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.circular(90.0),
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 10.0,
                                 ),
                               ),
                             ),
-                          ), decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20)),border: Border.all(width: 1.0, color: Colors.white70),),
+                            Text(snapshot.data['name'],
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  color: Colors.black,
+                                  fontSize: 32.0,
+                                  fontWeight: FontWeight.w700,
+                                )),
+                            Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'United Nations-Its Your World!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Spectral',
+                                  fontWeight: FontWeight.w400,
+                                  //try changing weight to w500 if not thin
+                                  fontStyle: FontStyle.italic,
+                                  color: Color(0xFF799497),
+                                  fontSize: 24.0,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: screenSize.width / 1.6,
+                              height: 2.0,
+                              color: Colors.black54,
+                              margin: EdgeInsets.only(top: 4.0),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+
+                          ],
                         ),
                       ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(30, 0, 20, 20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text('Current Position Title : ',style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        Text(snapshot.data['curPostTitle'],
+                          style: TextStyle(
+                            fontFamily: 'Spectral',
+                            color: Color(0xFF303030),
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w600,
+                          ),),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text('Nation : ',style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        Text(snapshot.data['Nation'],
+                        style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
+                        ),),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text('Current Duty Station : ',style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        Text(snapshot.data['curDutyStat'],
+                          style: TextStyle(
+                            fontFamily: 'Spectral',
+                            color: Color(0xFF303030),
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w600,
+                          ),),
+                      ],
+                    ),
 
-                    ],
-                  ),
-                ))
-              ],
-            ),
-          );
-        },
-      );
 
+                  ],
+                ),
+              ),
+
+
+            ],
+          ),
+        );
+      },
+    );
   }
 }
 
