@@ -183,34 +183,31 @@ class _hmHomePageState extends State<hmHomePage> {
                 endIndent: 0,
                 width: 20,
               ),
-              Expanded(
-                //width: MediaQuery.of(context).size.width - 200.0,
-                child: FutureBuilder(
-                    future: gettype(),
-                    builder: (BuildContext context, AsyncSnapshot snapshot1) {
-                      if (snapshot1.hasData == false) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot1.hasError) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'Error: ${snapshot1.error}',
-                            style: TextStyle(fontSize: 15),
-                          ),
-                        );
-                      } else {
-                        var loginstate;
-                        if (snapshot1.data.toString() == '0')
-                          loginstate = 'HM';
-                        else if (snapshot1.data.toString() == '1')
-                          loginstate = 'HR';
-                        else
-                          loginstate = 'STF';
+              FutureBuilder(
+                  future: gettype(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot1) {
+                    if (snapshot1.hasData == false) {
+                      return CircularProgressIndicator();
+                    } else if (snapshot1.hasError) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Error: ${snapshot1.error}',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                      );
+                    } else {
+                      var loginstate;
+                      if (snapshot1.data.toString() == '0')
+                        loginstate = 'HM';
+                      else if (snapshot1.data.toString() == '1')
+                        loginstate = 'HR';
+                      else
+                        loginstate = 'STF';
 
-                        return ViewWidget(user_state: loginstate);
-                      }
-                    }),
-              ),
+                      return Expanded(child: ViewWidget(user_state: loginstate));
+                    }
+                  }),
             ],
           ),
         ),
@@ -270,84 +267,83 @@ class ViewState extends State<ViewWidget> {
           }).toList(),
         ),
         Expanded(
-            child: StreamBuilder(
-          stream: (levelNum == 0)
-              ? FirebaseFirestore.instance
-                  .collection('post')
-                  .where('approval', isEqualTo: true)
-                  .snapshots()
-              : FirebaseFirestore.instance
-                  .collection('post')
-                  .where('Level', isEqualTo: levelNum)
-                  .where('approval', isEqualTo: true)
-                  .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+          child: StreamBuilder(
+            stream: (levelNum == 0)
+            ? FirebaseFirestore.instance
+                .collection('post')
+                .where('approval', isEqualTo: true)
+                .snapshots()
+            : FirebaseFirestore.instance
+                .collection('post')
+                .where('Level', isEqualTo: levelNum)
+                .where('approval', isEqualTo: true)
+                .snapshots(),
+            builder:
+            (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
 
-            return GridView.count(
-              crossAxisCount: 3,
-              children: snapshot.data.docs.map((document) {
-                return Card(
-                  child: Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        document.get('photoURL') == ""
-                            ? Container(
-                              width: MediaQuery.of(context).size.width - 650,
-                              height: MediaQuery.of(context).size.height - 650,
-                              child: Image.network(
-                                  "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
-                                  height: MediaQuery.of(context).size.height,
-                                  width: MediaQuery.of(context).size.width),
-                            )
-                            : Container(
-                              width: MediaQuery.of(context).size.width - 650,
-                              height: MediaQuery.of(context).size.height - 650,
-                              child: Image.network(
-                                document.get('photoURL'),
+          return GridView.count(
+            crossAxisCount: 3,
+            children: snapshot.data.docs.map((document) {
+              return Card(
+                child: Container(
+                  padding: EdgeInsets.all(10.0),
+                  child: Column(
+                    children: [
+                      document.get('photoURL') == ""
+                          ? Container(
+                            width: MediaQuery.of(context).size.width - 650,
+                            height: MediaQuery.of(context).size.height - 650,
+                            child: Image.network(
+                                "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
                                 height: MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width,
-                              ),
-                            ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        Text("Title: ${document.get('Title')}"),
-                        Text("Level: ${document.get('Level')}"),
-                        Text("Division: ${document.get('Division')}"),
-                        Text("Branch: ${document.get('Branch')}"),
-                        Text("Duty station: ${document.get('Duty station')}"),
-                        Container(
-                          alignment: Alignment.centerRight,
-                          child: Expanded(
-                            child: TextButton(
-                              child: Text("more"),
-                              onPressed: () {
-                                // When tap the "more", go to Detail page
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          hmDetailPage(doc: document)),
-                                );
-                              },
+                                width: MediaQuery.of(context).size.width),
+                          )
+                          : Container(
+                            width: MediaQuery.of(context).size.width - 650,
+                            height: MediaQuery.of(context).size.height - 650,
+                            child: Image.network(
+                              document.get('photoURL'),
+                              height: MediaQuery.of(context).size.height,
+                              width: MediaQuery.of(context).size.width,
                             ),
                           ),
+                      SizedBox(
+                        height: 25,
+                      ),
+                      Text("Title: ${document.get('Title')}"),
+                      Text("Level: ${document.get('Level')}"),
+                      Text("Division: ${document.get('Division')}"),
+                      Text("Branch: ${document.get('Branch')}"),
+                      Text("Duty station: ${document.get('Duty station')}"),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          child: Text("more"),
+                          onPressed: () {
+                            // When tap the "more", go to Detail page
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      hmDetailPage(doc: document)),
+                            );
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                );
-              }).toList(),
-            );
-          },
-        )),
+                ),
+              );
+            }).toList(),
+          );
+            },
+          ),
+        ),
       ],
     );
   }

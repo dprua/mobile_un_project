@@ -309,56 +309,52 @@ class Case_generate extends StatelessWidget{
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Possible Relocation Case"),
+          backgroundColor: Color(0xFF01579B),
+          centerTitle: true,
+          title: Text("Possible Relocation Case"),
       ),
-      body: FutureBuilder(
-          future: getinfo(),
-          builder: (BuildContext context, AsyncSnapshot snapshot1) {
-            if (snapshot1.hasData == false) {
-              return CircularProgressIndicator();
-            }
-            //error가 발생하게 될 경우 반환하게 되는 부분
-            else if (snapshot1.hasError) {
-              return Padding(
-                padding: const EdgeInsets.all(
-                    8.0),
-                child: Text(
-                  'Error: ${snapshot1.error}',
-                  style: TextStyle(
-                      fontSize: 15),
-                ),
-              );
-            }
-            else {
-              //SingleChildScrollView( scrollDirection: Axis.horizontal, child: SingleChildScrollView( child: _getDataTable(), ), )
-              // return new ListView.builder(
-              //   itemCount: snapshot1.data.length,
-              //   itemBuilder: (BuildContext context, int index) {
-              //     int key = snapshot1.data.keys.elementAt(index);
-              //
-              //   },//
-              // );
-              return new Column(
-                children: <Widget>[
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      child: Container(
-                          width: MediaQuery.of(context).size.width-100,
-                          height: MediaQuery.of(context).size.height-400,
-                          child: DataTable(
-                            horizontalMargin: 12.0,
-                            columnSpacing: 28.0,
-                            columns: _getColumns(),
-                            rows: _getRows(),
-                          )
+      body: Center(
+        child: FutureBuilder(
+            future: getinfo(),
+            builder: (BuildContext context, AsyncSnapshot snapshot1) {
+              if (snapshot1.hasData == false) {
+                return Column( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[ CircularProgressIndicator( backgroundColor: Colors.white, strokeWidth: 6), SizedBox(height: 20), Text('Please Waiting...', style: TextStyle( fontSize: 40, fontWeight: FontWeight.w700, color: Colors.black, shadows: <Shadow>[ Shadow(offset: Offset(4, 4), color: Colors.black12) ], decorationStyle: TextDecorationStyle.solid)) ], );
+              }
+              else if (snapshot1.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(
+                      8.0),
+                  child: Text(
+                    'Error: ${snapshot1.error}',
+                    style: TextStyle(
+                        fontSize: 15),
+                  ),
+                );
+              }
+              else {
+                return new Column(
+                  children: <Widget>[
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: SingleChildScrollView(
+                        child: Container(
+                            width: MediaQuery.of(context).size.width-100,
+                            height: MediaQuery.of(context).size.height-400,
+                            child: DataTable(
+                              horizontalMargin: 12.0,
+                              columnSpacing: 28.0,
+                              columns: _getColumns(),
+                              rows: _getRows(),
+
+                            )
+                        ),
                       ),
                     ),
-                  ),
-                ],
-              );
+                  ],
+                );
+              }
             }
-          }
+        ),
       ),
     );
   }

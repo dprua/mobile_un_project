@@ -35,94 +35,163 @@ class SignUpPageState extends State<SignUpPage> {
 
     return Scaffold(
         key: _scaffoldKey,
-        appBar: AppBar(title: Text("Sign-Up Page"),backgroundColor: Color(0xFF01579B),),
-        body: ListView(
-          children: <Widget>[
-            Container(
-                margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
-                child: AspectRatio(
-                  aspectRatio: 12 / 9,
-                  child: Image.network(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
-                      height: 100,
-                      width: 175),
-                )
+        body: Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: new NetworkImage("https://www.softwareone.com/-/media/global/social-media-and-blog/hero/publisher-advisory_get-ready-for-the-office-2010-end-of-support-header.jpg?rev=5496ff43323143be831b8a7922711cf2&sc_lang=en-fi&hash=A250C8730555358AEFE638574FCA0AF4"),
+              fit: BoxFit.cover
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
-              child: Column(
+          ),
+          child: ListView(
+            children: [
+              Column(
                 children: <Widget>[
-                  //Header
-                  Container(
-                    height: 50,
-                    width: 600,
-                    decoration: BoxDecoration(color: Colors.amber),
-                    child: Center(
-                      child: Text(
-                        "Create Account",
-                        style: TextStyle(
-                            color: Colors.blueGrey,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(280, 150, 0, 30),
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white,
+                                spreadRadius: 5,
+                                blurRadius: 160,
+                                offset: Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Image.network(
+                              "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
+                              height: 100,
+                              width: 175
+                          ),
+                        ),
+                        Text(
+                          "HR Relocation System",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 8.0,
+                                  color: Colors.white,
+                                  offset: Offset(5.0,5.0),
+                                )
+                              ]
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-
-                  // Input Area
                   Container(
-                    width: 600,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.amber, width: 1),
-                    ),
+                    margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
                     child: Column(
                       children: <Widget>[
-                        TextField(
-                          controller: _mailCon,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.mail),
-                            hintText: "Email",
+                        //Header
+                        Container(
+                          height: 50,
+                          width: 600,
+                          decoration: BoxDecoration(color: Colors.lightBlue),
+                          child: Center(
+                            child: Text(
+                              "Create Account",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                        TextField(
-                          controller: _pwCon,
-                          decoration: InputDecoration(
-                            prefixIcon: Icon(Icons.lock),
-                            hintText: "Password",
+
+                        // Input Area
+                        Container(
+                          width: 600,
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.lightBlue, width: 1),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white,
+                                spreadRadius: 5,
+                                blurRadius: 160,
+                                offset: Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
                           ),
-                          obscureText: true,
-                        ),
-                      ].map((c) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 10),
-                          child: c,
-                        );
-                      }).toList(),
+                          child: Column(
+                            children: <Widget>[
+                              TextField(
+                                controller: _mailCon,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.mail),
+                                  hintText: "Email",
+                                  hintStyle: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ),
+                              TextField(
+                                controller: _pwCon,
+                                decoration: InputDecoration(
+                                  prefixIcon: Icon(Icons.lock),
+                                  hintText: "Password",
+                                  hintStyle: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                                obscureText: true,
+                              ),
+                            ].map((c) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 10),
+                                child: c,
+                              );
+                            }).toList(),
+                          ),
+                        )
+                      ],
                     ),
-                  )
+                  ),
+                  SizedBox(height: 40,),
+                  // Sign Up Button
+                  Container(
+                    width: 600,
+                    margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
+                    child: RaisedButton(
+
+                      color: Colors.indigo[300],
+                      child: Text(
+                        "SIGN UP",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        FocusScope.of(context)
+                            .requestFocus(new FocusNode()); // 키보드 감춤
+                        _signUp();
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: 600,
+                    margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
+                    child: RaisedButton(
+
+                      color: Colors.red[300],
+                      child: Text(
+                        "CANCEL",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ),
                 ],
               ),
-            ),
-
-            // Sign Up Button
-            Container(
-              //padding: ,
-              margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
-              child: RaisedButton(
-
-                color: Colors.indigo[300],
-                child: Text(
-                  "SIGN UP",
-                  style: TextStyle(color: Colors.white),
-                ),
-                onPressed: () {
-                  FocusScope.of(context)
-                      .requestFocus(new FocusNode()); // 키보드 감춤
-                  _signUp();
-                },
-              ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 

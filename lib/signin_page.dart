@@ -41,42 +41,70 @@ class SignInPageState extends State<SignInPage> {
     fp = Provider.of<FirebaseProvider>(context);
 
     return Scaffold(
+      backgroundColor: Colors.transparent,
       key: _scaffoldKey,
-      appBar: AppBar(title: Text("Sign-In Page"),centerTitle: true,backgroundColor: Color(0xFF01579B),),
       body: ListView(
         children: <Widget>[
           Container(
-            margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+            margin: const EdgeInsets.only(left: 20, right: 20, top: 100),
             child: Column(
               children: <Widget>[
                 //Header
                 Container(
-                  margin: const EdgeInsets.only(left: 0, right: 0, top: 40),
+                  margin: const EdgeInsets.only(left: 0, right: 0, top: 30),
                   height: 150,
-                  width: 600,
-                  decoration: BoxDecoration(color: Colors.greenAccent),
+                  width: MediaQuery.of(context).size.width-560,
                   child: Center(
-                    child: Text(
-                      "HR Relocation System",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold),
+                    child: Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.white,
+                                spreadRadius: 5,
+                                blurRadius: 160,
+                                offset: Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Image.network(
+                              "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
+                              height: 100,
+                              width: 175
+                          ),
+                        ),
+                        Text(
+                          "HR Relocation System",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold,
+                              shadows: [
+                                Shadow(
+                                  blurRadius: 8.0,
+                                  color: Colors.white,
+                                  offset: Offset(5.0,5.0),
+                                )
+                              ]
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
                 Container(
                   height: 50,
                   width: 600,
-                  decoration: BoxDecoration(color: Colors.amber),
+                  decoration: BoxDecoration(color: Colors.lightBlue),
                   child: Center(
                     child: Text(
                       "Sign In to Your Account",
                       style: TextStyle(
-                          color: Colors.blueGrey,
+                          color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.bold),
                     ),
@@ -87,7 +115,15 @@ class SignInPageState extends State<SignInPage> {
                 Container(
                   width: 600,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.amber, width: 1),
+                    border: Border.all(color: Colors.lightBlue, width: 1),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white,
+                        spreadRadius: 5,
+                        blurRadius: 160,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
                   ),
                   child: Column(
                     children: <Widget>[
@@ -96,6 +132,9 @@ class SignInPageState extends State<SignInPage> {
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.mail),
                           hintText: "Email",
+                          hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
                       TextField(
@@ -103,6 +142,9 @@ class SignInPageState extends State<SignInPage> {
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock),
                           hintText: "Password",
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                         obscureText: true,
                       ),
@@ -131,7 +173,12 @@ class SignInPageState extends State<SignInPage> {
                     });
                   },
                 ),
-                Text("Remember Me")
+                Text(
+                    "Remember Me",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
               ],
             ),
           ),
@@ -157,11 +204,11 @@ class SignInPageState extends State<SignInPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Text("Need an account?",
-                    style: TextStyle(color: Colors.blueGrey)),
+                    style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 15)),
                 FlatButton(
                   child: Text(
                     "Sign Up",
-                    style: TextStyle(color: Colors.blue, fontSize: 16),
+                    style: TextStyle(color: Colors.deepOrange, fontSize: 18,fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
                     Navigator.push(context,
@@ -189,7 +236,7 @@ class SignInPageState extends State<SignInPage> {
         ),
       ));
     bool result = await fp.signInWithEmail(_mailCon.text, _pwCon.text);
-    //_scaffoldKey.currentState.hideCurrentSnackBar();
+    _scaffoldKey.currentState.hideCurrentSnackBar();
     if (result == false) showLastFBMessage();
   }
 
@@ -218,10 +265,11 @@ class SignInPageState extends State<SignInPage> {
   }
 
   showLastFBMessage() {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
+    print("ADSGWEG");
+    _scaffoldKey.currentState..hideCurrentSnackBar()..showSnackBar(SnackBar(
       backgroundColor: Colors.red[400],
       duration: Duration(seconds: 10),
-      content: Text(fp.getLastFBMessage()),
+      content: Text("Please check ID / PW"),
       action: SnackBarAction(
         label: "Done",
         textColor: Colors.white,
