@@ -9,7 +9,7 @@ class StfPage extends StatelessWidget{
       appBar: AppBar(
         backgroundColor: Color(0xFF01579B),
           centerTitle: true,
-          title: Text("For Staff home page"),
+          title: Text("國際聯合"),
       ),
       // Default page is grid view of positions approved by HM
       body: SafeArea(

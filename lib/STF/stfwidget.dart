@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:un_project/STF/stfedit.dart';
 import 'package:un_project/authentification.dart';
 
-
 import '../profile.dart';
 
 class STFWidget extends StatefulWidget {
@@ -54,6 +53,7 @@ class STFState extends State<STFWidget> {
                         ),
                       ]),
                       SizedBox(height: 20,),
+                      Divider(),
                       TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -66,6 +66,7 @@ class STFState extends State<STFWidget> {
                             leading: Icon(
                               Icons.person,
                               size: 40,
+                              color: Color(0xFF01579B),
                             ),
                             title: Text(
                               "Profile",
@@ -82,7 +83,7 @@ class STFState extends State<STFWidget> {
                             },
                           child: ListTile(
                             leading:  Icon(Icons.add_location_alt_outlined,
-                                color: Colors.grey, size: 40),
+                                color: Color(0xFF01579B), size: 40),
                             title: Text(
                               "Add Position",
                               style:
@@ -96,7 +97,7 @@ class STFState extends State<STFWidget> {
                           signOut();
                           },
                         child: ListTile(
-                          leading:  Icon(Icons.logout, size: 40),
+                          leading:  Icon(Icons.logout, size: 40, color: Color(0xFF01579B),),
                           title: Text(
                             "Log out",
                             style:

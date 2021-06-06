@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,10 +21,10 @@ class StaffAddState extends State<StaffAdd>{
   final _workControl = TextEditingController();
   final _langControl = TextEditingController();
 
-  File postPhoto;
-  final picker = ImagePicker();
-  String filename = "";
-  String photoDefault = "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c";
+  File _postPhoto;
+  final _picker = ImagePicker();
+  String _filename = "";
+  String _photoDefault = "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c";
 
   Future<DocumentReference> addPosition(String duty, String name, int posNum, String photo) {
     return FirebaseFirestore.instance.collection('post').add({
@@ -40,27 +38,27 @@ class StaffAddState extends State<StaffAdd>{
       'lang_exp': _langControl.text.split('\n'),
       'work_exp': _workControl.text.split('\n'),
       'writerId': FirebaseAuth.instance.currentUser.uid,
-      'photoURL': (photo != "") ? photo : photoDefault,
+      'photoURL': (photo != "") ? photo : _photoDefault,
     });
   }
 
-  Future<void> photoPicker() async{
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    filename = "" ;
+  Future<void> _photoPicker() async{
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    _filename = "" ;
     setState(() {
       if(pickedFile != null){
-        postPhoto = File(pickedFile.path);
-        filename = path.basename(postPhoto.path);
+        _postPhoto = File(pickedFile.path);
+        _filename = path.basename(_postPhoto.path);
       }else{
         print('No file selected');
       }
     });
   }
-  Future<String> uploadImage() async{
+  Future<String> _uploadImage() async{
     Reference storageReference = firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('post photo/'+ filename);
-    UploadTask uploadTask = storageReference.putFile(postPhoto);
+        .child('post photo/'+ _filename);
+    UploadTask uploadTask = storageReference.putFile(_postPhoto);
     var imageUrl = await (await uploadTask).ref.getDownloadURL();
     print('File Uploaded');
 
@@ -72,6 +70,7 @@ class StaffAddState extends State<StaffAdd>{
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Color(0xFF01579B),
+          centerTitle: true,
           title: Text("Add page"),
       ),
       body: Container(
@@ -120,40 +119,47 @@ class StaffAddState extends State<StaffAdd>{
             Container(
               child: Row(
                 children: [
-                  Text("Upload your position photo"),
+                  Text("Position photo ", ),
                   TextButton(
-                    child: Text("File"),
+                    child: Text("File", style: TextStyle(fontSize: 17.0),),
                     onPressed: () async{
-                      photoPicker();
+                      _photoPicker();
                     },
                   ),
-                  (filename != "")
-                      ? Text("\t$filename will be updated", style: TextStyle(color: Colors.blue))
-                      : Text("\tDefault photo will be updated", style: TextStyle(color: Colors.brown)),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      child: (_filename != "")
+                          ? Text("\t$_filename will be updated", style: TextStyle(color: Colors.blue))
+                          : Text("\tDefault photo will be updated", style: TextStyle(color: Colors.brown)),
+                    ),
+                  ),
                 ],
               ),
             ),
             SizedBox(height:10.0),
-            ElevatedButton(
-              child: Text("Post"),
-              onPressed: () async{
-                String duty;
-                String name;
-                int posNum;
+            Center(
+              child: ElevatedButton(
+                child: Text("Post"),
+                onPressed: () async{
+                  String duty;
+                  String name;
+                  int posNum;
 
-                await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) {
-                  duty = value['duty_station'];
-                  name = "${value['last_name']} ${value['first_name']}";
-                  posNum = value['position_level'];
-                });
-                String url = "";
-                if(filename != ""){
-                  url = await uploadImage();
-                }
+                  await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) {
+                    duty = value['duty_station'];
+                    name = "${value['last_name']} ${value['first_name']}";
+                    posNum = value['position_level'];
+                  });
+                  String url = "";
+                  if(_filename != ""){
+                    url = await _uploadImage();
+                  }
 
-                addPosition(duty, name, posNum, url);
-                Navigator.pop(context);
-              },
+                  addPosition(duty, name, posNum, url);
+                  Navigator.pop(context);
+                },
+              ),
             ),
           ],
         ),
