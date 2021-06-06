@@ -31,7 +31,15 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: WidgetTree(),
+        home: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: NetworkImage("https://www.softwareone.com/-/media/global/social-media-and-blog/hero/publisher-advisory_get-ready-for-the-office-2010-end-of-support-header.jpg?rev=5496ff43323143be831b8a7922711cf2&sc_lang=en-fi&hash=A250C8730555358AEFE638574FCA0AF4"),
+                fit: BoxFit.cover
+              )
+            ),
+            child: WidgetTree()
+        ),
       ),
     );
   }

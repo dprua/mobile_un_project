@@ -17,19 +17,9 @@ class _HRShowState extends State<HRShow> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text("Detail about Applicant "),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.featured_play_list_sharp),
-            onPressed: (){
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Case_generate()),
-              );
-              print("Make case!");
-            },
-          ),
-        ]
+        backgroundColor: Color(0xFF01579B),
+        centerTitle: true,
+        title: Text("Total Applicant List"),
       ),
       body: Row(
         children: <Widget>[

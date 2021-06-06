@@ -6,6 +6,7 @@ import 'package:un_project/STF/stfdetail.dart';
 import 'package:un_project/HR/hrdetail.dart';
 import 'package:un_project/authentification.dart';
 import 'package:un_project/HR/hrshow.dart';
+import 'package:un_project/profile.dart';
 
 class HRWidget extends StatefulWidget{
   final user_state;
@@ -64,11 +65,11 @@ class HRState extends State<HRWidget>{
                     SizedBox(height: 20,),
                     FlatButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => ProfilePage()),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfilePage()),
+                          );
                         },
                         child: ListTile(
                           leading: Icon(
