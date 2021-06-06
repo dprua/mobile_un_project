@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:un_project/STF/stfedit.dart';
 import 'package:un_project/STF/stfapply.dart';
 
 class StaffDetail extends StatefulWidget{
@@ -29,65 +28,56 @@ class StaffDetailState extends State<StaffDetail>{
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Color(0xFF01579B),
+            centerTitle: true,
             title: Text("Detail"),
           ),
           body: Container(
-            padding: const EdgeInsets.all(10),
+            // padding: const EdgeInsets.all(10),
             child: Row(
               children: <Widget>[Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: <Widget>[
-                      Text("\n[${widget.doc['Title']}]", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),),
-                      SizedBox(height: 10.0,),
-                      Container(
-                        decoration: BoxDecoration(
-                          border:Border.all(),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0)
-                          ),
-                        ),
-                        padding: EdgeInsets.all(30.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AspectRatio(
-                              aspectRatio: 12/8,
-                              child: Image.network(
-                                widget.doc['photoURL'],
-                                  height: 50,
-                                  width: 50),
+                child: ListView(
+                  children: <Widget>[
+                    (widget.doc['photoURL'] != "")
+                        ? Image.network(
+                      widget.doc['photoURL'],
+                      fit: BoxFit.fitWidth,
+                      height: MediaQuery.of(context).size.height/3,
+                    )
+                        : Container(),
+                    Container(
+                      padding: EdgeInsets.all(30.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IconAndDetail(Icons.subtitles_rounded, "${widget.doc['Title']}"),
+                          SizedBox(height: 10.0),
+                          Text("\t\tWork Experience", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                          for(var i in widget.doc['work_exp'])
+                            Container(
+                              padding: EdgeInsets.all(5.0),
+                              child: Text("-   ${i.toString()}", style: TextStyle(fontSize: 17.0)),
                             ),
-                            Text("Work Experience", style: TextStyle(fontSize: 20.0),),
-                            for(var i in widget.doc['work_exp'])
-                              Container(
-                                padding: EdgeInsets.all(5.0),
-                                child: Text("   -   ${i.toString()}"),
-                              ),
-                            SizedBox(height:10.0),
-                            Text("Languages", style: TextStyle(fontSize: 20.0),),
-                            for(var i in widget.doc['lang_exp'])
-                              Container(
-                                padding: EdgeInsets.all(5.0),
-                                child: Text("  -  ${i.toString()}"),
-                              ),
-                          ],
-                        ),
+                          SizedBox(height:10.0),
+                          Text("\t\tLanguages", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
+                          for(var i in widget.doc['lang_exp'])
+                            Container(
+                              padding: EdgeInsets.all(5.0),
+                              child: Text("-  ${i.toString()}",  style: TextStyle(fontSize: 17.0)),
+                            ),
+                        ],
                       ),
-                      ElevatedButton(
+                    ),
+                    Center(
+                      child: ElevatedButton(
                           onPressed: (){
-                            widget.doc['work_exp'].forEach((text){
-                              print(text);
-                              print(widget.doc['work_exp'].length);
-                            });
                             setState(() {
                               join = true;
                             });
                           },
                           child: Text("Join?")
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
                 const VerticalDivider(
@@ -100,7 +90,14 @@ class StaffDetailState extends State<StaffDetail>{
                 Expanded(
                   child: (join)
                       ? ApplyPage(doc: widget.doc, applyId: FirebaseAuth.instance.currentUser.uid)
-                      : Center(child: Text("Push Join Button")),
+                      : Center(
+                        child: Image.network(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
+                        height: 300,
+                        width: 300,
+                    color: Colors.grey,
+                  ),
+                      ),
                 ),
               ],
             ),
@@ -109,4 +106,25 @@ class StaffDetailState extends State<StaffDetail>{
       },
     );
   }
+}
+
+class IconAndDetail extends StatelessWidget {
+  const IconAndDetail(this.icon, this.detail);
+  final IconData icon;
+  final String detail;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Row(
+      children: [
+        Icon(icon),
+        SizedBox(width: 8),
+        Text(
+          detail,
+          style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+        )
+      ],
+    ),
+  );
 }

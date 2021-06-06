@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:path/path.dart' as path;
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:un_project/STF/stfpage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class StaffEdit extends StatefulWidget{
   final doc;
@@ -19,6 +24,33 @@ class _StaffEditState extends State<StaffEdit>{
   TextEditingController _workController = TextEditingController();
   TextEditingController _langController = TextEditingController();
 
+  File _postPhoto;
+  final _picker = ImagePicker();
+  String _filename = "";
+  String _photoDefault = "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c";
+
+  Future<void> _photoPicker() async{
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    _filename = "" ;
+    setState(() {
+      if(pickedFile != null){
+        _postPhoto = File(pickedFile.path);
+        _filename = path.basename(_postPhoto.path);
+      }else{
+        print('No file selected');
+      }
+    });
+  }
+  Future<String> _uploadImage() async{
+    Reference storageReference = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('post photo/'+ _filename);
+    UploadTask uploadTask = storageReference.putFile(_postPhoto);
+    var imageUrl = await (await uploadTask).ref.getDownloadURL();
+    print('File Uploaded');
+
+    return imageUrl;
+  }
 
   Future<void> updatePosition(){
     return FirebaseFirestore.instance.collection('post').doc(widget.doc.id)
@@ -45,6 +77,8 @@ class _StaffEditState extends State<StaffEdit>{
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF01579B),
+        centerTitle: true,
         title: Text("Edit the position"),
         actions: [
           IconButton(
@@ -58,8 +92,29 @@ class _StaffEditState extends State<StaffEdit>{
       ),
       body: Container(
         padding: EdgeInsets.all(40.0),
-        child: Column(
+        child: ListView(
           children: [
+            Container(
+              child: Row(
+                children: [
+                  Text("Position photo ", style: TextStyle(fontSize: 17.0),),
+                  TextButton(
+                    child: Text("File", style: TextStyle(fontSize: 17.0),),
+                    onPressed: () async{
+                      _photoPicker();
+                    },
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.topRight,
+                      child: (_filename != "")
+                          ? Text("\t$_filename will be updated", style: TextStyle(color: Colors.blue))
+                          : Text("\tDefault photo will be updated", style: TextStyle(color: Colors.brown)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             TextField(
               controller: _nameController,
               decoration: InputDecoration(
@@ -111,13 +166,16 @@ class _StaffEditState extends State<StaffEdit>{
                 labelText: 'Languages Description',
               ),
             ),
-            TextButton(
-              child: Text("Edit"),
-              onPressed: (){
-                updatePosition();
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
-              },
+
+            Center(
+              child: ElevatedButton(
+                child: Text("Edit"),
+                onPressed: (){
+                  updatePosition();
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
+                },
+              ),
             )
           ],
         ),

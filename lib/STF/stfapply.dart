@@ -147,11 +147,13 @@ class ApplyState extends State<ApplyPage>{
                   child: Row(
                     children: [
                       Text("Upload your PHP"),
-                      TextButton(
-                        child: Text("File"),
-                        onPressed: () async{
-                          phpPicker();
-                        },
+                      Expanded(
+                        child: TextButton(
+                          child: Text("File"),
+                          onPressed: () async{
+                            phpPicker();
+                          },
+                        ),
                       ),
                       (filename != "")
                           ? Text(filename)
