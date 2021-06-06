@@ -43,30 +43,21 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   Widget build(BuildContext context) {
     fp = Provider.of<FirebaseProvider>(context);
-    print("HERRRRRRRRR:)");
     return Scaffold(
       appBar: AppBar(
         title: Text("Register In Page"),
         centerTitle: true,
         backgroundColor: Color(0xFF01579B),
-        // leading: IconButton(
-        //   icon: Icon(
-        //     Icons.arrow_back_rounded,
-        //   ),
-        //   onPressed: () async {
-        //     Navigator.pop(context, true);
-        //   },
-        // ),
       ),
       body: SingleChildScrollView(
         child: Column(
-          //margin: const EdgeInsets.symmetric(horizontal: 335),
           children: <Widget>[
             Container(
                 margin:
                 const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
-                child: AspectRatio(
-                  aspectRatio: 12 / 9,
+                child: Container(
+                  width: 300,
+                  height: 300,
                   child: Image.network(
                       "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
                       height: 100,
@@ -139,32 +130,6 @@ class _RegisterFormState extends State<RegisterForm> {
                         },
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 335),
-                      child: DropdownButton<int>(
-                        value: level,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: const TextStyle(color: Colors.black),
-                        underline: Container(
-                          height: 2,
-                          color: Colors.black12,
-                        ),
-                        onChanged: (int newValue) {
-                          setState(() {
-                            level = newValue;
-                          });
-                        },
-                        items: <int>[1, 2, 3, 4, 5]
-                            .map<DropdownMenuItem<int>>((int value) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text(value.toString()),
-                          );
-                        }).toList(),
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 335),
                       child: TextFormField(
@@ -180,31 +145,80 @@ class _RegisterFormState extends State<RegisterForm> {
                         },
                       ),
                     ),
-                    Container(
+                    Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 335),
-                      child: DropdownButton<String>(
-                        value: dropdownValue,
-                        icon: const Icon(Icons.arrow_drop_down),
-                        iconSize: 24,
-                        elevation: 16,
-                        style: const TextStyle(color: Colors.black),
-                        underline: Container(
-                          height: 2,
-                          color: Colors.black12,
-                        ),
-                        onChanged: (String newValue) {
-                          setState(() {
-                            dropdownValue = newValue;
-                          });
-                        },
-                        items: <String>['MALE', 'FEMALE']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                      child: Row(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                "Gender : "
+                              ),
+                              Container(
+                                child: DropdownButton<String>(
+                                  value: dropdownValue,
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Colors.black),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.black12,
+                                  ),
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      dropdownValue = newValue;
+                                    });
+                                  },
+                                  items: <String>['MALE', 'FEMALE']
+                                      .map<DropdownMenuItem<String>>((String value) {
+                                    return DropdownMenuItem<String>(
+                                      value: value,
+                                      child: Text(value),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 30),
+                            child: Row(
+                              children: [
+                                Text(
+                                    "Level : "
+                                ),
+                                DropdownButton<int>(
+                                  value: level,
+                                  icon: const Icon(Icons.arrow_drop_down),
+                                  iconSize: 24,
+                                  elevation: 16,
+                                  style: const TextStyle(color: Colors.black),
+                                  underline: Container(
+                                    height: 2,
+                                    color: Colors.black12,
+                                  ),
+                                  onChanged: (int newValue) {
+                                    setState(() {
+                                      level = newValue;
+                                    });
+                                  },
+                                  items: <int>[1, 2, 3, 4, 5, 6]
+                                      .map<DropdownMenuItem<int>>((int value) {
+                                    return DropdownMenuItem<int>(
+                                      value: value,
+                                      child: Text(value.toString()),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 50,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

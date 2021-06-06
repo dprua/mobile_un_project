@@ -259,68 +259,68 @@ class ViewState extends State<ViewWidget> {
                         padding: EdgeInsets.all(10.0),
                         // width: MediaQuery.of(context).size.width / 1.2,
                         // height: ,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              document.get('photoURL') == ""
-                                  ? AspectRatio(
-                                aspectRatio: 12 / 9,
-                                child: Image.network(
-                                    "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
-                                    height: 100,
-                                    width: 175),
-                              )
-                                  : AspectRatio(
-                                aspectRatio: 12 / 9,
-                                child: Image.network(
-                                  document.get('photoURL'),
-                                  height: 100,
-                                  width: 175,
-                                ),
+                        child: Column(
+                          children: [
+                            document.get('photoURL') == ""
+                                ? Container(
+                              width: MediaQuery.of(context).size.width - 650,
+                              height: MediaQuery.of(context).size.height - 650,
+                              child: Image.network(
+                                  "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
+                                  height: MediaQuery.of(context).size.height,
+                                  width: MediaQuery.of(context).size.width),
+                            )
+                                : Container(
+                              width: MediaQuery.of(context).size.width - 650,
+                              height: MediaQuery.of(context).size.height - 650,
+                              child: Image.network(
+                                document.get('photoURL'),
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
                               ),
-                              SizedBox(
-                                height: 25,
+                            ),
+                            SizedBox(
+                              height: 25,
+                            ),
+                            Text("Title: ${document.get('Title')}"),
+                            Text("Level: ${document.get('Level')}"),
+                            Text("Division: ${document.get('Division')}"),
+                            Text("Branch: ${document.get('Branch')}"),
+                            Text("Duty station: ${document.get('Duty station')}"),
+                            (document.get('writerId') == FirebaseAuth.instance.currentUser.uid)
+                                ?
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                child: Text("edit"),
+                                onPressed: () {
+                                  // When tap the "more", go to Detail page
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) =>
+                                  //         StaffEdit(doc: document),
+                                  //   ),);
+                                },
                               ),
-                              Text("Title: ${document.get('Title')}"),
-                              Text("Level: ${document.get('Level')}"),
-                              Text("Division: ${document.get('Division')}"),
-                              Text("Branch: ${document.get('Branch')}"),
-                              Text("Duty station: ${document.get('Duty station')}"),
-                              (document.get('writerId') == FirebaseAuth.instance.currentUser.uid)
-                                  ?
-                              Container(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  child: Text("edit"),
-                                  onPressed: () {
-                                    // When tap the "more", go to Detail page
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) =>
-                                    //         StaffEdit(doc: document),
-                                    //   ),);
-                                  },
-                                ),
-                              )
-                                  :
-                              Container(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  child: Text("more"),
-                                  onPressed: () {
-                                    // When tap the "more", go to Detail page
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              StaffDetail(doc: document)),
-                                    );
-                                  },
-                                ),
+                            )
+                                :
+                            Container(
+                              alignment: Alignment.centerRight,
+                              child: TextButton(
+                                child: Text("more"),
+                                onPressed: () {
+                                  // When tap the "more", go to Detail page
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            StaffDetail(doc: document)),
+                                  );
+                                },
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     );
