@@ -11,7 +11,7 @@ class HRPage extends StatelessWidget{
       appBar: AppBar(
           backgroundColor: Color(0xFF01579B),
           centerTitle: true,
-          title: Text("For HR home page"),
+          title: Text("UNITED NATIONS"),
           actions: <Widget>[
 
           ]),

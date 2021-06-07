@@ -67,16 +67,6 @@ class StaffDetailState extends State<StaffDetail>{
                         ],
                       ),
                     ),
-                    Center(
-                      child: ElevatedButton(
-                          onPressed: (){
-                            setState(() {
-                              join = true;
-                            });
-                          },
-                          child: Text("Join?")
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -88,16 +78,16 @@ class StaffDetailState extends State<StaffDetail>{
                   width: 20,
                 ),
                 Expanded(
-                  child: (join)
-                      ? ApplyPage(doc: widget.doc, applyId: FirebaseAuth.instance.currentUser.uid)
-                      : Center(
-                        child: Image.network(
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
-                        height: 300,
-                        width: 300,
-                    color: Colors.grey,
-                  ),
-                      ),
+                  child: //(join)
+                      ApplyPage(doc: widget.doc, applyId: FirebaseAuth.instance.currentUser.uid)
+                  //     : Center(
+                  //       child: Image.network(
+                  //       "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
+                  //       height: 300,
+                  //       width: 300,
+                  //   color: Colors.grey,
+                  // ),
+                  //     ),
                 ),
               ],
             ),

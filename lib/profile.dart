@@ -83,7 +83,7 @@ class ProfilePage extends StatelessWidget {
                           height: 20,
                         ),
                         Text(
-                          'My\nProfile',
+                          'My Profile',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -172,9 +172,10 @@ class ProfilePage extends StatelessWidget {
                                     top: 0,
                                     left: 0,
                                     right: 0,
-                                    bottom:-15,
+                                    bottom:-40,
                                     child: Center(
                                       child: Container(
+                                        height:500,
                                         child: snapshot.data['gender'] == 'MALE'
                                             ? Image.network(
                                           'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman_char-removebg-preview.png?alt=media&token=986c55de-c46c-49a4-965b-4feb49360c3c',

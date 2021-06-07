@@ -40,7 +40,7 @@ class HRState extends State<HRWidget>{
         child: Row(
           children: [
             Container(
-                width: 200.0,
+                width: 220.0,
                 child: Column(
                   children: [
                     Stack(children: [
@@ -63,6 +63,7 @@ class HRState extends State<HRWidget>{
                       ),
                     ]),
                     SizedBox(height: 20,),
+                    Divider(),
                     FlatButton(
                         onPressed: () {
                           Navigator.push(
@@ -75,6 +76,7 @@ class HRState extends State<HRWidget>{
                           leading: Icon(
                             Icons.person,
                             size: 40,
+                            color: Color(0xFF01579B),
                           ),
                           title: Text(
                             "Profile",
@@ -92,8 +94,9 @@ class HRState extends State<HRWidget>{
                         },
                         child: ListTile(
                           leading: Icon(
-                            Icons.find_in_page_sharp,
+                            Icons.view_list_outlined,
                             size: 40,
+                            color: Color(0xFF01579B),
                           ),
                           title: Text(
                             "Generate Case",
@@ -111,11 +114,12 @@ class HRState extends State<HRWidget>{
                         },
                         child: ListTile(
                           leading: Icon(
-                            Icons.view_list_outlined,
+                            Icons.find_in_page_sharp,
                             size: 40,
+                            color: Color(0xFF01579B),
                           ),
                           title: Text(
-                            "Apply List",
+                            "Applicant Information",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         )),
@@ -125,7 +129,7 @@ class HRState extends State<HRWidget>{
                         signOut();
                       },
                       child: ListTile(
-                        leading:  Icon(Icons.logout, size: 40),
+                        leading:  Icon(Icons.logout, size: 40,color: Color(0xFF01579B),),
                         title: Text(
                           "Log out",
                           style:
@@ -288,35 +292,17 @@ class ViewState extends State<ViewWidget> {
                             Text("Division: ${document.get('Division')}"),
                             Text("Branch: ${document.get('Branch')}"),
                             Text("Duty station: ${document.get('Duty station')}"),
-                            (document.get('writerId') == FirebaseAuth.instance.currentUser.uid)
-                                ?
                             Container(
                               alignment: Alignment.centerRight,
                               child: TextButton(
-                                child: Text("edit"),
-                                onPressed: () {
-                                  // When tap the "more", go to Detail page
-                                  // Navigator.push(
-                                  //   context,
-                                  //   MaterialPageRoute(
-                                  //     builder: (context) =>
-                                  //         StaffEdit(doc: document),
-                                  //   ),);
-                                },
-                              ),
-                            )
-                                :
-                            Container(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                child: Text("more"),
+                                child: Text("detail"),
                                 onPressed: () {
                                   // When tap the "more", go to Detail page
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            StaffDetail(doc: document)),
+                                            hrDetailPage(doc: document)),
                                   );
                                 },
                               ),

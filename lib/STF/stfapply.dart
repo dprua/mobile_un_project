@@ -98,8 +98,9 @@ class ApplyState extends State<ApplyPage>{
                 String url = await _uploadPHP();   // Storage upload
                 _updatePHPtoUsers(url);
                 applyAdd(url);
-                Navigator.of(context).pushAndRemoveUntil(
-                    MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
+                // Navigator.of(context).pushAndRemoveUntil(
+                //     MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
+                Navigator.pop(context);
               },
             ),
             TextButton(
@@ -143,17 +144,27 @@ class ApplyState extends State<ApplyPage>{
             padding: EdgeInsets.all(30.0),
             child: ListView(
               children: [
+                Center(
+                  child: Container(
+                    child: Text(
+                      "Apply Form",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    )
+                  ),
+                ),
                 Container(
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text("Upload your PHP"),
-                      Expanded(
-                        child: TextButton(
-                          child: Text("File"),
-                          onPressed: () async{
-                            phpPicker();
-                          },
-                        ),
+                      TextButton(
+                        child: Text("File"),
+                        onPressed: () async{
+                          phpPicker();
+                        },
                       ),
                       (filename != "")
                           ? Text(filename)
@@ -258,6 +269,7 @@ class ApplyState extends State<ApplyPage>{
                         _curTitleControl.clear();
                         _curDutyControl.clear();
                         _curLevelControl.clear();
+                        Navigator.pop(context);
                       },
                     ),
                     ElevatedButton(
@@ -265,8 +277,10 @@ class ApplyState extends State<ApplyPage>{
                       onPressed: () async{
                         if(filename == "")
                           ScaffoldMessenger.of(context).showSnackBar(snackBarLike);
-                        else
-                          showAlertDialog(context, widget.doc.get('Title'));
+                        else{
+                          await showAlertDialog(context, widget.doc.get('Title'));
+                          Navigator.pop(context);
+                        }
                       },
                     ),
                   ],

@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:un_project/HR/case_generate.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+var target;
 
 class HRShow extends StatefulWidget {
 
@@ -11,36 +15,73 @@ class HRShow extends StatefulWidget {
 class _HRShowState extends State<HRShow> {
   //String id = FirebaseAuth.instance.currentUser.uid;
   bool join = false;
-  var target = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: Color(0xFF01579B),
+        title: Text("Applicant Information"),
         centerTitle: true,
-        title: Text("Total Applicant List"),
+        backgroundColor: Color(0xFF01579B),
       ),
       body: Row(
         children: <Widget>[
-          SizedBox(
-            width: 250,
-            child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('apply')
-                    .snapshots(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.hasData == false)
-                    return CircularProgressIndicator();
-                  if (snapshot.hasError)
-                    return Text("Error: ${snapshot.error}");
-                  return ListView(
-                    children: snapshot.data.docs
-                        .map((data) => _buildListItem(context, data))
-                        .toList(),
-                  );
-                }),
+          Expanded(
+            child: Column(
+              children: [
+                Stack(
+                  children: [
+                    Opacity(
+                      opacity: 0.7,
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                        height: 60,
+                        width: 400,
+                        padding: EdgeInsets.fromLTRB(120, 15, 20, 0),
+                        decoration: BoxDecoration(
+                          color: Color(0xFF64B5F6),
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 25,
+                      left: 110,
+                      child: Text(
+                        'Applicant List',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontFamily: 'Nunito',
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 650,
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('apply')
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData == false)
+                          return CircularProgressIndicator();
+                        if (snapshot.hasError)
+                          return Text("Error: ${snapshot.error}");
+                        return ListView(
+                          children: snapshot.data.docs
+                              .map((data) => _buildListItem(context, data))
+                              .toList(),
+                        );
+                      }
+                  ),
+                ),
+              ],
+            ),
           ),
           const VerticalDivider(
             color: Colors.grey,
@@ -51,9 +92,15 @@ class _HRShowState extends State<HRShow> {
           ),
           Expanded(
             child: (join)
-                ? ViewDetail(applyId: target,)
+                ? ViewDetail(applyId: target)
             //hmDetailInfoPage(doc:widget.doc,applyId:FirebaseAuth.instance.currentUser.uid)
-                : Text("Push Join Button"),
+                : AspectRatio(
+              aspectRatio: 4 / 2,
+              child: Image.network(
+                  "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/512px-UN_emblem_blue.svg.png",
+                  height: 50,
+                  width: 50),
+            ),
           ),
         ],
       ),
@@ -67,13 +114,39 @@ class _HRShowState extends State<HRShow> {
         key: ValueKey(data.data()['name']),
         padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: ListTile(
-          leading: Icon(Icons.person),
-          title: Text(data.data()['name']),
-          subtitle: Text(data.data()['Gender']),
+          contentPadding: EdgeInsets.symmetric(
+              horizontal: 20.0, vertical: 10.0),
+          leading: Container(
+            padding: EdgeInsets.only(right: 12.0),
+            decoration: new BoxDecoration(
+                border: new Border(
+                    right: new BorderSide(
+                        width: 1.0, color: Colors.grey))),
+            child:
+            Icon(Icons.person, color: Colors.grey, size: 40),
+          ),
+          title: Text(
+            data.data()['name'],
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+          subtitle: Row(
+            children: <Widget>[
+              Icon(Icons.linear_scale, color: Colors.black),
+              Text(data.data()['Gender'],
+                  style: TextStyle(color: Colors.black))
+            ],
+          ),
+          trailing: Icon(Icons.keyboard_arrow_right,
+              color: Colors.black, size: 30.0),
           onTap: () {
+            print('aaaa');
             setState(() {
+              print('bbbb');
               join = true;
               target = data.id;
+              print(target);
             });
           },
         ),
@@ -82,7 +155,10 @@ class _HRShowState extends State<HRShow> {
   }
 }
 
+
+
 class ViewDetail extends StatefulWidget {
+
   final applyId;
 
   ViewDetail({@required this.applyId});
@@ -92,67 +168,181 @@ class ViewDetail extends StatefulWidget {
 }
 
 class _ViewDetailState extends State<ViewDetail> {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('apply')
-            .doc(widget.applyId)
-            .snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasData == false) return CircularProgressIndicator();
-          if (snapshot.hasError) return Text("Error: ${snapshot.error}");
-          return Container(
-            padding: EdgeInsets.fromLTRB(0, 30, 0, 0),
-            child: Column(
-              children: [
-                Text(
-                  "Name: ${snapshot.data['name']}",
-                  style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Current Position Title: ${snapshot.data['curPostTitle']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Current Duty Station: ${snapshot.data['curDutyStat']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Current Position Level: ${snapshot.data['curPostLevel']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Gender: ${snapshot.data['Gender']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                Text(
-                  "Nation: ${snapshot.data['Nation']}",
-                  style: TextStyle(fontSize: 20.0),
-                ),
-              ],
-            ),
-          );
-        },
+
+  Widget _buildCoverImage(Size screenSize) {
+    return Opacity(
+      opacity: 0.6,
+      child: Container(
+        height: screenSize.height / 2.6,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+                'https://img-prod-cms-rt-microsoft-com.akamaized.net/cms/api/am/imageFileData/RWptHL?ver=f9a8&q=90&m=2&h=768&w=1024&b=%23FFFFFFFF&aim=true'),
+            fit: BoxFit.fitWidth,
+          ),
+        ),
       ),
     );
   }
-}
 
+  @override
+  Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('apply')
+          .doc(widget.applyId)
+          .snapshots(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasData == false) return CircularProgressIndicator();
+        if (snapshot.hasError) return Text("Error: ${snapshot.error}");
+        return Container(
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+                child: Stack(
+                  children: <Widget>[
+                    _buildCoverImage(screenSize),
+                    SafeArea(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: screenSize.height / 4.0,
+                            ),
+                            Container(
+                              width: 140.0,
+                              height: 140.0,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: snapshot.data['Gender'] == 'MALE'
+                                      ? NetworkImage(
+                                      'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman_char-removebg-preview.png?alt=media&token=986c55de-c46c-49a4-965b-4feb49360c3c')
+                                      : NetworkImage(
+                                      'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fwoman_char-removebg-preview.png?alt=media&token=bdd9a2ab-91ea-437c-8f61-74eae8e1e5a9'),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.circular(90.0),
+                                border: Border.all(
+                                  color: Colors.white,
+                                  width: 10.0,
+                                ),
+                              ),
+                            ),
+                            Text(snapshot.data['name'],
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  color: Colors.black,
+                                  fontSize: 32.0,
+                                  fontWeight: FontWeight.w700,
+                                )),
+                            Container(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                'United Nations-Its Your World!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: 'Spectral',
+                                  fontWeight: FontWeight.w400,
+                                  //try changing weight to w500 if not thin
+                                  fontStyle: FontStyle.italic,
+                                  color: Color(0xFF799497),
+                                  fontSize: 24.0,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: screenSize.width / 1.6,
+                              height: 2.0,
+                              color: Colors.black54,
+                              margin: EdgeInsets.only(top: 4.0),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.fromLTRB(30, 0, 20, 20),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text('Nation : ',style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        Text(snapshot.data['Nation'],
+                          style: TextStyle(
+                            fontFamily: 'Spectral',
+                            color: Color(0xFF303030),
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w600,
+                          ),),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text('Current Position Title : ',style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        Text(snapshot.data['curPostTitle'],
+                          style: TextStyle(
+                            fontFamily: 'Spectral',
+                            color: Color(0xFF303030),
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w600,
+                          ),),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text('Current Duty Station : ',style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        Text(snapshot.data['curDutyStat'],
+                          style: TextStyle(
+                            fontFamily: 'Spectral',
+                            color: Color(0xFF303030),
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w600,
+                          ),),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+
+            ],
+          ),
+        );
+      },
+    );
+  }
+}

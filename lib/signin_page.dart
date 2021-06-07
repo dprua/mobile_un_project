@@ -197,6 +197,7 @@ class SignInPageState extends State<SignInPage> {
               },
             ),
           ),
+          SizedBox(height: 10,),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             padding: const EdgeInsets.only(top: 50),
@@ -208,7 +209,7 @@ class SignInPageState extends State<SignInPage> {
                 FlatButton(
                   child: Text(
                     "Sign Up",
-                    style: TextStyle(color: Colors.deepOrange, fontSize: 18,fontWeight: FontWeight.bold),
+                    style: TextStyle(color: Colors.deepOrange, fontSize: 20,fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
                     Navigator.push(context,

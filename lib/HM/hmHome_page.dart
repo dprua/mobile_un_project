@@ -62,7 +62,7 @@ class _hmHomePageState extends State<hmHomePage> {
       appBar: AppBar(
           backgroundColor: Color(0xFF01579B),
           centerTitle: true,
-          title: Text("For HM home page"),
+          title: Text("UNITED NATIONS"),
           actions: <Widget>[
 
           ]),
@@ -95,6 +95,7 @@ class _hmHomePageState extends State<hmHomePage> {
                         ),
                       ]),
                       SizedBox(height: 20,),
+                      Divider(),
                       FlatButton(
                           onPressed: () {
                             Navigator.push(
@@ -107,6 +108,7 @@ class _hmHomePageState extends State<hmHomePage> {
                             leading: Icon(
                               Icons.person,
                               size: 40,
+                              color: Color(0xFF01579B),
                             ),
                             title: Text(
                               "Profile",
@@ -165,7 +167,7 @@ class _hmHomePageState extends State<hmHomePage> {
                             signOut();
                           },
                           child: ListTile(
-                                  leading:  Icon(Icons.logout, size: 40),
+                                  leading:  Icon(Icons.logout, size: 40, color: Color(0xFF01579B),),
                                   title: Text(
                                     "Log out",
                                     style:
