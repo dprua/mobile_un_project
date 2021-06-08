@@ -118,7 +118,7 @@ class STFState extends State<STFWidget> {
             color: Colors.grey,
             thickness: 1,
             indent: 20,
-            endIndent: 20,
+            endIndent: 15,
             width: 20,
           ),
           Expanded(child: STFViewWidget()),
@@ -199,74 +199,157 @@ class _STFViewState extends State<STFViewWidget> {
             return GridView.count(
               crossAxisCount: 3,
               children: snapshot.data.docs.map((document) {
-                return Card(
-                  child: Container(
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      children: [
-                        document.get('photoURL') == ""
-                            ? Container(
-                                width: MediaQuery.of(context).size.width - 650,
-                                height: MediaQuery.of(context).size.height - 650,
-                                child: Image.network(
-                                    "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
-                                    height: 100,
-                                    width: 175),
-                              )
-                            : Container(
-                                width: MediaQuery.of(context).size.width - 650,
-                                height: MediaQuery.of(context).size.height - 650,
-                                child: Image.network(
-                                  document.get('photoURL'),
-                                  height: 100,
-                                  width: 175,
-                                ),
+                return Padding(
+                  padding: const EdgeInsets.all(4.0),
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    color: Colors.brown[50],
+                    child: Container(
+                      child: Column(
+                        children: [
+                          document.get('photoURL') == ""
+                              ? ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 650,
+                              height: MediaQuery.of(context).size.height - 640,
+                              child: Image.network(
+                                "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
+                                fit: BoxFit.fill,
                               ),
-                        SizedBox(
-                          height: 25,
-                        ),
-                        Text("Title: ${document.get('Title')}"),
-                        Text("Level: ${document.get('Level')}"),
-                        Text("Division: ${document.get('Division')}"),
-                        Text("Branch: ${document.get('Branch')}"),
-                        Text("Duty station: ${document.get('Duty station')}"),
-                        (document.get('writerId') ==
-                                FirebaseAuth.instance.currentUser.uid)
-                            ? Container(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                      primary: Colors.pink),
-                                  child: Text(
-                                    "edit",
+                            ),
+                          )
+                              : ClipRRect(
+                            borderRadius: BorderRadius.circular(10.0),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width - 650,
+                              height: MediaQuery.of(context).size.height - 640,
+                              child: Image.network(
+                                document.get('photoURL'),
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Container(
+                              padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                "Title: ${document.get('Title')}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              )
+                          ),
+                          Divider(
+                            thickness: 1,
+                            color: Colors.black,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Level: ",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            StaffEdit(doc: document),
-                                      ),
-                                    );
-                                  },
                                 ),
-                              )
-                            : Container(
-                                alignment: Alignment.centerRight,
-                                child: TextButton(
-                                  child: Text("apply"),
-                                  onPressed: () {
-                                    // When tap the "more", go to Detail page
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              StaffDetail(doc: document)),
-                                    );
-                                  },
+                                Row(
+                                  children: [
+                                    Wrap(
+                                        children: List.generate(document.get('Level'), (index) {
+                                          return Text("🔥 ",);
+                                        })
+                                    ),
+                                  ],
                                 ),
+                                SizedBox(width: 15,),
+                                Expanded(
+                                  child: Text(
+                                    "Duty station: ${document.get('Duty station')}",
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 5,),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Division: ${document.get('Division')}",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
-                      ],
+                            ),
+                          ),
+                          SizedBox(height: 5,),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Branch: ${document.get('Branch')}",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          (document.get('writerId') ==
+                              FirebaseAuth.instance.currentUser.uid)
+                              ? Container(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                  primary: Colors.pink),
+                              child: Text(
+                                "Edit",
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        StaffEdit(doc: document),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                              : Container(
+                            alignment: Alignment.centerRight,
+                            child: TextButton(
+                              child: Text("Apply"),
+                              onPressed: () {
+// When tap the "more", go to Detail page
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          StaffDetail(doc: document)),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );

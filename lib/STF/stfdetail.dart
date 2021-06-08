@@ -29,7 +29,7 @@ class StaffDetailState extends State<StaffDetail>{
           appBar: AppBar(
             backgroundColor: Color(0xFF01579B),
             centerTitle: true,
-            title: Text("Detail"),
+            title: Text("Positoin Information & Apply Form"),
           ),
           body: Container(
             // padding: const EdgeInsets.all(10),
@@ -55,14 +55,14 @@ class StaffDetailState extends State<StaffDetail>{
                           for(var i in widget.doc['work_exp'])
                             Container(
                               padding: EdgeInsets.all(5.0),
-                              child: Text("-   ${i.toString()}", style: TextStyle(fontSize: 17.0)),
+                              child: Text("📌   ${i.toString()}", style: TextStyle(fontSize: 17.0)),
                             ),
                           SizedBox(height:10.0),
                           Text("\t\tLanguages", style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
                           for(var i in widget.doc['lang_exp'])
                             Container(
                               padding: EdgeInsets.all(5.0),
-                              child: Text("-  ${i.toString()}",  style: TextStyle(fontSize: 17.0)),
+                              child: Text("📌  ${i.toString()}",  style: TextStyle(fontSize: 17.0)),
                             ),
                         ],
                       ),
@@ -74,7 +74,7 @@ class StaffDetailState extends State<StaffDetail>{
                   color: Colors.grey,
                   thickness: 1,
                   indent: 20,
-                  endIndent: 0,
+                  endIndent: 15,
                   width: 20,
                 ),
                 Expanded(
@@ -112,7 +112,7 @@ class IconAndDetail extends StatelessWidget {
         SizedBox(width: 8),
         Text(
           detail,
-          style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 37.0, fontWeight: FontWeight.bold),
         )
       ],
     ),

@@ -157,26 +157,30 @@ class StaffAddState extends State<StaffAdd>{
                       ),
                       SizedBox(height:10.0),
                       Center(
-                        child: ElevatedButton(
-                          child: Text("Post"),
-                          onPressed: () async{
-                            String duty;
-                            String name;
-                            int posNum;
+                        child: Container(
+                          height: 40,
+                          width: 70,
+                          child: ElevatedButton(
+                            child: Text("Post",style: TextStyle(fontSize: 18),),
+                            onPressed: () async{
+                              String duty;
+                              String name;
+                              int posNum;
 
-                            await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) {
-                              duty = value['duty_station'];
-                              name = "${value['last_name']} ${value['first_name']}";
-                              posNum = value['position_level'];
-                            });
-                            String url = "";
-                            if(_filename != ""){
-                              url = await _uploadImage();
-                            }
+                              await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) {
+                                duty = value['duty_station'];
+                                name = "${value['last_name']} ${value['first_name']}";
+                                posNum = value['position_level'];
+                              });
+                              String url = "";
+                              if(_filename != ""){
+                                url = await _uploadImage();
+                              }
 
-                            addPosition(duty, name, posNum, url);
-                            Navigator.pop(context);
-                          },
+                              addPosition(duty, name, posNum, url);
+                              Navigator.pop(context);
+                            },
+                          ),
                         ),
                       ),
                     ],

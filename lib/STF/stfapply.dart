@@ -141,151 +141,174 @@ class ApplyState extends State<ApplyPage>{
           _curDutyControl..text = snapshot.data['duty_station'];
           _curLevelControl..text = "${snapshot.data['position_level']}";
           return Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                  image: new NetworkImage("https://www.advanced-workplace.com/wp-content/uploads/2015/04/Transition-Planning.jpg"),
+                  fit: BoxFit.cover
+              ),
+            ),
             padding: EdgeInsets.all(30.0),
-            child: ListView(
-              children: [
-                Center(
-                  child: Container(
-                    child: Text(
-                      "Apply Form",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                    )
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                      child: Text(
+                        "Apply Form",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 37,
+                        ),
+                      )
                   ),
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text("Upload your PHP"),
-                      TextButton(
-                        child: Text("File"),
-                        onPressed: () async{
-                          phpPicker();
-                        },
-                      ),
-                      (filename != "")
-                          ? Text(filename)
-                          : Text("No file selected"),
-                    ],
-                  ),
-                ),
-                TextField(
-                  controller: _nameControl,
-                  decoration: InputDecoration(
-                    filled: false,
-                    labelText: 'Name',
-                  ),
-                ),
-                TextField(
-                  controller: _nationControl,
-                  decoration: InputDecoration(
-                    filled: false,
-                    labelText: 'Nation',
-                  ),
-                ),
-                TextField(
-                  controller: _curTitleControl,
-                  decoration: InputDecoration(
-                    filled: false,
-                    labelText: 'Current Position',
-                  ),
-                ),
-                TextFormField(
-                  controller: _curLevelControl,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    filled: false,
-                    labelText: 'Current Position Level',
-                  ),
-                ),
-                TextField(
-                  controller: _curDutyControl,
-                  decoration: InputDecoration(
-                    filled: false,
-                    labelText: 'Current Duty Station',
-                  ),
-                ),
-                SizedBox(height:10.0),
-                // programming skill level
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Programming Skill", style: TextStyle(fontSize: 15.0 ,/*fontWeight: FontWeight.bold*/),),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Radio(value: 1, groupValue: skillLev,
-                              onChanged: (val) {setState(() {
-                                skillLev = 1;
-                              });}),
-                          Text('level 1', style: new TextStyle(fontSize: 15.0)),
-                          Radio(value: 2, groupValue: skillLev,
-                              onChanged: (val) {setState(() {
-                                skillLev = 2;
-                              });}),
-                          Text('level 2', style: new TextStyle(fontSize: 15.0)),
-                          Radio(value: 3, groupValue: skillLev,
-                              onChanged: (val) {setState(() {
-                                skillLev = 3;
-                              });}),
-                          Text('level 3', style: new TextStyle(fontSize: 15.0)),
-                          Radio(value: 4, groupValue: skillLev,
-                              onChanged: (val) {setState(() {
-                                skillLev = 4;
-                              });}),
-                          Text('level 4', style: TextStyle(fontSize: 15.0)),
-                          Radio(value: 5, groupValue: skillLev,
-                              onChanged: (val) {setState(() {
-                                skillLev = 5;
-                              });}),
-                          Text('level 5', style: TextStyle(fontSize: 15.0)),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                // Your Certificates
-                TextField(
-                  controller: _certControl,
-                  decoration: InputDecoration(
-                    filled: false,
-                    labelText: 'Your Certificates',
-                  ),
-                ),
-                Text("Please separate with ' , '", style: TextStyle(color: Colors.redAccent)),
+                  SizedBox(height: 50,),
+                  Container(
+                    child: Opacity(
+                      opacity: 0.93,
+                      child: Container(
+                        color: Colors.white,
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+                          height: 570,
+                          child: ListView(
+                            children: [
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text("Upload your PHP",style: TextStyle(fontWeight: FontWeight.bold),),
+                                    TextButton(
+                                      child: Text("File",style: TextStyle(fontWeight: FontWeight.bold)),
+                                      onPressed: () async{
+                                        phpPicker();
+                                      },
+                                    ),
+                                    (filename != "")
+                                        ? Text(filename,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.indigo))
+                                        : Text("No file selected",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red)),
+                                  ],
+                                ),
+                              ),
+                              TextField(
+                                controller: _nameControl,
+                                decoration: InputDecoration(
+                                  filled: false,
+                                  labelText: 'Name',
+                                ),
+                              ),
+                              TextField(
+                                controller: _nationControl,
+                                decoration: InputDecoration(
+                                  filled: false,
+                                  labelText: 'Nation',
+                                ),
+                              ),
+                              TextField(
+                                controller: _curTitleControl,
+                                decoration: InputDecoration(
+                                  filled: false,
+                                  labelText: 'Current Position',
+                                ),
+                              ),
+                              TextFormField(
+                                controller: _curLevelControl,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  filled: false,
+                                  labelText: 'Current Position Level',
+                                ),
+                              ),
+                              TextField(
+                                controller: _curDutyControl,
+                                decoration: InputDecoration(
+                                  filled: false,
+                                  labelText: 'Current Duty Station',
+                                ),
+                              ),
+                              SizedBox(height:10.0),
+                              // programming skill level
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Programming Skill", style: TextStyle(fontSize: 15.0 ,/*fontWeight: FontWeight.bold*/),),
+                                  Container(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Radio(value: 1, groupValue: skillLev,
+                                            onChanged: (val) {setState(() {
+                                              skillLev = 1;
+                                            });}),
+                                        Text('level 1', style: new TextStyle(fontSize: 15.0)),
+                                        Radio(value: 2, groupValue: skillLev,
+                                            onChanged: (val) {setState(() {
+                                              skillLev = 2;
+                                            });}),
+                                        Text('level 2', style: new TextStyle(fontSize: 15.0)),
+                                        Radio(value: 3, groupValue: skillLev,
+                                            onChanged: (val) {setState(() {
+                                              skillLev = 3;
+                                            });}),
+                                        Text('level 3', style: new TextStyle(fontSize: 15.0)),
+                                        Radio(value: 4, groupValue: skillLev,
+                                            onChanged: (val) {setState(() {
+                                              skillLev = 4;
+                                            });}),
+                                        Text('level 4', style: TextStyle(fontSize: 15.0)),
+                                        Radio(value: 5, groupValue: skillLev,
+                                            onChanged: (val) {setState(() {
+                                              skillLev = 5;
+                                            });}),
+                                        Text('level 5', style: TextStyle(fontSize: 15.0)),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              // Your Certificates
+                              TextField(
+                                controller: _certControl,
+                                decoration: InputDecoration(
+                                  filled: false,
+                                  labelText: 'Your Certificates',
+                                ),
+                              ),
+                              Text("Please separate with ' , '", style: TextStyle(color: Colors.redAccent)),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      child: Text("Cancel"),
-                      onPressed: () {
-                        _nationControl.clear();
-                        _nameControl.clear();
-                        _curTitleControl.clear();
-                        _curDutyControl.clear();
-                        _curLevelControl.clear();
-                        Navigator.pop(context);
-                      },
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    child: Text("Cancel",style: TextStyle(color: Colors.redAccent),),
+                                    onPressed: () {
+                                      _nationControl.clear();
+                                      _nameControl.clear();
+                                      _curTitleControl.clear();
+                                      _curDutyControl.clear();
+                                      _curLevelControl.clear();
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    child: Text("Apply"),
+                                    onPressed: () async{
+                                      if(filename == "")
+                                        ScaffoldMessenger.of(context).showSnackBar(snackBarLike);
+                                      else{
+                                        await showAlertDialog(context, widget.doc.get('Title'));
+                                        Navigator.pop(context);
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    ElevatedButton(
-                      child: Text("Apply"),
-                      onPressed: () async{
-                        if(filename == "")
-                          ScaffoldMessenger.of(context).showSnackBar(snackBarLike);
-                        else{
-                          await showAlertDialog(context, widget.doc.get('Title'));
-                          Navigator.pop(context);
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
           );
         }
