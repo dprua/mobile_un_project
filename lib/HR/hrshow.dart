@@ -87,7 +87,7 @@ class _HRShowState extends State<HRShow> {
             color: Colors.grey,
             thickness: 1,
             indent: 20,
-            endIndent: 0,
+            endIndent: 15,
             width: 20,
           ),
           Expanded(
