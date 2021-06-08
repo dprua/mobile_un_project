@@ -71,98 +71,121 @@ class StaffAddState extends State<StaffAdd>{
       appBar: AppBar(
           backgroundColor: Color(0xFF01579B),
           centerTitle: true,
-          title: Text("Add page"),
+          title: Text("Add Position"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(100.0),
-        child: ListView(
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Title',
-              ),
-            ),
-            TextField(
-              controller: _divisionController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Division',
-              ),
-            ),
-            TextField(
-              controller: _branchController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Branch',
-              ),
-            ),
-            TextField(
-              maxLines: null,
-              controller: _workControl,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Work Description',
-              ),
-            ),
-            Text("Please separate description list with enter", style: TextStyle(color: Colors.redAccent)),
-            TextField(
-              maxLines: null,
-              controller: _langControl,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Language Description',
-              ),
-            ),
-            Text("Please separate description list with enter", style: TextStyle(color: Colors.redAccent)),
-            Container(
-              child: Row(
-                children: [
-                  Text("Position photo ", ),
-                  TextButton(
-                    child: Text("File", style: TextStyle(fontSize: 17.0),),
-                    onPressed: () async{
-                      _photoPicker();
-                    },
-                  ),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.topRight,
-                      child: (_filename != "")
-                          ? Text("\t$_filename will be updated", style: TextStyle(color: Colors.blue))
-                          : Text("\tDefault photo will be updated", style: TextStyle(color: Colors.brown)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height:10.0),
-            Center(
-              child: ElevatedButton(
-                child: Text("Post"),
-                onPressed: () async{
-                  String duty;
-                  String name;
-                  int posNum;
+      body: Stack(
+        children: [
+          Image.network(
+            "https://www.advanced-workplace.com/wp-content/uploads/2015/04/Transition-Planning.jpg",
+            width: MediaQuery.of(context).size.width,
+            fit: BoxFit.fill,
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(150,200,150,0),
+            child: Opacity(
+              opacity: 0.93,
+              child: Container(
+                color: Colors.white,
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+                  child: ListView(
+                    children: [
+                      TextField(
+                        controller: _titleController,
+                        style: TextStyle(fontSize: 20.0),
+                        decoration: InputDecoration(
+                          filled: false,
+                          labelText: 'Title',
+                        ),
+                      ),
+                      TextField(
+                        controller: _divisionController,
+                        style: TextStyle(fontSize: 20.0),
+                        decoration: InputDecoration(
+                          filled: false,
+                          labelText: 'Division',
+                        ),
+                      ),
+                      TextField(
+                        controller: _branchController,
+                        style: TextStyle(fontSize: 20.0),
+                        decoration: InputDecoration(
+                          filled: false,
+                          labelText: 'Branch',
+                        ),
+                      ),
+                      TextField(
+                        maxLines: null,
+                        controller: _workControl,
+                        style: TextStyle(fontSize: 20.0),
+                        decoration: InputDecoration(
+                          filled: false,
+                          labelText: 'Work Description',
+                        ),
+                      ),
+                      Text("Please separate description list with enter", style: TextStyle(color: Colors.redAccent, fontSize: 17.0)),
+                      TextField(
+                        maxLines: null,
+                        controller: _langControl,
+                        style: TextStyle(fontSize: 20.0),
+                        decoration: InputDecoration(
+                          filled: false,
+                          labelText: 'Language Description',
+                        ),
+                      ),
+                      Text("Please separate description list with enter", style: TextStyle(color: Colors.redAccent, fontSize: 17.0)),
+                      Container(
+                        child: Row(
+                          children: [
+                            Text("Position photo ", style: TextStyle(fontSize: 20.0),),
+                            TextButton(
+                              child: Text("File", style: TextStyle(fontSize: 20.0),),
+                              onPressed: () async{
+                                _photoPicker();
+                              },
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.topRight,
+                                child: (_filename != "")
+                                    ? Text("\t$_filename will be updated", style: TextStyle(color: Colors.blue, fontSize: 17.0))
+                                    : Text("\tDefault photo will be updated", style: TextStyle(color: Colors.brown, fontSize: 17.0)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height:10.0),
+                      Center(
+                        child: ElevatedButton(
+                          child: Text("Post"),
+                          onPressed: () async{
+                            String duty;
+                            String name;
+                            int posNum;
 
-                  await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) {
-                    duty = value['duty_station'];
-                    name = "${value['last_name']} ${value['first_name']}";
-                    posNum = value['position_level'];
-                  });
-                  String url = "";
-                  if(_filename != ""){
-                    url = await _uploadImage();
-                  }
+                            await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser.uid).get().then((value) {
+                              duty = value['duty_station'];
+                              name = "${value['last_name']} ${value['first_name']}";
+                              posNum = value['position_level'];
+                            });
+                            String url = "";
+                            if(_filename != ""){
+                              url = await _uploadImage();
+                            }
 
-                  addPosition(duty, name, posNum, url);
-                  Navigator.pop(context);
-                },
+                            addPosition(duty, name, posNum, url);
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
