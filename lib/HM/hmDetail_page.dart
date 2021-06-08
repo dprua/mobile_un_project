@@ -16,7 +16,7 @@ class hmDetailPage extends StatefulWidget {
 }
 
 class _hmDetailPageState extends State<hmDetailPage> {
-  //String id = FirebaseAuth.instance.currentUser.uid;
+
   bool join = false;
 
   @override
@@ -102,12 +102,9 @@ class _hmDetailPageState extends State<hmDetailPage> {
                         trailing: Icon(Icons.keyboard_arrow_right,
                             color: Colors.black, size: 30.0),
                         onTap: () {
-                          print('aaaa');
                           setState(() {
-                            print('bbbb');
                             join = true;
                             target = doc.id;
-                            print(target);
                           });
                         },
                       );
@@ -150,12 +147,9 @@ class _hmDetailPageState extends State<hmDetailPage> {
         title: Text(data.data()['name']),
         subtitle: Text(data.data()['Gender']),
         onTap: () {
-          print('aaaa');
           setState(() {
-            print('bbbb');
             join = true;
             target = data.id;
-            print(target);
           });
         },
       ),
@@ -174,37 +168,6 @@ class ViewDetail extends StatefulWidget {
 }
 
 class _ViewDetailState extends State<ViewDetail> {
-  Widget _buildProfileImage(Stuidring) {
-    return Center(
-      child: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('apply')
-              .doc('2QyVNh0QWpcjckamGhnj')
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            return Container(
-              width: 140.0,
-              height: 140.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: snapshot.data['Gender'] == 'MALE'
-                      ? NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman_char-removebg-preview.png?alt=media&token=986c55de-c46c-49a4-965b-4feb49360c3c')
-                      : NetworkImage(
-                          'https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fwoman_char-removebg-preview.png?alt=media&token=bdd9a2ab-91ea-437c-8f61-74eae8e1e5a9'),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.circular(80.0),
-                border: Border.all(
-                  color: Colors.white,
-                  width: 10.0,
-                ),
-              ),
-            );
-          }),
-    );
-  }
 
   Widget _buildCoverImage(Size screenSize) {
     return Opacity(
@@ -220,31 +183,6 @@ class _ViewDetailState extends State<ViewDetail> {
         ),
       ),
     );
-  }
-
-  Widget _buildFullName() {
-    TextStyle _nameTextStyle = TextStyle(
-      fontFamily: 'Roboto',
-      color: Colors.black,
-      fontSize: 28.0,
-      fontWeight: FontWeight.w700,
-    );
-
-    return StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('apply')
-            .doc(widget.applyId)
-            .snapshots(),
-        builder:
-            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-          if (snapshot.hasData == false) return CircularProgressIndicator();
-          if (snapshot.hasError) return Text("Error: ${snapshot.error}");
-
-          return Text(
-            snapshot.data['name'],
-            style: _nameTextStyle,
-          );
-        });
   }
 
   @override
@@ -469,7 +407,7 @@ class _ReorderableFirebaseListState extends State<ReorderableFirebaseList> {
                 );
               } else {
                 return const Center(
-                  child: Text("hI"),
+                  child: Text("Loding...",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                 );
               }
             },

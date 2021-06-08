@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import "package:un_project/HM/hmPostInfo_page.dart";
 
 var target;
 
@@ -264,7 +263,6 @@ class _ApprovalState extends State<Approval> {
                                       onPressed: () async {
                                         print(document.id);
                                         await updateApproval(document.id);
-//update the users approval.
                                       },
                                     ),
                                   ),

@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'authentification.dart';
-import 'package:provider/provider.dart';
-import 'firebase_provider.dart';
 
 class ProfileEditPage extends StatefulWidget {
   final doc;
@@ -15,7 +12,7 @@ class ProfileEditPage extends StatefulWidget {
   _ProfileEditPageState createState() => _ProfileEditPageState();
 
 }
-//final _sigInFormKey = GlobalKey<FormState>();
+
 class _ProfileEditPageState extends State<ProfileEditPage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
@@ -182,10 +179,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                         mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                         children: [
-                                          // SizedBox(
-                                          //   height: 40,
-                                          //   width: 10,
-                                          // ),
                                           Text(
                                             snapshot.data['first_name'],
                                             style: TextStyle(
@@ -195,10 +188,6 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
                                               fontSize: 37,
                                             ),
                                           ),
-                                          // SizedBox(
-                                          //   height: 40,
-                                          //   width: 500,
-                                          // ),
                                           Text(
                                             snapshot.data['last_name'],
                                             style: TextStyle(

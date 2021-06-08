@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'firebase_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 SignUpPageState pageState;
 

@@ -18,7 +18,6 @@ class STFWidget extends StatefulWidget {
 }
 
 class STFState extends State<STFWidget> {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<void> signOut() async {
     await Authentification().signOut();
@@ -338,7 +337,6 @@ class _STFViewState extends State<STFViewWidget> {
                             child: TextButton(
                               child: Text("Apply"),
                               onPressed: () {
-// When tap the "more", go to Detail page
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -358,8 +356,7 @@ class _STFViewState extends State<STFViewWidget> {
             },
           )
         ),
-        ],
-      );
-
+      ],
+    );
   }
 }

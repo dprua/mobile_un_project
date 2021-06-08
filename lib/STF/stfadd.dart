@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
@@ -14,7 +13,6 @@ class StaffAdd extends StatefulWidget{
 }
 
 class StaffAddState extends State<StaffAdd>{
-  final _nameController = TextEditingController();
   final _titleController = TextEditingController();
   final _divisionController = TextEditingController();
   final _branchController = TextEditingController();

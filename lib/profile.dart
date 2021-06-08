@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'authentification.dart';
-import 'package:provider/provider.dart';
-import 'firebase_provider.dart';
 import 'profileEdit_page.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -282,98 +279,4 @@ class ProfilePage extends StatelessWidget {
       ],
     );
   }
-
-/*
- Scaffold(
-        appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.logout,
-                semanticLabel: 'logout',
-              ),
-              onPressed: () {
-                signOut();
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-        body: Center(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(80.0,0,80.0,0),
-              child: StreamBuilder(
-                stream: FirebaseFirestore.instance.collection('users').doc(_firebaseAuth.currentUser.uid).snapshots(),
-                builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        snapshot.data['gender']=='MALE'
-                            ?AspectRatio(
-                          aspectRatio: 12 / 9,
-                          child: Image.network(
-                              "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fman%20char%20-%20%EB%B3%B5%EC%82%AC%EB%B3%B8.png?alt=media&token=8476c05f-cd65-4093-8468-f85cdd35df66",
-                              height: 50,
-                              width: 175),
-                        )
-                        :AspectRatio(
-                          aspectRatio: 12 / 9,
-                          child: Image.network(
-                              "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/character%2Fwoman%20char%20-%20%EB%B3%B5%EC%82%AC%EB%B3%B8.png?alt=media&token=07b26116-52f9-4a1c-9ffc-0835c862e994",
-                              height: 50,
-                              width: 175),
-                        ),
-                        //SizedBox(height: 50,),
-                        Text(
-                          _firebaseAuth.currentUser.uid,
-                          //snapshot.data['gender'],
-                          style: TextStyle(fontSize: 15,fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 25,),
-                        const Divider(
-                          height: 1.0,
-                          color: Colors.black,
-                        ),
-                        SizedBox(height: 25,),
-                        getEmail(),
-                      ],
-                    ),
-                  );
-                }
-              ),
-            )
-        )
-    );*/
-/*
-  Widget displayUserInformation(context, snapshot) {
-    final authData = snapshot.data;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: Provider.of(context).auth.getProfileImage(),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "UID: ${FirebaseAuth.instance.currentUser.uid}",
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-        const Divider(
-          height: 1.0,
-          color: Colors.grey,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            "Email: ${authData.email ?? 'Anonymous'}",
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-      ],
-    );
-  }
-
-   */
 }

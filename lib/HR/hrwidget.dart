@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:un_project/HR/case_generate.dart';
-import 'package:un_project/STF/stfdetail.dart';
 import 'package:un_project/HR/hrdetail.dart';
 import 'package:un_project/authentification.dart';
 import 'package:un_project/HR/hrshow.dart';
@@ -214,8 +213,6 @@ class ViewState extends State<ViewWidget> {
                 n = int.tryParse(newValue[6]);
                 levelNum = n;
               }
-              // level 1, level 2, level 3,
-              // Query collection 'post',   // have to change
             });
           },
           items: <String>[

@@ -1,33 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../profile.dart';
 import 'package:un_project/HM/approval_page.dart';
-import 'package:un_project/HM/hmDetail_page.dart';
 import 'package:un_project/authentification.dart';
-import 'package:un_project/signin_page.dart';
 import 'package:un_project/HM/hmdetail.dart';
 
-// Home page for Staff
+
 class hmHomePage extends StatefulWidget {
-  // List<String> arr;
-  // getApproval() async{
-  //   Future<DocumentSnapshot> docSnapshot = FirebaseFirestore.instance
-  //       .collection('post')
-  //       .doc(FirebaseAuth.instance.currentUser.uid)
-  //       .get();
-  //   DocumentSnapshot docu= await docSnapshot;
-  //   if(docu.get('approval')==false)
-  //     arr+=FirebaseAuth.instance.currentUser.uid;
-  // }
 
   @override
   _hmHomePageState createState() => _hmHomePageState();
 }
 
 class _hmHomePageState extends State<hmHomePage> {
-  bool _isIncluding = false;
 
   Future<void> signOut() async {
     await Authentification().signOut();
@@ -41,20 +27,6 @@ class _hmHomePageState extends State<hmHomePage> {
     DocumentSnapshot docu = await docSnapshot;
     int a = await docu.get('user_type');
     return a;
-  }
-
-
-
-  _navigateAnd(BuildContext context) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => Approval(
-              doc: FirebaseFirestore.instance.collection('post').snapshots())),
-    );
-    if (result) {
-      setState(() {});
-    }
   }
 
   @override

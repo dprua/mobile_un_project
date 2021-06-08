@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 var target;
-
 
 class hmdetailPage extends StatefulWidget {
   final doc;
@@ -19,7 +15,6 @@ class hmdetailPage extends StatefulWidget {
 }
 
 class _hmdetailPageState extends State<hmdetailPage> {
-  //String id = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -115,52 +110,6 @@ class _ViewDetailState extends State<ViewDetail> {
             fit: BoxFit.fitWidth,
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildListItem(BuildContext context, DocumentSnapshot data) {
-    return Padding(
-      key: ValueKey(data.data()['name']),
-      padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: ListTile(
-        key: Key(data.id),
-        contentPadding: EdgeInsets.symmetric(
-            horizontal: 20.0, vertical: 10.0),
-        leading: Container(
-          padding: EdgeInsets.only(right: 12.0),
-          decoration: new BoxDecoration(
-              border: new Border(
-                  right: new BorderSide(
-                      width: 1.0, color: Colors.grey))),
-          child:
-          Icon(Icons.person, color: Colors.grey, size: 40),
-        ),
-        title: Text(
-          data.data()['name'],
-          style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
-
-        subtitle: Row(
-          children: <Widget>[
-            Icon(Icons.linear_scale, color: Colors.black),
-            Text(data.data()['Gender'],
-                style: TextStyle(color: Colors.black))
-          ],
-        ),
-        trailing: Icon(Icons.keyboard_arrow_right,
-            color: Colors.black, size: 30.0),
-        onTap: () {
-          print('aaaa');
-          setState(() {
-            print('bbbb');
-            flag = false;
-            target_docu = data;
-            print(target);
-          });
-        },
       ),
     );
   }
@@ -273,12 +222,9 @@ class _ViewDetailState extends State<ViewDetail> {
                       trailing: Icon(Icons.keyboard_arrow_right,
                           color: Colors.black, size: 30.0),
                       onTap: () {
-                        print('aaaa');
                         setState(() {
-                          print('bbbb');
                           flag = false;
                           target_docu = doc;
-                          print(flag);
                         });
                       },
                     );
@@ -562,7 +508,7 @@ class _ReorderableFirebaseListState extends State<ReorderableFirebaseList> {
                 );
               } else {
                 return const Center(
-                  child: Text("hI"),
+                  child: Text("Loding...",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
                 );
               }
             },

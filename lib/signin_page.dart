@@ -53,7 +53,6 @@ class SignInPageState extends State<SignInPage> {
                 Container(
                   margin: const EdgeInsets.only(left: 0, right: 0, top: 30),
                   height: 150,
-                  //width: MediaQuery.of(context).size.width-560,
                   child: Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -111,7 +110,6 @@ class SignInPageState extends State<SignInPage> {
                     ),
                   ),
                 ),
-
                 // Input Area
                 Container(
                   width: 600,
@@ -261,8 +259,6 @@ class SignInPageState extends State<SignInPage> {
   }
 
   setRememberInfo() async {
-
-
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool("doRemember", doRemember);
     if (doRemember) {
@@ -272,7 +268,6 @@ class SignInPageState extends State<SignInPage> {
   }
 
   showLastFBMessage() {
-    print("ADSGWEG");
     _scaffoldKey.currentState..hideCurrentSnackBar()..showSnackBar(SnackBar(
       backgroundColor: Colors.red[400],
       duration: Duration(seconds: 10),

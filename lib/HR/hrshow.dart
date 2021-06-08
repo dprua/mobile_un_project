@@ -1,8 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 var target;
 
@@ -13,7 +10,7 @@ class HRShow extends StatefulWidget {
 }
 
 class _HRShowState extends State<HRShow> {
-  //String id = FirebaseAuth.instance.currentUser.uid;
+
   bool join = false;
 
   @override
@@ -141,12 +138,9 @@ class _HRShowState extends State<HRShow> {
           trailing: Icon(Icons.keyboard_arrow_right,
               color: Colors.black, size: 30.0),
           onTap: () {
-            print('aaaa');
             setState(() {
-              print('bbbb');
               join = true;
               target = data.id;
-              print(target);
             });
           },
         ),

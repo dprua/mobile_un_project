@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -234,34 +233,6 @@ class Case_generate extends StatelessWidget{
     }
   }
 
-  // Future<void> makePDF() async {
-  //   final pdf = pw.Document();
-  //
-  //   pdf.addPage(
-  //     pw.Page(
-  //       build: (pw.Context context) => pw.Center(
-  //         child: pw.Table(
-  //             width: MediaQuery.of(context).size.width-100,
-  //             height: MediaQuery.of(context).size.height-100,
-  //             child: DataTable(
-  //               horizontalMargin: 12.0,
-  //               columnSpacing: 28.0,
-  //               columns: _getColumns(),
-  //               rows: _getRows(),
-  //             )
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  //
-  //   final file = File('example.pdf');
-  //   await file.writeAsBytes(await pdf.save());
-  // }
-  //num = 3
-  //final_case
-  //{0: {Data Analysis: stf1, yezzin: stf2, CEO position: admin_stf},
-  // 1: {Data Analysis: stf3, yezzin: stf2, CEO position: stf1},
-  // 2: {Data Analysis: stf2, yezzin: stf3, CEO position: stf1}}
   List<DataRow> _getRows(){
     List<DataRow> dataRow = [];
     for (var i=1; i<=num; i++) {
@@ -299,14 +270,6 @@ class Case_generate extends StatelessWidget{
     return dataColumn;
   }
 
-  Widget _getDataTable() {
-    return DataTable(
-      horizontalMargin: 30.0,
-      columnSpacing: 300.0,
-      columns: _getColumns(),
-      rows: _getRows(),
-    );
-  }
   List colors = [Colors.red, Colors.green, Colors.yellow];
   Random random = new Random();
   int index = 0;

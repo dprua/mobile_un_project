@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class tpp extends StatelessWidget {
+class Waiting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -10,9 +10,14 @@ class tpp extends StatelessWidget {
           title: Text('Welcome to Flutter'),
         ),
         body: Center(
-          child: Text('Hello World'),
+            child: Column(
+              children: [
+                Text("Loading....",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30),),
+                CircularProgressIndicator(),
+              ],
+            )
         ),
-      ),
-    );
+        ),
+      );
   }
 }

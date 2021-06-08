@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart' as path;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:un_project/STF/stfpage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class StaffEdit extends StatefulWidget{
@@ -28,7 +26,7 @@ class _StaffEditState extends State<StaffEdit>{
   final _picker = ImagePicker();
   String url = "";
   String _filename = "";
-  String _photoDefault = "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c";
+  bool flag = false;
 
   Future<void> _photoPicker() async{
     final pickedFile = await _picker.getImage(source: ImageSource.gallery);
@@ -54,17 +52,31 @@ class _StaffEditState extends State<StaffEdit>{
   }
 
   Future<void> updatePosition(){
-    return FirebaseFirestore.instance.collection('post').doc(widget.doc.id)
-        .update({
-      'Name' : _nameController.text,
-      'Title' : _titleController.text,
-      'Division' : _divisionController.text,
-      'Branch': _branchController.text,
-      'Duty station' : _dutyController.text,
-      'work_exp': _workController.text.split('\n'),
-      'lang_exp': _langController.text.split('\n'),
-      'photoURL' : url,
-    });
+    if(flag){
+      return FirebaseFirestore.instance.collection('post').doc(widget.doc.id)
+          .update({
+        'Name' : _nameController.text,
+        'Title' : _titleController.text,
+        'Division' : _divisionController.text,
+        'Branch': _branchController.text,
+        'Duty station' : _dutyController.text,
+        'work_exp': _workController.text.split('\n'),
+        'lang_exp': _langController.text.split('\n'),
+        'photoURL' : url,
+      });
+    }
+    else{
+      return FirebaseFirestore.instance.collection('post').doc(widget.doc.id)
+          .update({
+        'Name' : _nameController.text,
+        'Title' : _titleController.text,
+        'Division' : _divisionController.text,
+        'Branch': _branchController.text,
+        'Duty station' : _dutyController.text,
+        'work_exp': _workController.text.split('\n'),
+        'lang_exp': _langController.text.split('\n'),
+      });
+    }
   }
 
   @override
@@ -127,6 +139,7 @@ class _StaffEditState extends State<StaffEdit>{
                                     child: Text("File", style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
                                     onPressed: () async{
                                       _photoPicker();
+                                      flag = true;
                                     },
                                   ),
                                   Container(
@@ -210,10 +223,9 @@ class _StaffEditState extends State<StaffEdit>{
                                   child: ElevatedButton(
                                     child: Text("Edit"),
                                     onPressed: () async {
-                                      url = await _uploadImage();
+                                      if(flag)
+                                        url = await _uploadImage();
                                       await updatePosition();
-                                      // Navigator.of(context).pushAndRemoveUntil(
-                                      //     MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
                                       Navigator.pop(context);
                                     },
                                   ),

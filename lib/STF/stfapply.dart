@@ -1,11 +1,9 @@
 import 'dart:io';
 import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:un_project/STF/stfpage.dart';
 import 'package:file_picker/file_picker.dart';
 
 class ApplyPage extends StatefulWidget{
@@ -91,15 +89,12 @@ class ApplyState extends State<ApplyPage>{
           content: Text(
               "Are you sure you want to apply on the position [${postTitle}] ?"),
           actions: <Widget>[
-
             ElevatedButton(
               child: Text('Okay'),
               onPressed: () async{
                 String url = await _uploadPHP();   // Storage upload
                 _updatePHPtoUsers(url);
                 applyAdd(url);
-                // Navigator.of(context).pushAndRemoveUntil(
-                //     MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
                 Navigator.pop(context);
               },
             ),

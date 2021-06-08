@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class hmPostInfo extends StatefulWidget {
   final doc;
@@ -15,6 +13,7 @@ class hmPostInfo extends StatefulWidget {
 }
 
 class _hmPostInfoState extends State<hmPostInfo> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,10 +40,8 @@ class _hmPostInfoState extends State<hmPostInfo> {
                   margin:
                   const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
                   padding: const EdgeInsets.symmetric(vertical: 30),
-                  //padding: const EdgeInsets.symmetric(horizontal: 30),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    //border: Border.all(color: Colors.grey),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(10),
                         topRight: Radius.circular(10),
