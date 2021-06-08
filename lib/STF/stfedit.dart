@@ -26,6 +26,7 @@ class _StaffEditState extends State<StaffEdit>{
 
   File _postPhoto;
   final _picker = ImagePicker();
+  String url = "";
   String _filename = "";
   String _photoDefault = "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c";
 
@@ -62,6 +63,7 @@ class _StaffEditState extends State<StaffEdit>{
       'Duty station' : _dutyController.text,
       'work_exp': _workController.text.split('\n'),
       'lang_exp': _langController.text.split('\n'),
+      'photoURL' : url,
     });
   }
 
@@ -80,104 +82,167 @@ class _StaffEditState extends State<StaffEdit>{
         backgroundColor: Color(0xFF01579B),
         centerTitle: true,
         title: Text("Edit the position"),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: (){
-              FirebaseFirestore.instance.collection('post').doc(widget.doc.id).delete();
-              Navigator.pop(context);
-            },
-          ),
-        ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(40.0),
-        child: ListView(
-          children: [
-            Container(
-              child: Row(
-                children: [
-                  Text("Position photo ", style: TextStyle(fontSize: 17.0),),
-                  TextButton(
-                    child: Text("File", style: TextStyle(fontSize: 17.0),),
-                    onPressed: () async{
-                      _photoPicker();
-                    },
-                  ),
-                  Expanded(
+      body: SingleChildScrollView(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+                image: new NetworkImage("https://www.advanced-workplace.com/wp-content/uploads/2015/04/Transition-Planning.jpg"),
+                fit: BoxFit.cover
+            ),
+          ),
+          padding: EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              Container(
+                  child: Text(
+                    "Edit Form",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 37,
+                    ),
+                  )
+              ),
+              SizedBox(height: 20,),
+              Expanded(
+                child: Container(
+                  height: 700,
+                  width: 800,
+                  child: Opacity(
+                    opacity: 0.93,
                     child: Container(
-                      alignment: Alignment.topRight,
-                      child: (_filename != "")
-                          ? Text("\t$_filename will be updated", style: TextStyle(color: Colors.blue))
-                          : Text("\tDefault photo will be updated", style: TextStyle(color: Colors.brown)),
+                      color: Colors.white,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 0),
+                        child: ListView(
+                          children: [
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text("Position photo ", style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
+                                  TextButton(
+                                    child: Text("File", style: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),),
+                                    onPressed: () async{
+                                      _photoPicker();
+                                    },
+                                  ),
+                                  Container(
+                                    child: (_filename != "")
+                                        ? Text("\t$_filename will be updated", style: TextStyle(color: Colors.indigo,fontSize: 17.0,fontWeight: FontWeight.bold))
+                                        : Text("\tDefault photo will be updated", style: TextStyle(color: Colors.brown,fontSize: 17.0,fontWeight: FontWeight.bold)),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            TextField(
+                              controller: _nameController,
+                              style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                filled: false,
+                                labelText: 'Name',
+                                labelStyle: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            TextField(
+                              controller: _titleController,
+                              style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                filled: false,
+                                labelText: 'Title',
+                                labelStyle: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            TextField(
+                              controller: _divisionController,
+                              style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                filled: false,
+                                labelText: 'Division',
+                                labelStyle: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            TextField(
+                              controller: _branchController,
+                              style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                filled: false,
+                                labelText: 'Branch',
+                                labelStyle: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            TextField(
+                              controller: _dutyController,
+                              style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                filled: false,
+                                labelText: 'Duty Station',
+                                labelStyle: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold)
+                              ),
+                            ),
+                            TextField(
+                              maxLines: null,
+                              controller: _workController,
+                              style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                filled: false,
+                                labelText: 'Work Description',
+                                labelStyle: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            TextField(
+                              maxLines: null,
+                              controller: _langController,
+                              style: TextStyle(fontSize: 17.0,fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                filled: false,
+                                labelText: 'Languages Description',
+                                labelStyle: TextStyle(fontSize: 20.0,fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            SizedBox(height: 10,),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: ElevatedButton(
+                                    child: Text("Edit"),
+                                    onPressed: () async {
+                                      url = await _uploadImage();
+                                      await updatePosition();
+                                      // Navigator.of(context).pushAndRemoveUntil(
+                                      //     MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                                SizedBox(width: 150,),
+                                Center(
+                                  child: ElevatedButton(
+                                    child: Text("Delete Position"),
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateColor.resolveWith((states) => Colors.redAccent),
+                                    ),
+                                    onPressed: (){
+                                      FirebaseFirestore.instance.collection('post').doc(widget.doc.id).delete();
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 50,),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-            TextField(
-              controller: _nameController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Name',
-              ),
-            ),
-            TextField(
-              controller: _titleController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Title',
-              ),
-            ),
-            TextField(
-              controller: _divisionController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Division',
-              ),
-            ),
-            TextField(
-              controller: _branchController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Branch',
-              ),
-            ),
-            TextField(
-              controller: _dutyController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Duty Station',
-              ),
-            ),
-            TextField(
-              maxLines: null,
-              controller: _workController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Work Description',
-              ),
-            ),
-            TextField(
-              maxLines: null,
-              controller: _langController,
-              decoration: InputDecoration(
-                filled: false,
-                labelText: 'Languages Description',
-              ),
-            ),
-
-            Center(
-              child: ElevatedButton(
-                child: Text("Edit"),
-                onPressed: (){
-                  updatePosition();
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context)=>StfPage()),(Route<dynamic> route) => false);
-                },
-              ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );
