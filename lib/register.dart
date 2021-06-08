@@ -215,7 +215,7 @@ class _RegisterFormState extends State<RegisterForm> {
                         ),
                         Row(
                           children: [
-                            SizedBox(width: 230,),
+                            SizedBox(width: 180,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

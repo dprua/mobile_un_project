@@ -130,6 +130,7 @@ class SignInPageState extends State<SignInPage> {
                     children: <Widget>[
                       TextField(
                         controller: _mailCon,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.mail),
                           hintText: "Email",
@@ -140,6 +141,7 @@ class SignInPageState extends State<SignInPage> {
                       ),
                       TextField(
                         controller: _pwCon,
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.lock),
                           hintText: "Password",
@@ -205,7 +207,7 @@ class SignInPageState extends State<SignInPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text("Need an account?",
-                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 15)),
+                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 18)),
                       FlatButton(
                         child: Text(
                           "Sign Up",

@@ -124,6 +124,7 @@ class SignUpPageState extends State<SignUpPage> {
                             children: <Widget>[
                               TextField(
                                 controller: _mailCon,
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.mail),
                                   hintText: "Email",
@@ -134,6 +135,7 @@ class SignUpPageState extends State<SignUpPage> {
                               ),
                               TextField(
                                 controller: _pwCon,
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),
                                 decoration: InputDecoration(
                                   prefixIcon: Icon(Icons.lock),
                                   hintText: "Password",
