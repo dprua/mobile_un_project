@@ -141,82 +141,148 @@ class _ApprovalState extends State<Approval> {
                     crossAxisCount: 3,
                     children: snapshot.data.docs.map((DocumentSnapshot document) {
                       return Card(
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        color: Colors.brown[50],
                         child: Container(
-                          padding: EdgeInsets.all(10.0),
-                          width: MediaQuery.of(context).size.width / 1.2,
-                          // height: ,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                document.get('photoURL') == ""
-                                    ? AspectRatio(
-                                  aspectRatio: 12 / 7,
+                          child: Column(
+                            children: [
+                              document.get('photoURL') == ""
+                                  ? ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width - 650,
+                                  height: MediaQuery.of(context).size.height - 620,
                                   child: Image.network(
-                                      "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
-                                      height: 100,
-                                      width: 175),
-                                )
-                                    : AspectRatio(
-                                  aspectRatio: 12 / 7,
-                                  child: Image.network(
-                                    document.get('photoURL'),
-                                    height: 100,
-                                    width: 175,
+                                    "https://firebasestorage.googleapis.com/v0/b/unproject-af159.appspot.com/o/post%20photo%2F%ED%9A%8C%EC%83%89%EC%B9%B4%EB%A9%94%EB%9D%BC.PNG?alt=media&token=313d9221-433d-42e5-92aa-d0c57252ab7c",
+                                    fit: BoxFit.fill,
                                   ),
                                 ),
-                                Text("Title: ${document.get('Title')}"),
-                                Text("Level: ${document.get('Level')}"),
-                                Text("Division: ${document.get('Division')}"),
-                                Text("Branch: ${document.get('Branch')}"),
-                                Text("Duty station: ${document.get('Duty station')}"),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                              )
+                                  : ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width - 650,
+                                  height: MediaQuery.of(context).size.height - 620,
+                                  child: Image.network(
+                                    document.get('photoURL'),
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Container(
+                                  padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Title: ${document.get('Title')}",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  )
+                              ),
+                              Divider(
+                                thickness: 1,
+                                color: Colors.black,
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                alignment: Alignment.centerLeft,
+                                child: Row(
                                   children: [
-                                    Container(
-                                      child: TextButton(
-                                        child: Text(
-                                          "Accept",
-                                          style: TextStyle(color: Color(0xFF1A237E)),
-                                        ),
-                                        onPressed: () async {
-                                          print(document.id);
-                                          await updateApproval(document.id);
-                                          //update the users approval.
-                                        },
+                                    Text(
+                                      "Level: ",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Container(
-                                      child: TextButton(
-                                        child: Text(
-                                          "Reject",
-                                          style: TextStyle(color: Colors.red),
+                                    Row(
+                                      children: [
+                                        Wrap(
+                                            children: List.generate(document.get('Level'), (index) {
+                                              return Text("🔥 ",);
+                                            })
                                         ),
-                                        onPressed: () {
-                                          showAlertDialog(context,document.id);
-                                        },
+                                      ],
+                                    ),
+                                    SizedBox(width: 20,),
+                                    Expanded(
+                                      child: Text(
+                                        "Duty station: ${document.get('Duty station')}",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                                Container(
-                                  alignment: Alignment.centerRight,
-                                  child: TextButton(
-                                    child: Text("more"),
-                                    onPressed: () {
-                                      target=document.id;
-                                      print(target);
-                                      print(FirebaseAuth.instance.currentUser.uid);
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => hmPostInfo(doc: widget.doc,applyId: target),
-                                        ),
-                                      );
-                                    },
+                              ),
+                              SizedBox(height: 15,),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Division: ${document.get('Division')}",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(height: 20,),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  "Branch: ${document.get('Branch')}",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 15,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    child: TextButton(
+                                      child: Text(
+                                        "Accept",
+                                        style: TextStyle(color: Color(0xFF1A237E)),
+                                      ),
+                                      onPressed: () async {
+                                        print(document.id);
+                                        await updateApproval(document.id);
+//update the users approval.
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(width: 20,),
+                                  Container(
+                                    child: TextButton(
+                                      child: Text(
+                                        "Reject",
+                                        style: TextStyle(color: Colors.red),
+                                      ),
+                                      onPressed: () {
+                                        showAlertDialog(context,document.id);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       );
@@ -229,3 +295,4 @@ class _ApprovalState extends State<Approval> {
     );
   }
 }
+

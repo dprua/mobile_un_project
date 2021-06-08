@@ -72,7 +72,7 @@ class _hmdetailPageState extends State<hmdetailPage> {
             color: Colors.grey,
             thickness: 1,
             indent: 20,
-            endIndent: 0,
+            endIndent: 15,
             width: 20,
           ),
           Container(
@@ -605,7 +605,7 @@ class IconAndDetail extends StatelessWidget {
         SizedBox(width: 8),
         Text(
           detail,
-          style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 37.0, fontWeight: FontWeight.bold),
         )
       ],
     ),
