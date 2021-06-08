@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -276,9 +277,12 @@ class Case_generate extends StatelessWidget{
 
       List<DataCell> cells = [];
       for(var j=0; j<csvDataCells.length; j++) {
-        cells.add(DataCell(Text(csvDataCells[j])));
+        cells.add(DataCell(Text(csvDataCells[j],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold))));
       }
-      dataRow.add(DataRow(cells: cells));
+      dataRow.add(DataRow(cells: cells,color: MaterialStateColor.resolveWith((states) => colors[index]),));
+      index++;
+      if(index == 2)
+        index = 0;
     }
     return dataRow;
   }
@@ -286,10 +290,10 @@ class Case_generate extends StatelessWidget{
   List<DataColumn> _getColumns(){
     List<DataColumn> dataColumn = [];
 
-    dataColumn.add(DataColumn(label: Text('#')));
+    dataColumn.add(DataColumn(label: Text('CASE',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold))));
 
     for (int i = 0; i<position_length;i++) {
-        dataColumn.add(DataColumn(label: Text(init_arr[i])));
+        dataColumn.add(DataColumn(label: Text(init_arr[i],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)));
     }
 
     return dataColumn;
@@ -303,7 +307,9 @@ class Case_generate extends StatelessWidget{
       rows: _getRows(),
     );
   }
-
+  List colors = [Colors.red, Colors.green, Colors.yellow];
+  Random random = new Random();
+  int index = 0;
 
 
   Widget build(BuildContext context) {
@@ -313,47 +319,35 @@ class Case_generate extends StatelessWidget{
           centerTitle: true,
           title: Text("Possible Relocation Case"),
       ),
-      body: Center(
-        child: FutureBuilder(
-            future: getinfo(),
-            builder: (BuildContext context, AsyncSnapshot snapshot1) {
-              if (snapshot1.hasData == false) {
-                return Column( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[ CircularProgressIndicator( backgroundColor: Colors.white, strokeWidth: 6), SizedBox(height: 20), Text('Please Waiting...', style: TextStyle( fontSize: 40, fontWeight: FontWeight.w700, color: Colors.black, shadows: <Shadow>[ Shadow(offset: Offset(4, 4), color: Colors.black12) ], decorationStyle: TextDecorationStyle.solid)) ], );
-              }
-              else if (snapshot1.hasError) {
-                return Padding(
-                  padding: const EdgeInsets.all(
-                      8.0),
-                  child: Text(
-                    'Error: ${snapshot1.error}',
-                    style: TextStyle(
-                        fontSize: 15),
-                  ),
-                );
-              }
-              else {
-                return new Column(
-                  children: <Widget>[
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: SingleChildScrollView(
-                        child: Container(
-                            width: MediaQuery.of(context).size.width-100,
-                            height: MediaQuery.of(context).size.height-400,
-                            child: DataTable(
-                              horizontalMargin: 12.0,
-                              columnSpacing: 28.0,
-                              columns: _getColumns(),
-                              rows: _getRows(),
-
-                            )
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }
-            }
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SingleChildScrollView(
+          child: Center(
+            child: FutureBuilder(
+                future: getinfo(),
+                builder: (BuildContext context, AsyncSnapshot snapshot1) {
+                  if (snapshot1.hasData == false) {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(500, 300, 600, 300),
+                      child: Column( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[ CircularProgressIndicator( backgroundColor: Colors.white, strokeWidth: 6), SizedBox(height: 20), Text('Please Waiting...', style: TextStyle( fontSize: 40, fontWeight: FontWeight.w700, color: Colors.black, shadows: <Shadow>[ Shadow(offset: Offset(4, 4), color: Colors.black12) ], decorationStyle: TextDecorationStyle.solid)) ], ),
+                    );
+                  }
+                  else if (snapshot1.hasError) {
+                    return Column( mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[ CircularProgressIndicator( backgroundColor: Colors.white, strokeWidth: 6), SizedBox(height: 20), Text('Please Waiting...', style: TextStyle( fontSize: 40, fontWeight: FontWeight.w700, color: Colors.black, shadows: <Shadow>[ Shadow(offset: Offset(4, 4), color: Colors.black12) ], decorationStyle: TextDecorationStyle.solid)) ], );
+                  }
+                  else {
+                    return DataTable(
+                      headingRowColor:
+                      MaterialStateColor.resolveWith((states) => Colors.orangeAccent),
+                      horizontalMargin: 12.0,
+                      columnSpacing: 28.0,
+                      columns: _getColumns(),
+                      rows: _getRows(),
+                    );
+                  }
+                }
+            ),
+          ),
         ),
       ),
     );

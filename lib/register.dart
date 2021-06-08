@@ -59,9 +59,9 @@ class _RegisterFormState extends State<RegisterForm> {
               Container(
                 margin: const EdgeInsets.only(left: 0, right: 0, top: 30),
                 height: 250,
-                width: MediaQuery.of(context).size.width-560,
                   child: Center(
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           decoration: BoxDecoration(
@@ -101,7 +101,7 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
               Container(
                 height: 50,
-                width: MediaQuery.of(context).size.width-560,
+                width: 600,
                 decoration: BoxDecoration(color: Colors.lightBlue),
                 child: Center(
                   child: Text(
@@ -114,7 +114,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width-560,
+                width: 600,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.lightBlue, width: 1),
                   boxShadow: [
@@ -217,6 +217,7 @@ class _RegisterFormState extends State<RegisterForm> {
                           children: [
                             SizedBox(width: 230,),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
                                   "Gender : ",

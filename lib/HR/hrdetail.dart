@@ -102,6 +102,7 @@ class _ViewDetailState extends State<ViewDetail> {
   List<DocumentSnapshot> _docs;
   DocumentSnapshot target_docu;
   bool flag = true;
+
   Widget _buildCoverImage(Size screenSize) {
     return Opacity(
       opacity: 0.6,
@@ -399,7 +400,6 @@ class _ViewDetailState extends State<ViewDetail> {
                                   })
                               ),
                             )
-                            //Wrap(children: cetrificatebuilder(context, target_docu['certificates'],)),
                           ],
                         ),
                         SizedBox(

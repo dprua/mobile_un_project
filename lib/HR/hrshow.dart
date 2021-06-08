@@ -197,8 +197,7 @@ class _ViewDetailState extends State<ViewDetail> {
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasData == false) return CircularProgressIndicator();
         if (snapshot.hasError) return Text("Error: ${snapshot.error}");
-        return Container(
-          padding: EdgeInsets.fromLTRB(0, 0, 0, 30),
+        return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -274,18 +273,18 @@ class _ViewDetailState extends State<ViewDetail> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.fromLTRB(30, 0, 20, 20),
+                padding: EdgeInsets.fromLTRB(30, 0, 20, 10),
                 child: Column(
                   children: [
                     Row(
                       children: [
-                        Text('Nation : ',style: TextStyle(
+                        Text('Nation : ', style: TextStyle(
                           fontFamily: 'Spectral',
                           color: Color(0xFF303030),
                           fontSize: 23.0,
                           fontWeight: FontWeight.w400,
                         )),
-                        Text(snapshot.data['Nation'],
+                        Text(snapshot.data.data()['Nation'],
                           style: TextStyle(
                             fontFamily: 'Spectral',
                             color: Color(0xFF303030),
@@ -299,13 +298,13 @@ class _ViewDetailState extends State<ViewDetail> {
                     ),
                     Row(
                       children: [
-                        Text('Current Position Title : ',style: TextStyle(
+                        Text('Current Position Title : ', style: TextStyle(
                           fontFamily: 'Spectral',
                           color: Color(0xFF303030),
                           fontSize: 23.0,
                           fontWeight: FontWeight.w400,
                         )),
-                        Text(snapshot.data['curPostTitle'],
+                        Text(snapshot.data.data()['curPostTitle'],
                           style: TextStyle(
                             fontFamily: 'Spectral',
                             color: Color(0xFF303030),
@@ -319,13 +318,62 @@ class _ViewDetailState extends State<ViewDetail> {
                     ),
                     Row(
                       children: [
-                        Text('Current Duty Station : ',style: TextStyle(
+                        Text('Current Duty Station : ', style: TextStyle(
                           fontFamily: 'Spectral',
                           color: Color(0xFF303030),
                           fontSize: 23.0,
                           fontWeight: FontWeight.w400,
                         )),
-                        Text(snapshot.data['curDutyStat'],
+                        Text(snapshot.data.data()['curDutyStat'],
+                          style: TextStyle(
+                            fontFamily: 'Spectral',
+                            color: Color(0xFF303030),
+                            fontSize: 25.0,
+                            fontWeight: FontWeight.w600,
+                          ),),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Certificates list : ', style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        Container(
+                          width: 400,
+                          child: Wrap(
+                              direction: Axis.horizontal,
+                              children: List.generate(snapshot.data.data()['certificates'].length, (index) {
+                                return Text(snapshot.data.data()['certificates'][index]+', ',
+                                    style: TextStyle(
+                                      fontFamily: 'Spectral',
+                                      color: Color(0xFF303030),
+                                      fontSize: 25.0,
+                                      fontWeight: FontWeight.w600,
+                                    ));
+                              })
+                          ),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        Text('Programing Skill Level : ', style: TextStyle(
+                          fontFamily: 'Spectral',
+                          color: Color(0xFF303030),
+                          fontSize: 23.0,
+                          fontWeight: FontWeight.w400,
+                        )),
+                        Text(snapshot.data.data()['skillLev'].toString(),
                           style: TextStyle(
                             fontFamily: 'Spectral',
                             color: Color(0xFF303030),
@@ -337,8 +385,6 @@ class _ViewDetailState extends State<ViewDetail> {
                   ],
                 ),
               ),
-
-
             ],
           ),
         );

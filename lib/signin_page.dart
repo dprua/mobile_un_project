@@ -53,9 +53,10 @@ class SignInPageState extends State<SignInPage> {
                 Container(
                   margin: const EdgeInsets.only(left: 0, right: 0, top: 30),
                   height: 150,
-                  width: MediaQuery.of(context).size.width-560,
+                  //width: MediaQuery.of(context).size.width-560,
                   child: Center(
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           decoration: BoxDecoration(
@@ -156,69 +157,72 @@ class SignInPageState extends State<SignInPage> {
                       );
                     }).toList(),
                   ),
+                ),
+                Container(
+                  width: 600,
+                  margin: const EdgeInsets.symmetric(horizontal: 335),
+                  child: Row(
+                    children: <Widget>[
+                      Checkbox(
+                        value: doRemember,
+                        onChanged: (newValue) {
+                          setState(() {
+                            doRemember = newValue;
+                          });
+                        },
+                      ),
+                      Text(
+                        "Remember Me",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                // Sign In Button
+                Container(
+                  width: 600,
+                  margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
+                  child: RaisedButton(
+                    color: Colors.indigo[300],
+                    child: Text(
+                      "SIGN IN",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    onPressed: () {
+                      FocusScope.of(context).requestFocus(new FocusNode()); // 키보드 감춤
+                      _signIn();
+                    },
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Container(
+                  width: 600,
+                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  padding: const EdgeInsets.only(top: 50),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("Need an account?",
+                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 15)),
+                      FlatButton(
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(color: Colors.deepOrange, fontSize: 20,fontWeight: FontWeight.bold),
+                        ),
+                        onPressed: () {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => SignUpPage()));
+                        },
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
           ),
           // Remember Me
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 335),
-            child: Row(
-              children: <Widget>[
-                Checkbox(
-                  value: doRemember,
-                  onChanged: (newValue) {
-                    setState(() {
-                      doRemember = newValue;
-                    });
-                  },
-                ),
-                Text(
-                    "Remember Me",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
-              ],
-            ),
-          ),
-          // Sign In Button
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 335, vertical: 10),
-            child: RaisedButton(
-              color: Colors.indigo[300],
-              child: Text(
-                "SIGN IN",
-                style: TextStyle(color: Colors.white),
-              ),
-              onPressed: () {
-                FocusScope.of(context).requestFocus(new FocusNode()); // 키보드 감춤
-                _signIn();
-              },
-            ),
-          ),
-          SizedBox(height: 10,),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            padding: const EdgeInsets.only(top: 50),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text("Need an account?",
-                    style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold, fontSize: 15)),
-                FlatButton(
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(color: Colors.deepOrange, fontSize: 20,fontWeight: FontWeight.bold),
-                  ),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUpPage()));
-                  },
-                )
-              ],
-            ),
-          )
         ],
       ),
     );

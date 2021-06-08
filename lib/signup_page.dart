@@ -47,8 +47,9 @@ class SignUpPageState extends State<SignUpPage> {
               Column(
                 children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(280, 150, 0, 30),
+                    padding: const EdgeInsets.fromLTRB(0, 150, 0, 30),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           decoration: BoxDecoration(

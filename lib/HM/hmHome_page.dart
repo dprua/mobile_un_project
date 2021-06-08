@@ -7,6 +7,7 @@ import 'package:un_project/HM/approval_page.dart';
 import 'package:un_project/HM/hmDetail_page.dart';
 import 'package:un_project/authentification.dart';
 import 'package:un_project/signin_page.dart';
+import 'package:un_project/HM/hmdetail.dart';
 
 // Home page for Staff
 class hmHomePage extends StatefulWidget {
@@ -328,11 +329,19 @@ class ViewState extends State<ViewWidget> {
                           child: Text("more"),
                           onPressed: () {
                             // When tap the "more", go to Detail page
+                            //version 1
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) =>
+                            //           hmDetailPage(doc: document)),
+                            // );
+                            //version2
                             Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) =>
-                                      hmDetailPage(doc: document)),
+                                      hmdetailPage(doc: document)),
                             );
                           },
                         ),
@@ -350,3 +359,4 @@ class ViewState extends State<ViewWidget> {
     );
   }
 }
+
