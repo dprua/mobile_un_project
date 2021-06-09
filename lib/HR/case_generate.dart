@@ -235,6 +235,9 @@ class Case_generate extends StatelessWidget{
 
   List<DataRow> _getRows(){
     List<DataRow> dataRow = [];
+    List colors = [Color(0xFFCFFFE5),Color(0xFFFAF1D6),  Color(0xFFFAD4AE),  Color(0xFFFADEE1), Color(0xFFD9F1F1), Color(0xFFB6E3E9)];
+    Random random = new Random();
+    int index = 0;
     for (var i=1; i<=num; i++) {
       var csvDataCells=[];
       csvDataCells.add('$i') ;
@@ -250,10 +253,22 @@ class Case_generate extends StatelessWidget{
       for(var j=0; j<csvDataCells.length; j++) {
         cells.add(DataCell(Text(csvDataCells[j],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold))));
       }
-      dataRow.add(DataRow(cells: cells,color: MaterialStateColor.resolveWith((states) => colors[index]),));
-      index++;
-      if(index == 2)
-        index = 0;
+      print("ADSGASDGASDGSDAGSADGASDGASDGASD");
+
+      dataRow.add(DataRow(
+        cells: cells,
+        //color: MaterialStateColor.resolveWith((states) => colors[index]),
+        color: MaterialStateProperty.resolveWith ((Set  states) {
+          print(index);
+          print(colors[index]);
+          index++;
+          if(index == 6)
+            index = 0;
+          return colors[index];// Use the default value.
+        }),
+      ));
+
+
     }
     return dataRow;
   }
@@ -261,18 +276,15 @@ class Case_generate extends StatelessWidget{
   List<DataColumn> _getColumns(){
     List<DataColumn> dataColumn = [];
 
-    dataColumn.add(DataColumn(label: Text('CASE',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold))));
+    dataColumn.add(DataColumn(label: Text('CASE',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.white))));
 
     for (int i = 0; i<position_length;i++) {
-        dataColumn.add(DataColumn(label: Text(init_arr[i],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),)));
+        dataColumn.add(DataColumn(label: Text(init_arr[i],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold, color: Colors.white),)));
     }
 
     return dataColumn;
   }
 
-  List colors = [Colors.red, Colors.green, Colors.yellow];
-  Random random = new Random();
-  int index = 0;
 
 
   Widget build(BuildContext context) {
@@ -301,7 +313,7 @@ class Case_generate extends StatelessWidget{
                   else {
                     return DataTable(
                       headingRowColor:
-                      MaterialStateColor.resolveWith((states) => Colors.orangeAccent),
+                      MaterialStateColor.resolveWith((states) =>  Color(0xFF878787)),
                       horizontalMargin: 12.0,
                       columnSpacing: 28.0,
                       columns: _getColumns(),
