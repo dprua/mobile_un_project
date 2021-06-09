@@ -61,7 +61,24 @@ class HRState extends State<HRWidget>{
                         ),
                       ),
                     ]),
-                    SizedBox(height: 20,),
+                    SizedBox(height: 10,),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Welcome!\nHR_admin!!",
+                            style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5,),
                     Divider(),
                     FlatButton(
                         onPressed: () {
@@ -220,9 +237,6 @@ class ViewState extends State<ViewWidget> {
             'level 1',
             'level 2',
             'level 3',
-            'level 4',
-            'level 5',
-            'level 6'
           ].map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,

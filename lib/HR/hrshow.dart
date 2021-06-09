@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 var target;
 
@@ -374,6 +375,29 @@ class _ViewDetailState extends State<ViewDetail> {
                             fontSize: 25.0,
                             fontWeight: FontWeight.w600,
                           ),),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Resume : ",
+                          style: TextStyle(
+                              fontFamily: 'Spectral',
+                              color: Color(0xFF303030),
+                              fontSize: 23.0,
+                              fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              launch(snapshot.data.data()['phpURL']);
+                            },
+                            child: Text(
+                                'Click 📜 ',
+                              style: TextStyle(fontSize: 20,color: Color(0xFF303030),),
+                            )
+                        )
                       ],
                     ),
                   ],

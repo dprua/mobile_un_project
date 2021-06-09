@@ -280,7 +280,7 @@ class _RegisterFormState extends State<RegisterForm> {
                                         level = newValue;
                                       });
                                     },
-                                    items: <int>[1, 2, 3, 4, 5, 6]
+                                    items: <int>[1, 2, 3]
                                         .map<DropdownMenuItem<int>>((int value) {
                                       return DropdownMenuItem<int>(
                                         value: value,

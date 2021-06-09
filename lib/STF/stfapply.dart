@@ -26,6 +26,8 @@ class ApplyState extends State<ApplyPage>{
   TextEditingController _curLevelControl = TextEditingController();
   TextEditingController _certControl = TextEditingController();
 
+  bool level;
+
   Future<void> phpPicker() async{
     final result = await FilePicker.platform.pickFiles();
     setState(() {
@@ -132,9 +134,12 @@ class ApplyState extends State<ApplyPage>{
               child: CircularProgressIndicator(),
             );
           }
+          _nameControl..text = snapshot.data['first_name'] +' '+ snapshot.data['last_name'];
+          _nationControl..text = snapshot.data['nationality'];
           _curTitleControl..text = snapshot.data['position_title'];
           _curDutyControl..text = snapshot.data['duty_station'];
           _curLevelControl..text = "${snapshot.data['position_level']}";
+          level = snapshot.data['position_level'] == widget.doc.get('Level');
           return Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(
@@ -268,7 +273,7 @@ class ApplyState extends State<ApplyPage>{
                                 ),
                               ),
                               Text("Please separate with ' , '", style: TextStyle(color: Colors.redAccent)),
-
+                              (level)?
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -295,7 +300,24 @@ class ApplyState extends State<ApplyPage>{
                                     },
                                   ),
                                 ],
-                              ),
+                              )
+                              :
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  TextButton(
+                                    child: Text("You can ONLY APPLY for jobs that fit your LEVEL. Click to Exit.",style: TextStyle(color: Colors.redAccent,fontWeight: FontWeight.bold),),
+                                    onPressed: () {
+                                      _nationControl.clear();
+                                      _nameControl.clear();
+                                      _curTitleControl.clear();
+                                      _curDutyControl.clear();
+                                      _curLevelControl.clear();
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              )
                             ],
                           ),
                         ),

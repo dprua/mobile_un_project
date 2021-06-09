@@ -22,97 +22,146 @@ class STFState extends State<STFWidget> {
   Future<void> signOut() async {
     await Authentification().signOut();
   }
-
+  var uid = FirebaseAuth.instance.currentUser.uid;
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Row(
         children: [
-          Container(
-              width: 200.0,
-              child: Column(
-                children: [
-                  Stack(children: [
-                    AspectRatio(
-                      aspectRatio: 4 / 2,
-                      child: Image.network(
-                          "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/64px-UN_emblem_blue.svg.png",
-                          height: 50,
-                          width: 50),
-                    ),
-                    Positioned(
-                      top: 85,
-                      left: 45,
-                      child: Text(
-                        'UN HR Application',
-                        style: TextStyle(
-                            color: Color(0xFF1976D2),
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ]),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Divider(),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProfilePage()),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Icon(
-                          Icons.person,
-                          size: 40,
-                          color: Color(0xFF01579B),
+        StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance.collection('users').doc(uid).snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            if (snapshot.hasData == false)
+              return CircularProgressIndicator();
+            if (snapshot.hasError)
+              return Text("Error: ${snapshot.error}");
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return Text("Loading...");
+              default:
+                return Container(
+                    width: 200.0,
+                    child: Column(
+                      children: [
+                        Stack(children: [
+                          AspectRatio(
+                            aspectRatio: 4 / 2,
+                            child: Image.network(
+                                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/UN_emblem_blue.svg/64px-UN_emblem_blue.svg.png",
+                                height: 50,
+                                width: 50),
+                          ),
+                          Positioned(
+                            top: 85,
+                            left: 45,
+                            child: Text(
+                              'UN HR Application',
+                              style: TextStyle(
+                                  color: Color(0xFF1976D2),
+                                  fontWeight: FontWeight.bold
+                              ),
+                            ),
+                          ),
+                        ]),
+                        SizedBox(
+                          height: 20,
                         ),
-                        title: Text(
-                          "Profile",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Container(
+                          padding: EdgeInsets.fromLTRB(30, 0, 0, 0),
+                          alignment: Alignment.centerLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Welcome!\n"+snapshot.data.get('first_name')+' '+snapshot.data.get('last_name'),
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Level : ",
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Wrap(
+                                      children: List.generate(snapshot.data['position_level'], (index) {
+                                        return Text("🔥 ",);
+                                      })
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => StaffAdd()),
-                        );
-                      },
-                      child: ListTile(
-                        leading: Icon(Icons.add_location_alt_outlined,
-                            color: Color(0xFF01579B), size: 40),
-                        title: Text(
-                          "Add Position",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        Divider(),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProfilePage()),
+                              );
+                            },
+                            child: ListTile(
+                              leading: Icon(
+                                Icons.person,
+                                size: 40,
+                                color: Color(0xFF01579B),
+                              ),
+                              title: Text(
+                                "Profile",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )),
+                        SizedBox(
+                          height: 20,
                         ),
-                      )),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      signOut();
-                    },
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.logout,
-                        size: 40,
-                        color: Color(0xFF01579B),
-                      ),
-                      title: Text(
-                        "Log out",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ],
-              )),
+                        TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StaffAdd()),
+                              );
+                            },
+                            child: ListTile(
+                              leading: Icon(Icons.add_location_alt_outlined,
+                                  color: Color(0xFF01579B), size: 40),
+                              title: Text(
+                                "Add Position",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            )),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            signOut();
+                          },
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.logout,
+                              size: 40,
+                              color: Color(0xFF01579B),
+                            ),
+                            title: Text(
+                              "Log out",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                );
+            }
+          }
+          ),
           const VerticalDivider(
             color: Colors.grey,
             thickness: 1,
@@ -162,9 +211,6 @@ class _STFViewState extends State<STFViewWidget> {
             'level 1',
             'level 2',
             'level 3',
-            'level 4',
-            'level 5',
-            'level 6'
           ].map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
