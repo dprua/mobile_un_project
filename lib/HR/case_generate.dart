@@ -33,21 +33,21 @@ class Case_generate extends StatelessWidget{
   getinfo() async {
     post = await FirebaseFirestore.instance.collection('post').where('approval', isEqualTo: true).get();
     apply = await FirebaseFirestore.instance.collection('apply').get();
-    position_length = post.docs.length;
-    apply_length = apply.docs.length;
-    fac_pos = await factorial(position_length);
+    position_length = post.docs.length; //포지션 수
+    apply_length = apply.docs.length; //지원자 수
+    fac_pos = await factorial(position_length); //포지션 펙토리얼 값
     arr = new List(2);
-    init_arr = new List<String>(position_length);
+    init_arr = new List<String>(position_length); // 각 포지션의 이름이 적힌 리스
     arr[1] = position_length;
     arr[0] = fac_pos;
     for(int i =0;i<position_length;i++){
       init_arr[i] = post.docs.elementAt(i).data()["Title"];
     }
-    apply_arr = new List(position_length); // 각 포지션 별로 지원한 사람 숫
+    apply_arr = new List(position_length); // 각 포지션 별로 지원한 사람
     make2darr();
     int count = 0;
     for(int i =0;i<position_length;i++){
-      for(int j = 0; j<apply_length;j++){
+      for(int j = 0; j<apply_length;j++){ // apply length는 포지션 중에서 가장 지원자가 많은 놈 기준으로 값이 정해짐
         if(apply.docs.elementAt(j).data()['postId'] == post.docs.elementAt(i).id){
           count++;
         }

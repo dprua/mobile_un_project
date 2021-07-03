@@ -218,7 +218,7 @@ class ViewWidget extends StatefulWidget {
 
 class ViewState extends State<ViewWidget> {
   String dropdownValue = 'All';
-  int levelNum = 0;
+  String levelNum = 'All';
 
   @override
   Widget build(BuildContext context) {
@@ -228,15 +228,22 @@ class ViewState extends State<ViewWidget> {
           // positions per level (DropdownButton)
           value: dropdownValue,
           onChanged: (String newValue) {
-            print(widget.user_state);
             setState(() {
               dropdownValue = newValue;
               var n;
               if (newValue == 'All') {
-                levelNum = 0;
+                levelNum = 'All';
               } else {
                 n = int.tryParse(newValue[6]);
-                levelNum = n;
+                if(n == 1){
+                  levelNum = 'P-1';
+                }
+                else if (n == 2){
+                  levelNum = 'P-2';
+                }
+                else{
+                  levelNum = 'P-3';
+                }
               }
               // level 1, level 2, level 3,
               // Query collection 'post',   // have to change
@@ -256,7 +263,7 @@ class ViewState extends State<ViewWidget> {
         ),
         Expanded(
           child: StreamBuilder(
-            stream: (levelNum == 0)
+            stream: (levelNum == 'All')
             ? FirebaseFirestore.instance
                 .collection('post')
                 .where('approval', isEqualTo: true)
@@ -344,25 +351,23 @@ class ViewState extends State<ViewWidget> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  Wrap(
-                                      children: List.generate(document.get('Level'), (index) {
-                                        return Text("🔥 ",);
-                                      })
-                                  ),
-                                ],
-                              ),
-                            SizedBox(width: 15,),
-                            Expanded(
-                              child: Text(
-                                  "Duty station: ${document.get('Duty station')}",
+                              Text(
+                                "${document.get('Level')}",
                                 style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
+                              SizedBox(width: 15,),
+                              Expanded(
+                                child: Text(
+                                  "Duty station: ${document.get('Duty station')}",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),

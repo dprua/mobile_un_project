@@ -20,11 +20,10 @@ class _RegisterFormState extends State<RegisterForm> {
   final _dutyController = TextEditingController();
   final _titleController = TextEditingController();
   String dropdownValue = 'MALE';
+  String ddtt = 'Human Rights Officer';
+  String level = 'P-1';
 
-  //position level, gender,
-  int level = 1;
-
-  enrolluser(String gender, int level) {
+  enrolluser(String gender, String title, String level) {
     return FirebaseFirestore.instance.collection('users').doc(cur_uid).set({
       'duty_station': _dutyController.text,
       'first_name': _firstNameController.text,
@@ -32,7 +31,7 @@ class _RegisterFormState extends State<RegisterForm> {
       'gender': gender,
       'nationality': _nationalityController.text,
       'position_level': level,
-      'position_title': _titleController.text,
+      'position_title': title,
       'resume_url': ' ',
       'user_type': 2,
     });
@@ -167,30 +166,14 @@ class _RegisterFormState extends State<RegisterForm> {
                           controller: _dutyController,
                           decoration: const InputDecoration(
                             prefixIcon: Icon(Icons.home_work_outlined),
-                            hintText: 'Enter your Duty Station',
+                            hintText: 'Enter your Current Duty Station',
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.bold
                             ),
                           ),
                           validator: (value) {
                             if (value.isEmpty) {
-                              return 'Enter your Duty Station';
-                            }
-                            return null;
-                          },
-                        ),
-                        TextFormField(
-                          controller: _titleController,
-                          decoration: const InputDecoration(
-                            prefixIcon: Icon(Icons.subtitles_sharp),
-                            hintText: 'Enter your Position Title',
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty) {
-                              return 'Enter your Position Title';
+                              return 'Enter your Current Duty Station';
                             }
                             return null;
                           },
@@ -211,9 +194,57 @@ class _RegisterFormState extends State<RegisterForm> {
                             return null;
                           },
                         ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(width: 13,),
+                            Icon(Icons.home_repair_service_outlined),
+                            SizedBox(width: 13,),
+                            Text(
+                              "Current Position Title : ",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Container(
+                              child: DropdownButton<String>(
+                                value: ddtt,
+                                icon: const Icon(Icons.arrow_drop_down),
+                                iconSize: 24,
+                                elevation: 16,
+                                style: const TextStyle(color: Colors.black),
+                                underline: Container(
+                                  height: 2,
+                                  color: Colors.black12,
+                                ),
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    ddtt = newValue;
+                                  });
+                                },
+                                items: <String>['Human Rights Officer', 'Information Systems Officer','Programme Management Officer', 'Legal Officer']
+                                    .map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Divider(
+                          thickness: 3,
+                          height: 5,
+                        ),
                         Row(
                           children: [
-                            SizedBox(width: 180,),
+                            SizedBox(width: 160,),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -246,26 +277,27 @@ class _RegisterFormState extends State<RegisterForm> {
                                         child: Text(value,
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
-                                          ),),
+                                          ),
+                                        ),
                                       );
                                     }).toList(),
                                   ),
                                 ),
                               ],
                             ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 30),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                      "Level : ",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(width: 20,),
+                                Text(
+                                  "Level : ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  DropdownButton<int>(
+                                ),
+                                Container(
+                                  child: DropdownButton<String>(
                                     value: level,
                                     icon: const Icon(Icons.arrow_drop_down),
                                     iconSize: 24,
@@ -275,21 +307,25 @@ class _RegisterFormState extends State<RegisterForm> {
                                       height: 2,
                                       color: Colors.black12,
                                     ),
-                                    onChanged: (int newValue) {
+                                    onChanged: (String newValue) {
                                       setState(() {
                                         level = newValue;
                                       });
                                     },
-                                    items: <int>[1, 2, 3]
-                                        .map<DropdownMenuItem<int>>((int value) {
-                                      return DropdownMenuItem<int>(
+                                    items: <String>['P-1', 'P-2','P-3']
+                                        .map<DropdownMenuItem<String>>((String value) {
+                                      return DropdownMenuItem<String>(
                                         value: value,
-                                        child: Text(value.toString()),
+                                        child: Text(value,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       );
                                     }).toList(),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -325,7 +361,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     onPressed: () async {
                       if(_formKey.currentState.validate()) {
                         final FirebaseAuth fAuth = FirebaseAuth.instance;
-                        await enrolluser(dropdownValue, level);
+                        await enrolluser(dropdownValue, ddtt,level);
                         fp.setUser(fAuth.currentUser);
                       }
                     },

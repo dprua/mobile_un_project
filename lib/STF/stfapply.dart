@@ -27,6 +27,7 @@ class ApplyState extends State<ApplyPage>{
   TextEditingController _certControl = TextEditingController();
 
   bool level;
+  bool catego;
 
   Future<void> phpPicker() async{
     final result = await FilePicker.platform.pickFiles();
@@ -69,7 +70,7 @@ class ApplyState extends State<ApplyPage>{
       'Gender': userDoc['gender'], // user info
       'Nation': _nationControl.text, // user info, can change
       'curDutyStat': _curDutyControl.text, // user info, can change?
-      'curPostLevel': int.tryParse(_curLevelControl.text), // user info, can change?
+      'curPostLevel': _curLevelControl.text, // user info, can change?
       'curPostTitle': _curTitleControl.text, // user info, can change?
       'name': _nameControl.text, // I don't know...
       'phpURL': url, // have to change, update
@@ -140,6 +141,7 @@ class ApplyState extends State<ApplyPage>{
           _curDutyControl..text = snapshot.data['duty_station'];
           _curLevelControl..text = "${snapshot.data['position_level']}";
           level = snapshot.data['position_level'] == widget.doc.get('Level');
+          catego = snapshot.data['position_title'] == widget.doc.get('Title');
           return Container(
             decoration: new BoxDecoration(
               image: new DecorationImage(
@@ -273,7 +275,7 @@ class ApplyState extends State<ApplyPage>{
                                 ),
                               ),
                               Text("Please separate with ' , '", style: TextStyle(color: Colors.redAccent)),
-                              (level)?
+                              (level && catego)?
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -306,7 +308,7 @@ class ApplyState extends State<ApplyPage>{
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   TextButton(
-                                    child: Text("You can ONLY APPLY for jobs that fit your LEVEL. Click to Exit.",style: TextStyle(color: Colors.redAccent,fontWeight: FontWeight.bold),),
+                                    child: Text("You can ONLY APPLY fit your LEVEL and Position Category. Click to Exit.",style: TextStyle(color: Colors.redAccent,fontWeight: FontWeight.bold),),
                                     onPressed: () {
                                       _nationControl.clear();
                                       _nameControl.clear();
