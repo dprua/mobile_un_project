@@ -85,4 +85,4 @@
 |:-:|------|-----|
 |**박예겸**|PM, HR Pages, UI design, Algorithm development|dprua@naver.com|
 |**신겸**|HM Pages, UI design|21500265@handong.edu|
-|**김예진**|STF Pages, DB design, Algorithm development|21800138@handong.edu|
+|**김예진**|STF Pages, DB design, Algorithm development|yj11735@naver.com|
